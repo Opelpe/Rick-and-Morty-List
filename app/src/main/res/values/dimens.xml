@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="size_text_13sp">13sp</dimen>
+    <dimen name="size_space_15dp">15dp</dimen>
+    <dimen name="size_space_30dp">30dp</dimen>
+    <dimen name="size_space_40dp">40dp</dimen>
+    <dimen name="size_space_20dp">20dp</dimen>
+    <dimen name="size_text_14sp">14sp</dimen>
+    <dimen name="size_icon_details">150dp</dimen>
+    <dimen name="size_space_25dp">25dp</dimen>
+    <dimen name="size_text_10sp">10sp</dimen>
+    <dimen name="size_text_20sp">20sp</dimen>
+    <dimen name="size_space_5dp">5dp</dimen>
+    <dimen name="size_text_8sp">8sp</dimen>
+    <dimen name="size_space_80dp">80dp</dimen>
+    <dimen name="size_space_2dp">2dp</dimen>
+    <dimen name="size_space_50dp">50dp</dimen>
+    <dimen name="size_space_10dp">10dp</dimen>
+    <dimen name="size_logo_width">50dp</dimen>
+    <dimen name="size_logo_height">60dp</dimen>
+    <dimen name="size_scrollbar">4dp</dimen>
+    <dimen name="size_space_3dp">3dp</dimen>
+    <dimen name="size_item_icon_width">65dp</dimen>
+    <dimen name="size_item_icon_height">75dp</dimen>
+    <dimen name="size_text_9sp">9sp</dimen>
+</resources>

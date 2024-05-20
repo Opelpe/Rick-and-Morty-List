@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Rick &amp; Morty List</string>
+    <string name="module_list_logo_motto">Rick and Morty characters list!</string>
+    <string name="common_word_name">Name:</string>
+    <string name="common_word_status">Status:</string>
+    <string name="common_word_species">Species:</string>
+    <string name="common_word_gender">Gender:</string>
+    <string name="common_word_origin">Origin</string>
+    <string name="common_word_location">Location</string>
+    <string name="common_word_type">Type:</string>
+    <string name="common_word_dimension">Dimension:</string>
+    <string name="common_word_episodes">Episodes</string>
+    <string name="common_word_unknown">Unknown</string>
+</resources>

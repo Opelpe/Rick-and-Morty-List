@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/size_space_15dp"
+    android:layout_marginVertical="@dimen/size_space_3dp"
+    android:background="@drawable/item_character_background_selectable"
+    android:paddingHorizontal="15dp"
+    android:paddingVertical="10dp">
+
+    <ImageView
+        android:id="@+id/characterIcon"
+        android:layout_width="@dimen/size_item_icon_width"
+        android:layout_height="@dimen/size_item_icon_height"
+        android:src="@drawable/ic_rick_morty_logo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@id/characterNameTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_light"
+        android:paddingStart="@dimen/size_space_10dp"
+        android:paddingEnd="@dimen/size_space_10dp"
+        android:text="@string/common_word_name"
+        android:textSize="@dimen/size_text_9sp"
+        app:layout_constraintStart_toEndOf="@id/characterIcon"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@id/characterNameDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_bold"
+        android:paddingStart="@dimen/size_space_20dp"
+        android:paddingEnd="@dimen/size_space_20dp"
+        android:textAllCaps="true"
+        android:textColor="@color/color_text_black_transparent"
+        android:textSize="@dimen/size_text_20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/characterIcon"
+        app:layout_constraintTop_toBottomOf="@id/characterNameTitle"
+        tools:text="Ricky sanchezzzzz" />
+
+
+    <TextView
+        android:id="@+id/characterStatusTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_light"
+        android:layout_marginStart="@dimen/size_space_10dp"
+        android:text="@string/common_word_status"
+        android:textSize="@dimen/size_text_9sp"
+        app:layout_constraintBottom_toBottomOf="@id/characterStatusColorContainer"
+        app:layout_constraintStart_toEndOf="@id/characterIcon"
+        app:layout_constraintTop_toTopOf="@id/characterStatusColorContainer" />
+
+    <LinearLayout
+        android:id="@+id/characterStatusColorContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/size_space_5dp"
+        android:layout_marginTop="@dimen/size_space_10dp"
+        android:background="@drawable/character_status_background_alive"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toEndOf="@id/characterStatusTitle"
+        app:layout_constraintTop_toBottomOf="@id/characterNameDescription" />
+
+    <TextView
+        android:id="@+id/characterStatusDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_light"
+        android:paddingHorizontal="@dimen/size_space_5dp"
+        android:textAllCaps="true"
+        android:textSize="@dimen/size_text_10sp"
+        app:layout_constraintBottom_toBottomOf="@id/characterStatusColorContainer"
+        app:layout_constraintStart_toEndOf="@id/characterStatusColorContainer"
+        app:layout_constraintTop_toTopOf="@id/characterStatusColorContainer"
+        tools:text="Dead" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

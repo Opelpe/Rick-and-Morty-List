@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_details_background">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <ProgressBar
+            android:id="@+id/progressView"
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@id/characterEpisodesTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/characterOriginTitle" />
+
+
+        <ImageView
+            android:id="@+id/characterIcon"
+            android:layout_width="@dimen/size_icon_details"
+            android:layout_height="@dimen/size_icon_details"
+            android:layout_marginStart="@dimen/size_space_25dp"
+            android:layout_marginTop="@dimen/size_space_40dp"
+            android:src="@drawable/ic_rick_morty_transparent_logo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!--    INFO SECTION -->
+
+        <TextView
+            android:id="@+id/characterNameTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/size_space_15dp"
+            android:text="@string/common_word_name"
+            android:textSize="@dimen/size_text_10sp"
+            app:layout_constraintStart_toEndOf="@id/characterIcon"
+            app:layout_constraintTop_toTopOf="@id/characterIcon" />
+
+        <TextView
+            android:id="@+id/characterNameDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/size_space_25dp"
+            android:paddingEnd="@dimen/size_space_5dp"
+            android:textSize="@dimen/size_text_20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/characterIcon"
+            app:layout_constraintTop_toBottomOf="@id/characterNameTitle"
+            tools:text="RICK SANCHEZ" />
+
+        <TextView
+            android:id="@+id/characterSpeciesTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/size_space_15dp"
+            android:text="@string/common_word_species"
+            android:textSize="@dimen/size_text_8sp"
+            app:layout_constraintStart_toEndOf="@id/characterIcon"
+            app:layout_constraintTop_toBottomOf="@id/characterNameDescription" />
+
+        <TextView
+            android:id="@+id/characterSpeciesDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/size_space_25dp"
+            android:paddingEnd="@dimen/size_space_5dp"
+            android:textSize="@dimen/size_text_13sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/characterIcon"
+            app:layout_constraintTop_toBottomOf="@id/characterSpeciesTitle"
+            tools:text="HUMANOIDAL" />
+
+        <TextView
+            android:id="@+id/characterGenderTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/size_space_15dp"
+            android:text="@string/common_word_gender"
+            android:textSize="@dimen/size_text_8sp"
+            app:layout_constraintStart_toEndOf="@id/characterIcon"
+            app:layout_constraintTop_toBottomOf="@id/characterSpeciesDescription" />
+
+        <TextView
+            android:id="@+id/characterGenderDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/size_space_25dp"
+            android:paddingEnd="@dimen/size_space_5dp"
+            android:textSize="@dimen/size_text_13sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/characterIcon"
+            app:layout_constraintTop_toBottomOf="@id/characterGenderTitle"
+            tools:text="MALE" />
+
+        <TextView
+            android:id="@+id/characterStatusTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/size_space_15dp"
+            android:text="@string/common_word_status"
+            android:textSize="@dimen/size_text_8sp"
+            app:layout_constraintStart_toEndOf="@id/characterIcon"
+            app:layout_constraintTop_toBottomOf="@id/characterGenderDescription" />
+
+        <LinearLayout
+            android:id="@+id/characterStatusColorContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/size_space_25dp"
+            android:background="@drawable/character_status_background_alive"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@id/characterStatusDescription"
+            app:layout_constraintStart_toEndOf="@id/characterIcon"
+            app:layout_constraintTop_toTopOf="@id/characterStatusDescription" />
+
+        <TextView
+            android:id="@+id/characterStatusDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/size_space_5dp"
+            android:paddingEnd="@dimen/size_space_5dp"
+            android:textAllCaps="true"
+            android:textSize="@dimen/size_text_13sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/characterStatusColorContainer"
+            app:layout_constraintTop_toBottomOf="@id/characterStatusTitle"
+            tools:text="DEAD" />
+
+
+        <TextView
+            android:id="@+id/characterOriginTitle"
+            style="@style/details_titles_text_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_space_80dp"
+            android:text="@string/common_word_origin"
+            app:layout_constraintEnd_toStartOf="@id/originNameDescription"
+            app:layout_constraintStart_toEndOf="@id/originNameTitle"
+            app:layout_constraintTop_toBottomOf="@id/characterStatusDescription" />
+
+        <TextView
+            android:id="@+id/characterLocationTitle"
+            style="@style/details_titles_text_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_space_80dp"
+            android:text="@string/common_word_location"
+            app:layout_constraintEnd_toStartOf="@id/locationNameDescription"
+            app:layout_constraintStart_toEndOf="@id/locationNameTitle"
+            app:layout_constraintTop_toBottomOf="@id/characterStatusDescription" />
+
+        <!--    NAME-->
+
+        <TextView
+            android:id="@+id/originNameTitle"
+            style="@style/location_title_text_style"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/common_word_name"
+            app:layout_constraintEnd_toStartOf="@id/originNameDescription"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/characterOriginTitle" />
+
+        <TextView
+            android:id="@+id/originNameDescription"
+            style="@style/location_description_text_style"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@id/locationNameTitle"
+            app:layout_constraintStart_toEndOf="@id/originDimensionTitle"
+            app:layout_constraintTop_toBottomOf="@id/characterOriginTitle"
+            tools:text="sadfgfdgdasd" />
+
+        <TextView
+            android:id="@+id/locationNameTitle"
+            style="@style/location_title_text_style"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/common_word_name"
+            app:layout_constraintEnd_toStartOf="@id/locationNameDescription"
+            app:layout_constraintStart_toEndOf="@id/originDimensionDescription"
+            app:layout_constraintTop_toBottomOf="@id/characterLocationTitle" />
+
+        <TextView
+            android:id="@+id/locationNameDescription"
+            style="@style/location_description_text_style"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/locationDimensionTitle"
+            app:layout_constraintTop_toTopOf="@id/locationNameTitle"
+            tools:text="sadfgfdgdasd" />
+
+        <!--    TYPE-->
+
+        <TextView
+            android:id="@+id/originTypeTitle"
+            style="@style/location_title_text_style"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/common_word_type"
+            app:layout_constraintEnd_toStartOf="@id/originDimensionDescription"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/originNameDescription" />
+
+        <TextView
+            android:id="@+id/originTypeDescription"
+            style="@style/location_description_text_style"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@id/locationTypeTitle"
+            app:layout_constraintStart_toEndOf="@id/originDimensionTitle"
+            app:layout_constraintTop_toTopOf="@id/originTypeTitle"
+            tools:text="sadfgfdgdasd" />
+
+        <TextView
+            android:id="@+id/locationTypeTitle"
+            style="@style/location_title_text_style"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/common_word_type"
+            app:layout_constraintEnd_toStartOf="@id/locationTypeDescription"
+            app:layout_constraintStart_toEndOf="@id/originDimensionDescription"
+            app:layout_constraintTop_toBottomOf="@id/locationNameDescription" />
+
+        <TextView
+            android:id="@+id/locationTypeDescription"
+            style="@style/location_description_text_style"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/locationDimensionTitle"
+            app:layout_constraintTop_toTopOf="@id/locationTypeTitle"
+            tools:text="sadfgfdgdasd" />
+
+        <!--DIMENSIONS-->
+
+        <TextView
+            android:id="@+id/originDimensionTitle"
+            style="@style/location_title_text_style"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/common_word_dimension"
+            app:layout_constraintEnd_toStartOf="@id/originDimensionDescription"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/originTypeDescription" />
+
+        <TextView
+            android:id="@+id/originDimensionDescription"
+            style="@style/location_description_text_style"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@id/locationDimensionTitle"
+            app:layout_constraintStart_toEndOf="@id/originDimensionTitle"
+            app:layout_constraintTop_toTopOf="@id/originDimensionTitle"
+            tools:text="sadfgfdgdasd" />
+
+        <TextView
+            android:id="@+id/locationDimensionTitle"
+            style="@style/location_title_text_style"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/common_word_dimension"
+            app:layout_constraintEnd_toStartOf="@id/locationDimensionDescription"
+            app:layout_constraintStart_toEndOf="@id/originDimensionDescription"
+            app:layout_constraintTop_toBottomOf="@id/locationTypeDescription" />
+
+        <TextView
+            android:id="@+id/locationDimensionDescription"
+            style="@style/location_description_text_style"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/locationDimensionTitle"
+            app:layout_constraintTop_toTopOf="@id/locationDimensionTitle"
+            tools:text="sadfgfdgdasd" />
+
+        <!--    EPISODES SECTION -->
+
+        <TextView
+            android:id="@+id/characterEpisodesTitle"
+            style="@style/details_titles_text_style"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_space_50dp"
+            android:text="@string/common_word_episodes"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/originDimensionDescription" />
+
+        <LinearLayout
+            android:id="@+id/episodesNameContainer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/size_space_30dp"
+            android:layout_marginVertical="@dimen/size_space_10dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/size_space_20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/characterEpisodesTitle" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
