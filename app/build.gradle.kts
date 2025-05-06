@@ -64,8 +64,6 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.recyclerview)
-    implementation(libs.androidx.navigation.fragment.ktx)
-    implementation(libs.androidx.navigation.ui.ktx)
     testImplementation(libs.junit)
     testImplementation(libs.mockito.kotlin)
     testImplementation(libs.junit)
@@ -81,11 +79,13 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+
     //    DAGGER
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
     testImplementation(libs.hilt.android.testing)
     kaptTest(libs.hilt.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
 
     // Retrofit
     implementation(libs.retrofit)
@@ -94,9 +94,23 @@ dependencies {
     implementation(libs.logging.interceptor)
     implementation(libs.gson)
 
-    //PICASSO
-    implementation(libs.picasso)
+
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.coil.compose)
+    implementation(libs.androidx.paging.compose)
+
+
 
     //PAGING
     implementation(libs.androidx.paging.runtime.ktx)
+
+
+    //TODO: remove after migrate to compose
+    //PICASSO
+    implementation(libs.picasso)
+
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
+
+
 }
