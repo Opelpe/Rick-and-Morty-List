@@ -7,12 +7,12 @@ plugins {
 
 android {
     namespace = "com.pnow.rick_and_morty_list"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.pnow.rick_and_morty_list"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -73,7 +73,6 @@ dependencies {
     testImplementation(libs.androidx.core.testing)
     testImplementation(libs.truth)
     testImplementation(libs.mockk)
-    testImplementation(libs.kotlinx.coroutines.test.v171)
     testImplementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
