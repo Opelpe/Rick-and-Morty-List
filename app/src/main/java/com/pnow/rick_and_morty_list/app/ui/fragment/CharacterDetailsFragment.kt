@@ -10,13 +10,16 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.pnow.rick_and_morty_list.app.ui.model.CharacterUIModel
+import com.pnow.rick_and_morty_list.app.ui.model.DetailsUIModel
 import com.pnow.rick_and_morty_list.app.ui.model.EpisodeUIModel
 import com.pnow.rick_and_morty_list.app.ui.model.LocationUIModel
 import com.pnow.rick_and_morty_list.app.ui.viewmodel.DetailsViewModel
 import com.pnow.rick_and_morty_list.databinding.FragmentCharacterDeatailsBinding
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class CharacterDetailsFragment : Fragment() {
@@ -36,22 +39,32 @@ class CharacterDetailsFragment : Fragment() {
         binding = FragmentCharacterDeatailsBinding.inflate(layoutInflater, container, false)
 
         setProgressVisibility(true)
-
         getDetails()
-
-        detailsViewModel.detailsState.observe(viewLifecycleOwner) {
-            setProgressVisibility(false)
-
-            if (it.episodeModel.isNotEmpty()) {
-                addEpisodesView(it.episodeModel)
-            }
-            bindOriginInfo(it.originModel)
-            bindLocationInfo(it.locationModel)
-        }
-
+        observeDetailsState()
         bindCharacterDetails()
 
         return binding.root
+    }
+
+    private fun observeDetailsState() {
+        lifecycleScope.launch {
+            detailsViewModel.detailsState.collect { details ->
+                details?.let {
+                    updateDetailsView(it)
+                }
+            }
+        }
+    }
+
+    private fun updateDetailsView(model: DetailsUIModel) {
+        setProgressVisibility(false)
+
+        if (model.episodeModel.isNotEmpty()) {
+            addEpisodesView(model.episodeModel)
+        }
+
+        bindOriginInfo(model.originModel)
+        bindLocationInfo(model.locationModel)
     }
 
     private fun getDetails() {

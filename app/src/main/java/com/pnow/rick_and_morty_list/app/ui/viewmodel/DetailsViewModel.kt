@@ -1,8 +1,6 @@
 package com.pnow.rick_and_morty_list.app.ui.viewmodel
 
-import android.net.Uri
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pnow.rick_and_morty_list.app.data.mapper.DetailsUiMapper
@@ -13,6 +11,11 @@ import com.pnow.rick_and_morty_list.app.ui.model.EpisodeUIModel
 import com.pnow.rick_and_morty_list.app.ui.model.LocationUIModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,40 +24,45 @@ class DetailsViewModel @Inject constructor(
     private val rickAndMortyRepository: RickAndMortyRepository,
     private val detailsMapper: DetailsUiMapper,
     private val dispatcher: CoroutineDispatcher
-) :
-    ViewModel() {
+) : ViewModel() {
 
-    private val _detailsState = MutableLiveData<DetailsUIModel>()
-    val detailsState: LiveData<DetailsUIModel> = _detailsState
+    private val _detailsState = MutableStateFlow<DetailsUIModel?>(null)
+    val detailsState: StateFlow<DetailsUIModel?> = _detailsState.asStateFlow()
 
-    fun fetchDetails(episodesUrlList: List<String>?, locationUrl: String?, originUrl: String?) {
+    fun fetchDetails(episodeUrls: List<String>?, locationUrl: String?, originUrl: String?) {
         viewModelScope.launch(dispatcher) {
-            if (episodesUrlList != null) {
-                val episodesList = mutableListOf<EpisodeUIModel>()
-                episodesUrlList.forEach {
-                    val episodeDto = rickAndMortyRepository.getEpisode(getUriPath(it))
-                    val episode = detailsMapper.mapToEpisodeUIModel(episodeDto)
-                    if (!episodesList.contains(episode)) {
-                        episodesList.add(episode)
+            val episodes = mutableListOf<EpisodeUIModel>()
+
+            val originFlow = rickAndMortyRepository.getLocation(getUriPath(originUrl))
+                .map { detailsMapper.mapToLocationUiModel(it) }
+            val locationFlow = rickAndMortyRepository.getLocation(getUriPath(locationUrl))
+                .map { detailsMapper.mapToLocationUiModel(it) }
+
+            val origin = originFlow.first()
+            val location = locationFlow.first()
+
+            _detailsState.emit(DetailsUIModel(origin, location, emptyList()))
+
+            episodeUrls.orEmpty().forEach { url ->
+                rickAndMortyRepository.getEpisode(getUriPath(url))
+                    .map { detailsMapper.mapToEpisodeUIModel(it) }
+                    .collect { episode ->
+                        if (!episodes.contains(episode)) {
+                            episodes.add(episode)
+                            _detailsState.emit(
+                                DetailsUIModel(origin, location, episodes.toList())
+                            )
+                        }
                     }
-                }
-
-                val originInfo = detailsMapper.mapToLocationUiModel(rickAndMortyRepository.getLocation(getUriPath(originUrl)))
-                val locationInfo = detailsMapper.mapToLocationUiModel(rickAndMortyRepository.getLocation(getUriPath(locationUrl)))
-
-                val detailsUIModel = DetailsUIModel(originInfo, locationInfo, episodesList)
-                _detailsState.value = detailsUIModel
             }
         }
+    }
+
+    private fun getUriPath(url: String?): String {
+        return url?.toUri()?.lastPathSegment ?: ""
     }
 
     fun getLocationDescription(model: CharacterLocationModel?): LocationUIModel {
         return detailsMapper.mapToLocationUiModel(model)
     }
-
-    private fun getUriPath(locationUrl: String?): String {
-        val uri = Uri.parse(locationUrl)
-        return uri?.lastPathSegment ?: ""
-    }
-
 }
