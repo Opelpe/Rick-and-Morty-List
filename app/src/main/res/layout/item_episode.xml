@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="@dimen/size_space_3dp">
+
+    <TextView
+        android:id="@+id/episodeNumber"
+        android:layout_width="@dimen/size_item_episode_side_width"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_light"
+        android:padding="@dimen/size_space_5dp"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textSize="@dimen/size_text_8sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="E01S02" />
+
+    <TextView
+        android:id="@+id/episodeName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_regular"
+        android:paddingHorizontal="@dimen/size_space_3dp"
+        android:paddingVertical="@dimen/size_space_3dp"
+        android:selectAllOnFocus="true"
+        android:textAlignment="center"
+        android:textIsSelectable="true"
+        android:textSize="@dimen/size_text_10sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/episodeDate"
+        app:layout_constraintStart_toEndOf="@id/episodeNumber"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Example episode Rick And Morty Name" />
+
+    <TextView
+        android:id="@+id/episodeDate"
+        android:layout_width="@dimen/size_item_episode_side_width"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_thin"
+        android:padding="@dimen/size_space_5dp"
+        android:textAlignment="viewEnd"
+        android:textSize="@dimen/size_text_8sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="January 2, 2013" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,48 +2,66 @@ package com.pnow.rick_and_morty_list.app.ui.fragment
 
 import android.os.Build
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.pnow.rick_and_morty_list.app.ui.adapter.EpisodeListAdapter
 import com.pnow.rick_and_morty_list.app.ui.model.CharacterUIModel
 import com.pnow.rick_and_morty_list.app.ui.model.DetailsUIModel
-import com.pnow.rick_and_morty_list.app.ui.model.EpisodeUIModel
 import com.pnow.rick_and_morty_list.app.ui.model.LocationUIModel
 import com.pnow.rick_and_morty_list.app.ui.viewmodel.DetailsViewModel
 import com.pnow.rick_and_morty_list.databinding.FragmentCharacterDeatailsBinding
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class CharacterDetailsFragment : Fragment() {
+
+    @Inject
+    lateinit var episodeAdapter: EpisodeListAdapter
+
     private lateinit var binding: FragmentCharacterDeatailsBinding
 
     private val detailsViewModel: DetailsViewModel by viewModels()
 
     private var args: CharacterUIModel? = null
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
         args = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            arguments?.getSerializable(CharactersListFragment.MODEL_BUNDLE, CharacterUIModel::class.java)
+            arguments?.getSerializable(
+                CharactersListFragment.MODEL_BUNDLE,
+                CharacterUIModel::class.java
+            )
         } else {
             arguments?.getSerializable(CharactersListFragment.MODEL_BUNDLE) as CharacterUIModel
         }
 
         binding = FragmentCharacterDeatailsBinding.inflate(layoutInflater, container, false)
 
+        setupAdapter()
         setProgressVisibility(true)
         getDetails()
         observeDetailsState()
         bindCharacterDetails()
 
         return binding.root
+    }
+
+    private fun setupAdapter() {
+        binding.episodesRecyclerView.layoutManager = LinearLayoutManager(context)
+        binding.episodesRecyclerView.adapter = episodeAdapter
     }
 
     private fun observeDetailsState() {
@@ -58,11 +76,7 @@ class CharacterDetailsFragment : Fragment() {
 
     private fun updateDetailsView(model: DetailsUIModel) {
         setProgressVisibility(false)
-
-        if (model.episodeModel.isNotEmpty()) {
-            addEpisodesView(model.episodeModel)
-        }
-
+        episodeAdapter.submitList(model.episodeModel)
         bindOriginInfo(model.originModel)
         bindLocationInfo(model.locationModel)
     }
@@ -82,7 +96,13 @@ class CharacterDetailsFragment : Fragment() {
             characterSpeciesDescription.text = args?.species
             characterGenderDescription.text = args?.gender
             characterStatusDescription.text = args?.status
-            characterStatusColorContainer.background = args?.statusDrawable?.drawable?.let { ContextCompat.getDrawable(requireContext(), it) }
+            characterStatusColorContainer.background =
+                args?.statusDrawable?.drawable?.let { resId ->
+                    ContextCompat.getDrawable(
+                        requireContext(),
+                        resId
+                    )
+                }
             originNameDescription.text = detailsViewModel.getLocationDescription(args?.origin).name
             Picasso.get().load(args?.imageUrl).into(characterIcon)
         }
@@ -103,17 +123,6 @@ class CharacterDetailsFragment : Fragment() {
             locationDimensionDescription.text = locationModel.dimension
         }
     }
-
-    private fun addEpisodesView(episodeModelList: List<EpisodeUIModel>) {
-        episodeModelList.forEach {
-            val textView = TextView(context)
-            textView.text = it.nameAndNumbering
-            textView.gravity = Gravity.CENTER
-            textView.setPadding(0, 4, 0, 4)
-            binding.episodesNameContainer.addView(textView)
-        }
-    }
-
 
     private fun setProgressVisibility(visible: Boolean) {
         if (visible) binding.progressView.visibility = View.VISIBLE

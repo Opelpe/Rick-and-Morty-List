@@ -6,7 +6,10 @@ import com.pnow.rick_and_morty_list.app.data.mapper.CharacterUiModelMapper
 import com.pnow.rick_and_morty_list.app.ui.model.CharacterUIModel
 import javax.inject.Inject
 
-class CharactersPagingDataSource @Inject constructor(private val service: ApiService, private val mapper: CharacterUiModelMapper) :
+class CharactersPagingDataSource @Inject constructor(
+    private val service: ApiService,
+    private val mapper: CharacterUiModelMapper
+) :
     PagingSource<Int, CharacterUIModel>() {
     override fun getRefreshKey(state: PagingState<Int, CharacterUIModel>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
@@ -22,7 +25,7 @@ class CharactersPagingDataSource @Inject constructor(private val service: ApiSer
             val data = mapper.mapToUIModel(response)
             LoadResult.Page(
                 data = data,
-                prevKey = if (page == 1) null else page.minus(1),
+                prevKey = if (page <= 1) null else page.minus(1),
                 nextKey = if (data.isEmpty()) null else page.plus(1)
             )
         } catch (exception: Exception) {
