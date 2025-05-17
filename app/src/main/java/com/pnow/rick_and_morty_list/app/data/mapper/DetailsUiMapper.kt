@@ -12,6 +12,7 @@ import javax.inject.Inject
 class DetailsUiMapper @Inject constructor(val context: Context) {
 
     private val unknownTitle = context.getString(R.string.common_word_unknown)
+
     fun mapToLocationUiModel(locationDto: LocationModel?): LocationUIModel {
         val name = capitalize(locationDto?.name?.ifEmpty { unknownTitle } ?: unknownTitle)
         val type = capitalize(locationDto?.type?.ifEmpty { unknownTitle } ?: unknownTitle)
@@ -27,10 +28,12 @@ class DetailsUiMapper @Inject constructor(val context: Context) {
     }
 
     fun mapToEpisodeUIModel(episodeDto: EpisodeModel): EpisodeUIModel {
-        val episodeNumbering = episodeDto.episode
-        val episodeName = episodeDto.name
-        val episodeDesc = " \"$episodeName\" - $episodeNumbering "
-        return EpisodeUIModel(episodeDesc)
+        return EpisodeUIModel(
+            id = episodeDto.id,
+            episodeNumber = episodeDto.episode,
+            name = episodeDto.name,
+            date = episodeDto.airDate,
+        )
     }
 
     private fun capitalize(word: String): String {

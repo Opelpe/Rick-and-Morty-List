@@ -1,7 +1,6 @@
 package com.pnow.rick_and_morty_list.app.data.di.module
 
 import com.google.gson.Gson
-import com.pnow.rick_and_morty_list.app.data.mapper.CharacterUiModelMapper
 import com.pnow.rick_and_morty_list.app.data.networking.ApiService
 import com.pnow.rick_and_morty_list.app.data.networking.CharactersPagingDataSource
 import dagger.Module
@@ -53,7 +52,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideCharactersPagingDataSource(apiService: ApiService, mapper: CharacterUiModelMapper): CharactersPagingDataSource {
-        return CharactersPagingDataSource(apiService, mapper)
+    fun provideCharactersPagingDataSource(apiService: ApiService): CharactersPagingDataSource {
+        return CharactersPagingDataSource(apiService)
     }
 }
