@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -14,6 +15,7 @@ import com.pnow.rick_and_morty_list.app.ui.adapter.EpisodeListAdapter
 import com.pnow.rick_and_morty_list.app.ui.model.CharacterUIModel
 import com.pnow.rick_and_morty_list.app.ui.model.DetailsUIModel
 import com.pnow.rick_and_morty_list.app.ui.model.LocationUIModel
+import com.pnow.rick_and_morty_list.app.ui.viewmodel.DetailsUiState
 import com.pnow.rick_and_morty_list.app.ui.viewmodel.DetailsViewModel
 import com.pnow.rick_and_morty_list.databinding.FragmentCharacterDeatailsBinding
 import com.squareup.picasso.Picasso
@@ -67,10 +69,19 @@ class CharacterDetailsFragment : Fragment() {
 
     private fun observeDetailsState() {
         lifecycleScope.launch {
-            detailsViewModel.detailsState.collect { details ->
-                updateDetailsView(details)
+            detailsViewModel.detailsState.collect{ state ->
+                when(state){
+                    DetailsUiState.Loading -> setProgressVisibility(true)
+                    is DetailsUiState.Success -> updateDetailsView(state.data)
+                    is DetailsUiState.Failure -> handleError(state.error)
+                }
             }
         }
+    }
+
+    private fun handleError(error: String) {
+        setProgressVisibility(false)
+        Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
     }
 
     private fun updateDetailsView(model: DetailsUIModel) {
@@ -81,7 +92,6 @@ class CharacterDetailsFragment : Fragment() {
     }
 
     private fun getDetails() {
-        setProgressVisibility(true)
         val episodesList = args?.episodeUrl
         val location = args?.location
         val origin = args?.origin
