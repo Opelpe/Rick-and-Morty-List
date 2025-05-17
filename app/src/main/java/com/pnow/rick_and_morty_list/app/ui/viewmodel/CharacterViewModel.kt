@@ -6,7 +6,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.pnow.rick_and_morty_list.app.data.mapper.CharacterUiModelMapper
 import com.pnow.rick_and_morty_list.app.data.repository.RickAndMortyRepository
-import com.pnow.rick_and_morty_list.app.ui.model.CharacterUIModel
+import com.pnow.rick_and_morty_list.app.ui.model.CharacterInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,8 +24,8 @@ class CharacterViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _charactersState =
-        MutableStateFlow<PagingData<CharacterUIModel>>(PagingData.empty())
-    val charactersState: StateFlow<PagingData<CharacterUIModel>> = _charactersState
+        MutableStateFlow<PagingData<CharacterInfo.ListItem>>(PagingData.empty())
+    val charactersState: StateFlow<PagingData<CharacterInfo.ListItem>> = _charactersState
 
     init {
         viewModelScope.launch(dispatcher) {

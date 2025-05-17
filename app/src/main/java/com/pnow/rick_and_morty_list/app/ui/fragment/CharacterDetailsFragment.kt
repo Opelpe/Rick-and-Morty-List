@@ -12,8 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pnow.rick_and_morty_list.app.ui.adapter.EpisodeListAdapter
-import com.pnow.rick_and_morty_list.app.ui.model.CharacterUIModel
-import com.pnow.rick_and_morty_list.app.ui.model.DetailsUIModel
+import com.pnow.rick_and_morty_list.app.ui.model.CharacterInfo
 import com.pnow.rick_and_morty_list.app.ui.model.LocationUIModel
 import com.pnow.rick_and_morty_list.app.ui.viewmodel.DetailsUiState
 import com.pnow.rick_and_morty_list.app.ui.viewmodel.DetailsViewModel
@@ -31,7 +30,7 @@ class CharacterDetailsFragment : Fragment() {
 
     private val detailsViewModel: DetailsViewModel by viewModels()
 
-    private var args: CharacterUIModel? = null
+    private var args: CharacterInfo.ListItem? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,10 +41,10 @@ class CharacterDetailsFragment : Fragment() {
         args = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             arguments?.getSerializable(
                 CharactersListFragment.MODEL_BUNDLE,
-                CharacterUIModel::class.java
+                CharacterInfo.ListItem::class.java
             )
         } else {
-            arguments?.getSerializable(CharactersListFragment.MODEL_BUNDLE) as CharacterUIModel
+            arguments?.getSerializable(CharactersListFragment.MODEL_BUNDLE) as CharacterInfo.ListItem
         }
 
         binding = FragmentCharacterDeatailsBinding.inflate(layoutInflater, container, false)
@@ -69,10 +68,12 @@ class CharacterDetailsFragment : Fragment() {
 
     private fun observeDetailsState() {
         lifecycleScope.launch {
-            detailsViewModel.detailsState.collect{ state ->
-                when(state){
-                    DetailsUiState.Loading -> setProgressVisibility(true)
-                    is DetailsUiState.Success -> updateDetailsView(state.data)
+            detailsViewModel.detailsState.collect { state ->
+                when (state) {
+                    DetailsUiState.CharacterInfoLoading -> setCharacterInfoProgress(true)
+                    is DetailsUiState.CharacterInfoUpdated -> updateCharacterInfo(state.info)
+                    is DetailsUiState.EpisodesUpdated -> episodeAdapter.submitList(state.episodes)
+                    is DetailsUiState.EpisodesLoading -> setEpisodesProgress(state.isLoading)
                     is DetailsUiState.Failure -> handleError(state.error)
                 }
             }
@@ -80,13 +81,13 @@ class CharacterDetailsFragment : Fragment() {
     }
 
     private fun handleError(error: String) {
-        setProgressVisibility(false)
+        setCharacterInfoProgress(false)
+        setEpisodesProgress(false)
         Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
     }
 
-    private fun updateDetailsView(model: DetailsUIModel) {
-        setProgressVisibility(false)
-        episodeAdapter.submitList(model.episodeModel)
+    private fun updateCharacterInfo(model: CharacterInfo.Details) {
+        setCharacterInfoProgress(false)
         bindOriginInfo(model.originModel)
         bindLocationInfo(model.locationModel)
     }
@@ -134,8 +135,13 @@ class CharacterDetailsFragment : Fragment() {
         }
     }
 
-    private fun setProgressVisibility(visible: Boolean) {
+    private fun setCharacterInfoProgress(visible: Boolean) {
         if (visible) binding.progressView.visibility = View.VISIBLE
         else binding.progressView.visibility = View.GONE
+    }
+
+    private fun setEpisodesProgress(visible: Boolean) {
+        if (visible) binding.episodesProgress.visibility = View.VISIBLE
+        else binding.episodesProgress.visibility = View.GONE
     }
 }

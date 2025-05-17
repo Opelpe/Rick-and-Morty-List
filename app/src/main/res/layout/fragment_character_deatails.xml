@@ -297,6 +297,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/originDimensionDescription" />
 
+        <ProgressBar
+            android:id="@+id/episodesProgress"
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:paddingVertical="@dimen/size_space_3dp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@id/characterEpisodesTitle"
+            app:layout_constraintStart_toEndOf="@id/characterEpisodesTitle"
+            app:layout_constraintTop_toTopOf="@id/characterEpisodesTitle" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/episodesRecyclerView"
             android:layout_width="0dp"
