@@ -8,46 +8,57 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.pnow.rick_and_morty_list.R
-import com.pnow.rick_and_morty_list.app.ui.model.CharacterUIModel
+import com.pnow.rick_and_morty_list.app.ui.model.CharacterInfo
 import com.pnow.rick_and_morty_list.databinding.ItemCharacterBinding
 import com.squareup.picasso.Picasso
 
-class CharacterListAdapter(private val onClick: (CharacterUIModel) -> Unit) :
-    PagingDataAdapter<CharacterUIModel, CharacterListAdapter.CharacterViewHolder>(Comparator) {
+class CharacterListAdapter(private val onClick: (CharacterInfo.ListItem) -> Unit) :
+    PagingDataAdapter<CharacterInfo.ListItem, CharacterListAdapter.CharacterViewHolder>(Comparator) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterViewHolder {
-        val binding = ItemCharacterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ItemCharacterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return CharacterViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
-        getItem(position)?.let { userItemUiState -> holder.bindCharacterInfo(userItemUiState, onClick) }
+        getItem(position)?.let { userItemUiState ->
+            holder.bindCharacterInfo(
+                userItemUiState,
+                onClick
+            )
+        }
     }
 
-    class CharacterViewHolder(private val binding: ItemCharacterBinding) : RecyclerView.ViewHolder(binding.root) {
+    class CharacterViewHolder(private val binding: ItemCharacterBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bindCharacterInfo(
-            character: CharacterUIModel, onClick: (CharacterUIModel) -> Unit
+            character: CharacterInfo.ListItem, onClick: (CharacterInfo.ListItem) -> Unit
         ) {
             with(binding) {
                 root.setOnClickListener { onClick(character) }
                 characterNameDescription.text = character.name
                 characterStatusDescription.text = character.status
                 Picasso.get().load(character.imageUrl).into(characterIcon)
-                characterStatusColorContainer.background = ContextCompat.getDrawable(root.context, character.statusDrawable.drawable)
+                characterStatusColorContainer.background =
+                    ContextCompat.getDrawable(root.context, character.statusDrawable.drawable)
             }
         }
 
     }
 }
 
-object Comparator : DiffUtil.ItemCallback<CharacterUIModel>() {
-    override fun areItemsTheSame(oldItem: CharacterUIModel, newItem: CharacterUIModel): Boolean {
+object Comparator : DiffUtil.ItemCallback<CharacterInfo.ListItem>() {
+    override fun areItemsTheSame(
+        oldItem: CharacterInfo.ListItem,
+        newItem: CharacterInfo.ListItem
+    ): Boolean {
         return oldItem == newItem
     }
 
     override fun areContentsTheSame(
-        oldItem: CharacterUIModel,
-        newItem: CharacterUIModel
+        oldItem: CharacterInfo.ListItem,
+        newItem: CharacterInfo.ListItem
     ): Boolean {
         return oldItem.id == newItem.id
     }
