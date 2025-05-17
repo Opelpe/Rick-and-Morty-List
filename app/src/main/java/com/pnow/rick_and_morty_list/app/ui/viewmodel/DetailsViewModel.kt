@@ -11,9 +11,9 @@ import com.pnow.rick_and_morty_list.app.ui.model.EpisodeUIModel
 import com.pnow.rick_and_morty_list.app.ui.model.LocationUIModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -26,8 +26,8 @@ class DetailsViewModel @Inject constructor(
     private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    private val _detailsState = MutableStateFlow<DetailsUIModel?>(null)
-    val detailsState: StateFlow<DetailsUIModel?> = _detailsState.asStateFlow()
+    private val _detailsState = MutableSharedFlow<DetailsUIModel>()
+    val detailsState: SharedFlow<DetailsUIModel> = _detailsState.asSharedFlow()
 
     fun fetchDetails(episodeUrls: List<String>?, locationUrl: String?, originUrl: String?) {
         viewModelScope.launch(dispatcher) {

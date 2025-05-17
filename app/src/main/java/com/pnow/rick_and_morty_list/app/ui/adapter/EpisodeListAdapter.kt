@@ -7,9 +7,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.pnow.rick_and_morty_list.app.ui.model.EpisodeUIModel
 import com.pnow.rick_and_morty_list.databinding.ItemEpisodeBinding
-import javax.inject.Inject
 
-class EpisodeListAdapter @Inject constructor() :
+class EpisodeListAdapter :
     ListAdapter<EpisodeUIModel, EpisodeListAdapter.EpisodeViewHolder>(EpisodeDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EpisodeViewHolder {

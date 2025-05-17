@@ -19,13 +19,11 @@ import com.pnow.rick_and_morty_list.databinding.FragmentCharacterDeatailsBinding
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class CharacterDetailsFragment : Fragment() {
 
-    @Inject
-    lateinit var episodeAdapter: EpisodeListAdapter
+    private lateinit var episodeAdapter: EpisodeListAdapter
 
     private lateinit var binding: FragmentCharacterDeatailsBinding
 
@@ -50,16 +48,19 @@ class CharacterDetailsFragment : Fragment() {
 
         binding = FragmentCharacterDeatailsBinding.inflate(layoutInflater, container, false)
 
-        setupAdapter()
-        setProgressVisibility(true)
-        getDetails()
-        observeDetailsState()
-        bindCharacterDetails()
-
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupAdapter()
+        getDetails()
+        observeDetailsState()
+        bindCharacterDetails()
+    }
+
     private fun setupAdapter() {
+        episodeAdapter = EpisodeListAdapter()
         binding.episodesRecyclerView.layoutManager = LinearLayoutManager(context)
         binding.episodesRecyclerView.adapter = episodeAdapter
     }
@@ -67,9 +68,7 @@ class CharacterDetailsFragment : Fragment() {
     private fun observeDetailsState() {
         lifecycleScope.launch {
             detailsViewModel.detailsState.collect { details ->
-                details?.let {
-                    updateDetailsView(it)
-                }
+                updateDetailsView(details)
             }
         }
     }
@@ -82,6 +81,7 @@ class CharacterDetailsFragment : Fragment() {
     }
 
     private fun getDetails() {
+        setProgressVisibility(true)
         val episodesList = args?.episodeUrl
         val location = args?.location
         val origin = args?.origin
