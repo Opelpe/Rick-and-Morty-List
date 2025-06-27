@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "com.pnow.rick_and_morty_list"
+    namespace = "com.pnow.ramlist"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.pnow.rick_and_morty_list"
+        applicationId = "com.pnow.ramlist"
         minSdk = 26
         targetSdk = 35
         versionCode = 1
