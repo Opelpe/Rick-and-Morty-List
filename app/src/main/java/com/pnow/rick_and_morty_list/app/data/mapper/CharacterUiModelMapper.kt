@@ -1,32 +1,27 @@
 package com.pnow.rick_and_morty_list.app.data.mapper
 
-import com.pnow.rick_and_morty_list.app.data.networking.model.CharacterResponseModel
-import com.pnow.rick_and_morty_list.app.ui.model.CharacterUIModel
+import androidx.paging.PagingData
+import androidx.paging.map
+import com.pnow.rick_and_morty_list.app.data.model.character.CharacterModel
+import com.pnow.rick_and_morty_list.app.ui.model.CharacterInfo
 import javax.inject.Inject
 
 class CharacterUiModelMapper @Inject constructor(private val characterStatusMapper: CharacterStatusMapper) {
 
-    fun mapToUIModel(response: CharacterResponseModel): List<CharacterUIModel> {
-
-        val newList = mutableListOf<CharacterUIModel>()
-        response.results.forEach {
-
-            val uiModel = CharacterUIModel(
-                it.id,
-                it.name,
-                characterStatusMapper.mapToStatusText(it.status),
-                characterStatusMapper.mapToStatusDrawable(it.status),
-                it.species,
-                it.gender,
-                it.imageUrl,
-                it.origin,
-                it.location,
-                it.episodeUrl
+    fun map(pagingData: PagingData<CharacterModel>): PagingData<CharacterInfo.ListItem> {
+        return pagingData.map { character ->
+            CharacterInfo.ListItem(
+                id = character.id,
+                name = character.name,
+                status = characterStatusMapper.mapToStatusText(character.status),
+                statusDrawable = characterStatusMapper.mapToStatusDrawable(character.status),
+                species = character.species,
+                gender = character.gender,
+                imageUrl = character.imageUrl,
+                origin = character.origin,
+                location = character.location,
+                episodeUrl = character.episodeUrl
             )
-            if (!newList.contains(uiModel)) {
-                newList.add(uiModel)
-            }
         }
-        return newList
     }
 }

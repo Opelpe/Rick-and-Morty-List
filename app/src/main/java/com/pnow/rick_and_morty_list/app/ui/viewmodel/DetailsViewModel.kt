@@ -1,18 +1,23 @@
 package com.pnow.rick_and_morty_list.app.ui.viewmodel
 
-import android.net.Uri
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import android.util.Log
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pnow.rick_and_morty_list.app.data.mapper.DetailsUiMapper
 import com.pnow.rick_and_morty_list.app.data.model.character.CharacterLocationModel
 import com.pnow.rick_and_morty_list.app.data.repository.RickAndMortyRepository
-import com.pnow.rick_and_morty_list.app.ui.model.DetailsUIModel
+import com.pnow.rick_and_morty_list.app.ui.model.CharacterInfo
 import com.pnow.rick_and_morty_list.app.ui.model.EpisodeUIModel
 import com.pnow.rick_and_morty_list.app.ui.model.LocationUIModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,40 +26,81 @@ class DetailsViewModel @Inject constructor(
     private val rickAndMortyRepository: RickAndMortyRepository,
     private val detailsMapper: DetailsUiMapper,
     private val dispatcher: CoroutineDispatcher
-) :
-    ViewModel() {
+) : ViewModel() {
 
-    private val _detailsState = MutableLiveData<DetailsUIModel>()
-    val detailsState: LiveData<DetailsUIModel> = _detailsState
+    private val _detailsState =
+        MutableStateFlow<DetailsUiState>(DetailsUiState.CharacterInfoLoading)
+    val detailsState: StateFlow<DetailsUiState> = _detailsState.asStateFlow()
 
-    fun fetchDetails(episodesUrlList: List<String>?, locationUrl: String?, originUrl: String?) {
+    companion object {
+        const val TAG = "DetailsVM"
+    }
+
+    fun fetchDetails(episodeUrls: List<String>?, locationUrl: String?, originUrl: String?) {
         viewModelScope.launch(dispatcher) {
-            if (episodesUrlList != null) {
-                val episodesList = mutableListOf<EpisodeUIModel>()
-                episodesUrlList.forEach {
-                    val episodeDto = rickAndMortyRepository.getEpisode(getUriPath(it))
-                    val episode = detailsMapper.mapToEpisodeUIModel(episodeDto)
-                    if (!episodesList.contains(episode)) {
-                        episodesList.add(episode)
+            _detailsState.emit(DetailsUiState.CharacterInfoLoading)
+
+            val originFlow = rickAndMortyRepository.getLocation(getUriPath(originUrl))
+                .map { detailsMapper.mapToLocationUiModel(it) }
+            val locationFlow = rickAndMortyRepository.getLocation(getUriPath(locationUrl))
+                .map { detailsMapper.mapToLocationUiModel(it) }
+
+            val origin = originFlow.first()
+            val location = locationFlow.first()
+            val detailsData = CharacterInfo.Details(
+                origin,
+                location,
+            )
+            _detailsState.emit(DetailsUiState.CharacterInfoUpdated(detailsData))
+            fetchEpisodes(episodeUrls)
+        }
+    }
+
+    private fun fetchEpisodes(episodeUrls: List<String>?) {
+        val urls = episodeUrls.orEmpty()
+        if (urls.isEmpty()) return
+
+        val episodes = mutableSetOf<EpisodeUIModel>()
+
+        viewModelScope.launch(dispatcher) {
+            _detailsState.emit(DetailsUiState.EpisodesLoading(true))
+
+            urls.forEach { url ->
+                rickAndMortyRepository.getEpisode(getUriPath(url))
+                    .map { detailsMapper.mapToEpisodeUIModel(it) }
+                    .catch {
+                        Log.e(TAG, "Error fetching episode from URL: $url", it)
+                        _detailsState.emit(
+                            DetailsUiState.Failure("Something goes wrong, retry!")
+                        )
                     }
-                }
+                    .collect { episode ->
+                        if (episodes.add(episode)) {
+                            _detailsState.emit(DetailsUiState.EpisodesUpdated(episodes.toList()))
+                        }
 
-                val originInfo = detailsMapper.mapToLocationUiModel(rickAndMortyRepository.getLocation(getUriPath(originUrl)))
-                val locationInfo = detailsMapper.mapToLocationUiModel(rickAndMortyRepository.getLocation(getUriPath(locationUrl)))
-
-                val detailsUIModel = DetailsUIModel(originInfo, locationInfo, episodesList)
-                _detailsState.value = detailsUIModel
+                        if (episodes.size == urls.size) {
+                            _detailsState.emit(DetailsUiState.EpisodesLoading(false))
+                        }
+                    }
             }
         }
+    }
+
+
+    private fun getUriPath(url: String?): String {
+        return url?.toUri()?.lastPathSegment ?: ""
     }
 
     fun getLocationDescription(model: CharacterLocationModel?): LocationUIModel {
         return detailsMapper.mapToLocationUiModel(model)
     }
+}
 
-    private fun getUriPath(locationUrl: String?): String {
-        val uri = Uri.parse(locationUrl)
-        return uri?.lastPathSegment ?: ""
-    }
-
+sealed class DetailsUiState {
+    data object CharacterInfoLoading : DetailsUiState()
+    data class CharacterInfoUpdated(val info: CharacterInfo.Details) : DetailsUiState()
+    data class EpisodesLoading(val isLoading: Boolean) : DetailsUiState()
+    data class EpisodesUpdated(val episodes: List<EpisodeUIModel>) : DetailsUiState()
+    data class Failure(val error: String) : DetailsUiState()
 }

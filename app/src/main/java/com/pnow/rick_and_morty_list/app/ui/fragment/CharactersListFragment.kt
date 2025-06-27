@@ -8,14 +8,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
-import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pnow.rick_and_morty_list.R
 import com.pnow.rick_and_morty_list.app.ui.adapter.CharacterListAdapter
-import com.pnow.rick_and_morty_list.app.ui.model.CharacterUIModel
 import com.pnow.rick_and_morty_list.app.ui.viewmodel.CharacterViewModel
 import com.pnow.rick_and_morty_list.databinding.FragmentCharactersListBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
@@ -47,18 +46,11 @@ class CharactersListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        characterVM.charactersState.observe(viewLifecycleOwner) {
-            setCharacters(it)
-        }
-    }
-
-    private fun setCharacters(charactersPagingData: PagingData<CharacterUIModel>?) {
-        if (charactersPagingData != null) {
-            lifecycleScope.launch {
-                adapter.submitData(charactersPagingData)
+        lifecycleScope.launch {
+            characterVM.charactersState.collectLatest { pagingData ->
+                adapter.submitData(pagingData)
             }
         }
     }
-
 
 }

@@ -2,56 +2,94 @@ package com.pnow.rick_and_morty_list.app.ui.fragment
 
 import android.os.Build
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.pnow.rick_and_morty_list.app.ui.model.CharacterUIModel
-import com.pnow.rick_and_morty_list.app.ui.model.EpisodeUIModel
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.pnow.rick_and_morty_list.app.ui.adapter.EpisodeListAdapter
+import com.pnow.rick_and_morty_list.app.ui.model.CharacterInfo
 import com.pnow.rick_and_morty_list.app.ui.model.LocationUIModel
+import com.pnow.rick_and_morty_list.app.ui.viewmodel.DetailsUiState
 import com.pnow.rick_and_morty_list.app.ui.viewmodel.DetailsViewModel
 import com.pnow.rick_and_morty_list.databinding.FragmentCharacterDeatailsBinding
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class CharacterDetailsFragment : Fragment() {
+
+    private lateinit var episodeAdapter: EpisodeListAdapter
+
     private lateinit var binding: FragmentCharacterDeatailsBinding
 
     private val detailsViewModel: DetailsViewModel by viewModels()
 
-    private var args: CharacterUIModel? = null
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    private var args: CharacterInfo.ListItem? = null
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
         args = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            arguments?.getSerializable(CharactersListFragment.MODEL_BUNDLE, CharacterUIModel::class.java)
+            arguments?.getSerializable(
+                CharactersListFragment.MODEL_BUNDLE,
+                CharacterInfo.ListItem::class.java
+            )
         } else {
-            arguments?.getSerializable(CharactersListFragment.MODEL_BUNDLE) as CharacterUIModel
+            arguments?.getSerializable(CharactersListFragment.MODEL_BUNDLE) as CharacterInfo.ListItem
         }
 
         binding = FragmentCharacterDeatailsBinding.inflate(layoutInflater, container, false)
 
-        setProgressVisibility(true)
-
-        getDetails()
-
-        detailsViewModel.detailsState.observe(viewLifecycleOwner) {
-            setProgressVisibility(false)
-
-            if (it.episodeModel.isNotEmpty()) {
-                addEpisodesView(it.episodeModel)
-            }
-            bindOriginInfo(it.originModel)
-            bindLocationInfo(it.locationModel)
-        }
-
-        bindCharacterDetails()
-
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupAdapter()
+        getDetails()
+        observeDetailsState()
+        bindCharacterDetails()
+    }
+
+    private fun setupAdapter() {
+        episodeAdapter = EpisodeListAdapter()
+        binding.episodesRecyclerView.layoutManager = LinearLayoutManager(context)
+        binding.episodesRecyclerView.adapter = episodeAdapter
+    }
+
+    private fun observeDetailsState() {
+        lifecycleScope.launch {
+            detailsViewModel.detailsState.collect { state ->
+                when (state) {
+                    DetailsUiState.CharacterInfoLoading -> setCharacterInfoProgress(true)
+                    is DetailsUiState.CharacterInfoUpdated -> updateCharacterInfo(state.info)
+                    is DetailsUiState.EpisodesUpdated -> episodeAdapter.submitList(state.episodes)
+                    is DetailsUiState.EpisodesLoading -> setEpisodesProgress(state.isLoading)
+                    is DetailsUiState.Failure -> handleError(state.error)
+                }
+            }
+        }
+    }
+
+    private fun handleError(error: String) {
+        setCharacterInfoProgress(false)
+        setEpisodesProgress(false)
+        Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun updateCharacterInfo(model: CharacterInfo.Details) {
+        setCharacterInfoProgress(false)
+        bindOriginInfo(model.originModel)
+        bindLocationInfo(model.locationModel)
     }
 
     private fun getDetails() {
@@ -69,7 +107,13 @@ class CharacterDetailsFragment : Fragment() {
             characterSpeciesDescription.text = args?.species
             characterGenderDescription.text = args?.gender
             characterStatusDescription.text = args?.status
-            characterStatusColorContainer.background = args?.statusDrawable?.drawable?.let { ContextCompat.getDrawable(requireContext(), it) }
+            characterStatusColorContainer.background =
+                args?.statusDrawable?.drawable?.let { resId ->
+                    ContextCompat.getDrawable(
+                        requireContext(),
+                        resId
+                    )
+                }
             originNameDescription.text = detailsViewModel.getLocationDescription(args?.origin).name
             Picasso.get().load(args?.imageUrl).into(characterIcon)
         }
@@ -91,19 +135,13 @@ class CharacterDetailsFragment : Fragment() {
         }
     }
 
-    private fun addEpisodesView(episodeModelList: List<EpisodeUIModel>) {
-        episodeModelList.forEach {
-            val textView = TextView(context)
-            textView.text = it.nameAndNumbering
-            textView.gravity = Gravity.CENTER
-            textView.setPadding(0, 4, 0, 4)
-            binding.episodesNameContainer.addView(textView)
-        }
-    }
-
-
-    private fun setProgressVisibility(visible: Boolean) {
+    private fun setCharacterInfoProgress(visible: Boolean) {
         if (visible) binding.progressView.visibility = View.VISIBLE
         else binding.progressView.visibility = View.GONE
+    }
+
+    private fun setEpisodesProgress(visible: Boolean) {
+        if (visible) binding.episodesProgress.visibility = View.VISIBLE
+        else binding.episodesProgress.visibility = View.GONE
     }
 }
