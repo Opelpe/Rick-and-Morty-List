@@ -10,28 +10,29 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
+import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import org.junit.Test
-import io.mockk.verify
 
 class DetailsViewModelTest {
-
     @OptIn(ExperimentalCoroutinesApi::class)
     private val dispatcher: TestDispatcher = UnconfinedTestDispatcher()
-    private  val mockMapper = mockk<DetailsUiMapper>(relaxed = true, relaxUnitFun = true){
-        every { mapToLocationUiModel(any<LocationModel>()) } returns LocationUIModel("Earth", "Normal", "XD")
-    }
-    private   val mockRepo = mockk<RickAndMortyRepository>(relaxed = true, relaxUnitFun = true){
-        coEvery { getEpisode(any()) } returns mockk< EpisodeModel>(relaxed = true)
-    }
-    private  val tested = DetailsViewModel(mockRepo, mockMapper, dispatcher)
+    private val mockMapper =
+        mockk<DetailsUiMapper>(relaxed = true, relaxUnitFun = true) {
+            every { mapToLocationUiModel(any<LocationModel>()) } returns LocationUIModel("Earth", "Normal", "XD")
+        }
+    private val mockRepo =
+        mockk<RickAndMortyRepository>(relaxed = true, relaxUnitFun = true) {
+            coEvery { getEpisode(any()) } returns mockk<EpisodeModel>(relaxed = true)
+        }
+    private val tested = DetailsViewModel(mockRepo, mockMapper, dispatcher)
 
-    val looper = mockk<Looper> {
-        every { thread } returns Thread.currentThread()
-    }
-
+    val looper =
+        mockk<Looper> {
+            every { thread } returns Thread.currentThread()
+        }
 
     @Test
     fun fetchDetails() {
@@ -46,5 +47,4 @@ class DetailsViewModelTest {
 
         verify { mockMapper.mapToLocationUiModel(any<LocationModel>()) }
     }
-
 }

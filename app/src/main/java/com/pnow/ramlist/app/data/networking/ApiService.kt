@@ -8,10 +8,9 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
-
     @GET("character/")
     suspend fun getCharacters(
-         @Query("page") page: Int,
+        @Query("page") page: Int,
     ): CharacterResponseModel
 
     @GET("episode/{id}")

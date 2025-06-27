@@ -8,10 +8,10 @@ import io.mockk.mockk
 import org.junit.Test
 
 class DetailsUiMapperTest {
-
-    private val context = mockk<Context>(relaxed = true) {
-        every { getString(any()) } returns "Unknown"
-    }
+    private val context =
+        mockk<Context>(relaxed = true) {
+            every { getString(any()) } returns "Unknown"
+        }
     private val tested = DetailsUiMapper(context)
 
     @Test

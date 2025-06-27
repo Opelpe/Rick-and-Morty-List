@@ -6,5 +6,5 @@ data class CharacterLocationModel(
     @field:SerializedName("name")
     val name: String,
     @field:SerializedName("url")
-    val url: String
+    val url: String,
 )

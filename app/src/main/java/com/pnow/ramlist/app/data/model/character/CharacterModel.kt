@@ -20,5 +20,5 @@ data class CharacterModel(
     @field:SerializedName("location")
     val location: CharacterLocationModel,
     @field:SerializedName("episode")
-    val episodeUrl: List<String>
+    val episodeUrl: List<String>,
 )

@@ -17,24 +17,25 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CharacterViewModel @Inject constructor(
-    rickAndMortyRepository: RickAndMortyRepository,
-    dispatcher: CoroutineDispatcher,
-    mapper: CharacterUiModelMapper,
-) : ViewModel() {
+class CharacterViewModel
+    @Inject
+    constructor(
+        rickAndMortyRepository: RickAndMortyRepository,
+        dispatcher: CoroutineDispatcher,
+        mapper: CharacterUiModelMapper,
+    ) : ViewModel() {
+        private val _charactersState =
+            MutableStateFlow<PagingData<CharacterInfo.ListItem>>(PagingData.empty())
+        val charactersState: StateFlow<PagingData<CharacterInfo.ListItem>> = _charactersState
 
-    private val _charactersState =
-        MutableStateFlow<PagingData<CharacterInfo.ListItem>>(PagingData.empty())
-    val charactersState: StateFlow<PagingData<CharacterInfo.ListItem>> = _charactersState
-
-    init {
-        viewModelScope.launch(dispatcher) {
-            rickAndMortyRepository.getCharacters()
-                .map(mapper::map)
-                .cachedIn(viewModelScope)
-                .collectLatest { pagingData ->
-                    _charactersState.value = pagingData
-                }
+        init {
+            viewModelScope.launch(dispatcher) {
+                rickAndMortyRepository.getCharacters()
+                    .map(mapper::map)
+                    .cachedIn(viewModelScope)
+                    .collectLatest { pagingData ->
+                        _charactersState.value = pagingData
+                    }
+            }
         }
     }
-}

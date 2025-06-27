@@ -13,15 +13,15 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
-
     @Provides
     @Singleton
-    fun provideContext(@ApplicationContext appContext: Context): Context {
+    fun provideContext(
+        @ApplicationContext appContext: Context,
+    ): Context {
         return appContext
     }
 
     @Provides
     @Singleton
     fun provideDispatcher(): CoroutineDispatcher = Dispatchers.Main
-
 }

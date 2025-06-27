@@ -14,18 +14,23 @@ import com.squareup.picasso.Picasso
 
 class CharacterListAdapter(private val onClick: (CharacterInfo.ListItem) -> Unit) :
     PagingDataAdapter<CharacterInfo.ListItem, CharacterListAdapter.CharacterViewHolder>(Comparator) {
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): CharacterViewHolder {
         val binding =
             ItemCharacterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return CharacterViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: CharacterViewHolder,
+        position: Int,
+    ) {
         getItem(position)?.let { userItemUiState ->
             holder.bindCharacterInfo(
                 userItemUiState,
-                onClick
+                onClick,
             )
         }
     }
@@ -33,7 +38,8 @@ class CharacterListAdapter(private val onClick: (CharacterInfo.ListItem) -> Unit
     class CharacterViewHolder(private val binding: ItemCharacterBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bindCharacterInfo(
-            character: CharacterInfo.ListItem, onClick: (CharacterInfo.ListItem) -> Unit
+            character: CharacterInfo.ListItem,
+            onClick: (CharacterInfo.ListItem) -> Unit,
         ) {
             with(binding) {
                 root.setOnClickListener { onClick(character) }
@@ -44,28 +50,31 @@ class CharacterListAdapter(private val onClick: (CharacterInfo.ListItem) -> Unit
                     ContextCompat.getDrawable(root.context, character.statusDrawable.drawable)
             }
         }
-
     }
 }
 
 object Comparator : DiffUtil.ItemCallback<CharacterInfo.ListItem>() {
     override fun areItemsTheSame(
         oldItem: CharacterInfo.ListItem,
-        newItem: CharacterInfo.ListItem
+        newItem: CharacterInfo.ListItem,
     ): Boolean {
         return oldItem == newItem
     }
 
     override fun areContentsTheSame(
         oldItem: CharacterInfo.ListItem,
-        newItem: CharacterInfo.ListItem
+        newItem: CharacterInfo.ListItem,
     ): Boolean {
         return oldItem.id == newItem.id
     }
 }
 
-sealed class CharacterStatus(@DrawableRes val drawable: Int) {
+sealed class CharacterStatus(
+    @DrawableRes val drawable: Int,
+) {
     data object Alive : CharacterStatus(R.drawable.character_status_background_alive)
+
     data object Dead : CharacterStatus(R.drawable.character_status_background_dead)
+
     data object Unknown : CharacterStatus(R.drawable.character_status_background_unknown)
 }

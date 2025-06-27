@@ -10,5 +10,5 @@ data class LocationModel(
     @field:SerializedName("type")
     val type: String,
     @field:SerializedName("dimension")
-    val dimension: String
+    val dimension: String,
 )

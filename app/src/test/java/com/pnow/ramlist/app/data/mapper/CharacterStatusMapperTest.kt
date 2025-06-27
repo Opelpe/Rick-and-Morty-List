@@ -4,11 +4,10 @@ import com.pnow.ramlist.app.ui.adapter.CharacterStatus
 import org.junit.Test
 
 class CharacterStatusMapperTest {
-
-
     val tested = CharacterStatusMapper()
+
     @Test
-    fun mapToStatusDrawableTest(){
+    fun mapToStatusDrawableTest() {
         val status = "Alive"
 
         val result = tested.mapToStatusDrawable(status)
@@ -16,5 +15,4 @@ class CharacterStatusMapperTest {
         val expected = CharacterStatus.Alive
         assert(result == expected)
     }
-
 }

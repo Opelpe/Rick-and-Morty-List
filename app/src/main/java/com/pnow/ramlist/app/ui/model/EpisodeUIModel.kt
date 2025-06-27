@@ -1,6 +1,5 @@
 package com.pnow.ramlist.app.ui.model
 
-
 data class EpisodeUIModel(
     val id: Int,
     val name: String,

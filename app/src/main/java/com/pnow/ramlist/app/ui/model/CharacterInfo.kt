@@ -5,7 +5,6 @@ import com.pnow.ramlist.app.ui.adapter.CharacterStatus
 import java.io.Serializable
 
 sealed class CharacterInfo {
-
     data class Details(
         val originModel: LocationUIModel,
         val locationModel: LocationUIModel,
@@ -21,6 +20,6 @@ sealed class CharacterInfo {
         val imageUrl: String,
         val origin: CharacterLocationModel,
         val location: CharacterLocationModel,
-        val episodeUrl: List<String>
+        val episodeUrl: List<String>,
     ) : CharacterInfo(), Serializable
 }

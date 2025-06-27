@@ -10,14 +10,19 @@ import com.pnow.ramlist.databinding.ItemEpisodeBinding
 
 class EpisodeListAdapter :
     ListAdapter<EpisodeUIModel, EpisodeListAdapter.EpisodeViewHolder>(EpisodeDiffCallback()) {
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EpisodeViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): EpisodeViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemEpisodeBinding.inflate(inflater, parent, false)
         return EpisodeViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: EpisodeViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: EpisodeViewHolder,
+        position: Int,
+    ) {
         holder.bind(getItem(position))
     }
 
@@ -31,11 +36,17 @@ class EpisodeListAdapter :
     }
 
     class EpisodeDiffCallback : DiffUtil.ItemCallback<EpisodeUIModel>() {
-        override fun areItemsTheSame(oldItem: EpisodeUIModel, newItem: EpisodeUIModel): Boolean {
+        override fun areItemsTheSame(
+            oldItem: EpisodeUIModel,
+            newItem: EpisodeUIModel,
+        ): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: EpisodeUIModel, newItem: EpisodeUIModel): Boolean {
+        override fun areContentsTheSame(
+            oldItem: EpisodeUIModel,
+            newItem: EpisodeUIModel,
+        ): Boolean {
             return oldItem == newItem
         }
     }

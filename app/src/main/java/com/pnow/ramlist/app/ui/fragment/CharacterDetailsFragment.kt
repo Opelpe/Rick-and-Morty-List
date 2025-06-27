@@ -23,7 +23,6 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class CharacterDetailsFragment : Fragment() {
-
     private lateinit var episodeAdapter: EpisodeListAdapter
 
     private lateinit var binding: FragmentCharacterDeatailsBinding
@@ -35,24 +34,27 @@ class CharacterDetailsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
-
-        args = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            arguments?.getSerializable(
-                CharactersListFragment.MODEL_BUNDLE,
-                CharacterInfo.ListItem::class.java
-            )
-        } else {
-            arguments?.getSerializable(CharactersListFragment.MODEL_BUNDLE) as CharacterInfo.ListItem
-        }
+        args =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                arguments?.getSerializable(
+                    CharactersListFragment.MODEL_BUNDLE,
+                    CharacterInfo.ListItem::class.java,
+                )
+            } else {
+                arguments?.getSerializable(CharactersListFragment.MODEL_BUNDLE) as CharacterInfo.ListItem
+            }
 
         binding = FragmentCharacterDeatailsBinding.inflate(layoutInflater, container, false)
 
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         setupAdapter()
         getDetails()
@@ -111,7 +113,7 @@ class CharacterDetailsFragment : Fragment() {
                 args?.statusDrawable?.drawable?.let { resId ->
                     ContextCompat.getDrawable(
                         requireContext(),
-                        resId
+                        resId,
                     )
                 }
             originNameDescription.text = detailsViewModel.getLocationDescription(args?.origin).name
@@ -136,12 +138,18 @@ class CharacterDetailsFragment : Fragment() {
     }
 
     private fun setCharacterInfoProgress(visible: Boolean) {
-        if (visible) binding.progressView.visibility = View.VISIBLE
-        else binding.progressView.visibility = View.GONE
+        if (visible) {
+            binding.progressView.visibility = View.VISIBLE
+        } else {
+            binding.progressView.visibility = View.GONE
+        }
     }
 
     private fun setEpisodesProgress(visible: Boolean) {
-        if (visible) binding.episodesProgress.visibility = View.VISIBLE
-        else binding.episodesProgress.visibility = View.GONE
+        if (visible) {
+            binding.episodesProgress.visibility = View.VISIBLE
+        } else {
+            binding.episodesProgress.visibility = View.GONE
+        }
     }
 }

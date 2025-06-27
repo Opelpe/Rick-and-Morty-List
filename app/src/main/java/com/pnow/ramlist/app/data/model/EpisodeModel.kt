@@ -10,5 +10,5 @@ data class EpisodeModel(
     @field:SerializedName("air_date")
     val airDate: String,
     @field:SerializedName("episode")
-    val episode: String
+    val episode: String,
 )

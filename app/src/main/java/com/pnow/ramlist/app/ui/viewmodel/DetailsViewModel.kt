@@ -22,85 +22,96 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class DetailsViewModel @Inject constructor(
-    private val rickAndMortyRepository: RickAndMortyRepository,
-    private val detailsMapper: DetailsUiMapper,
-    private val dispatcher: CoroutineDispatcher
-) : ViewModel() {
+class DetailsViewModel
+    @Inject
+    constructor(
+        private val rickAndMortyRepository: RickAndMortyRepository,
+        private val detailsMapper: DetailsUiMapper,
+        private val dispatcher: CoroutineDispatcher,
+    ) : ViewModel() {
+        private val _detailsState =
+            MutableStateFlow<DetailsUiState>(DetailsUiState.CharacterInfoLoading)
+        val detailsState: StateFlow<DetailsUiState> = _detailsState.asStateFlow()
 
-    private val _detailsState =
-        MutableStateFlow<DetailsUiState>(DetailsUiState.CharacterInfoLoading)
-    val detailsState: StateFlow<DetailsUiState> = _detailsState.asStateFlow()
-
-    companion object {
-        const val TAG = "DetailsVM"
-    }
-
-    fun fetchDetails(episodeUrls: List<String>?, locationUrl: String?, originUrl: String?) {
-        viewModelScope.launch(dispatcher) {
-            _detailsState.emit(DetailsUiState.CharacterInfoLoading)
-
-            val originFlow = rickAndMortyRepository.getLocation(getUriPath(originUrl))
-                .map { detailsMapper.mapToLocationUiModel(it) }
-            val locationFlow = rickAndMortyRepository.getLocation(getUriPath(locationUrl))
-                .map { detailsMapper.mapToLocationUiModel(it) }
-
-            val origin = originFlow.first()
-            val location = locationFlow.first()
-            val detailsData = CharacterInfo.Details(
-                origin,
-                location,
-            )
-            _detailsState.emit(DetailsUiState.CharacterInfoUpdated(detailsData))
-            fetchEpisodes(episodeUrls)
+        companion object {
+            const val TAG = "DetailsVM"
         }
-    }
 
-    private fun fetchEpisodes(episodeUrls: List<String>?) {
-        val urls = episodeUrls.orEmpty()
-        if (urls.isEmpty()) return
+        fun fetchDetails(
+            episodeUrls: List<String>?,
+            locationUrl: String?,
+            originUrl: String?,
+        ) {
+            viewModelScope.launch(dispatcher) {
+                _detailsState.emit(DetailsUiState.CharacterInfoLoading)
 
-        val episodes = mutableSetOf<EpisodeUIModel>()
+                val originFlow =
+                    rickAndMortyRepository.getLocation(getUriPath(originUrl))
+                        .map { detailsMapper.mapToLocationUiModel(it) }
+                val locationFlow =
+                    rickAndMortyRepository.getLocation(getUriPath(locationUrl))
+                        .map { detailsMapper.mapToLocationUiModel(it) }
 
-        viewModelScope.launch(dispatcher) {
-            _detailsState.emit(DetailsUiState.EpisodesLoading(true))
-
-            urls.forEach { url ->
-                rickAndMortyRepository.getEpisode(getUriPath(url))
-                    .map { detailsMapper.mapToEpisodeUIModel(it) }
-                    .catch {
-                        Log.e(TAG, "Error fetching episode from URL: $url", it)
-                        _detailsState.emit(
-                            DetailsUiState.Failure("Something goes wrong, retry!")
-                        )
-                    }
-                    .collect { episode ->
-                        if (episodes.add(episode)) {
-                            _detailsState.emit(DetailsUiState.EpisodesUpdated(episodes.toList()))
-                        }
-
-                        if (episodes.size == urls.size) {
-                            _detailsState.emit(DetailsUiState.EpisodesLoading(false))
-                        }
-                    }
+                val origin = originFlow.first()
+                val location = locationFlow.first()
+                val detailsData =
+                    CharacterInfo.Details(
+                        origin,
+                        location,
+                    )
+                _detailsState.emit(DetailsUiState.CharacterInfoUpdated(detailsData))
+                fetchEpisodes(episodeUrls)
             }
         }
-    }
 
+        private fun fetchEpisodes(episodeUrls: List<String>?) {
+            val urls = episodeUrls.orEmpty()
+            if (urls.isEmpty()) return
 
-    private fun getUriPath(url: String?): String {
-        return url?.toUri()?.lastPathSegment ?: ""
-    }
+            val episodes = mutableSetOf<EpisodeUIModel>()
 
-    fun getLocationDescription(model: CharacterLocationModel?): LocationUIModel {
-        return detailsMapper.mapToLocationUiModel(model)
+            viewModelScope.launch(dispatcher) {
+                _detailsState.emit(DetailsUiState.EpisodesLoading(true))
+
+                urls.forEach { url ->
+                    rickAndMortyRepository.getEpisode(getUriPath(url))
+                        .map { detailsMapper.mapToEpisodeUIModel(it) }
+                        .catch {
+                            Log.e(TAG, "Error fetching episode from URL: $url", it)
+                            _detailsState.emit(
+                                DetailsUiState.Failure("Something goes wrong, retry!"),
+                            )
+                        }
+                        .collect { episode ->
+                            if (episodes.add(episode)) {
+                                _detailsState.emit(DetailsUiState.EpisodesUpdated(episodes.toList()))
+                            }
+
+                            if (episodes.size == urls.size) {
+                                _detailsState.emit(DetailsUiState.EpisodesLoading(false))
+                            }
+                        }
+                }
+            }
+        }
+
+        private fun getUriPath(url: String?): String {
+            return url?.toUri()?.lastPathSegment ?: ""
+        }
+
+        fun getLocationDescription(model: CharacterLocationModel?): LocationUIModel {
+            return detailsMapper.mapToLocationUiModel(model)
+        }
     }
-}
 
 sealed class DetailsUiState {
     data object CharacterInfoLoading : DetailsUiState()
+
     data class CharacterInfoUpdated(val info: CharacterInfo.Details) : DetailsUiState()
+
     data class EpisodesLoading(val isLoading: Boolean) : DetailsUiState()
+
     data class EpisodesUpdated(val episodes: List<EpisodeUIModel>) : DetailsUiState()
+
     data class Failure(val error: String) : DetailsUiState()
 }

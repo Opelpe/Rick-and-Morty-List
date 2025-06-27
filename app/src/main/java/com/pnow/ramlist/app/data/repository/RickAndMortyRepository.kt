@@ -10,26 +10,29 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class RickAndMortyRepository @Inject constructor(
-    private val apiService: ApiService,
-    private val pagingDataSource: CharactersPagingDataSource
-) {
+class RickAndMortyRepository
+    @Inject
+    constructor(
+        private val apiService: ApiService,
+        private val pagingDataSource: CharactersPagingDataSource,
+    ) {
+        fun getCharacters(): Flow<PagingData<CharacterModel>> {
+            return Pager(
+                config =
+                    PagingConfig(
+                        pageSize = 20,
+                    ),
+                pagingSourceFactory = { pagingDataSource },
+            ).flow
+        }
 
-    fun getCharacters(): Flow<PagingData<CharacterModel>> {
-        return Pager(
-            config = PagingConfig(
-                pageSize = 20
-            ),
-            pagingSourceFactory = { pagingDataSource }
-        ).flow
+        fun getEpisode(episodeId: String) =
+            flow {
+                emit(apiService.getEpisode(episodeId))
+            }
+
+        fun getLocation(episodeId: String) =
+            flow {
+                emit(apiService.getLocation(episodeId))
+            }
     }
-
-    fun getEpisode(episodeId: String) = flow {
-        emit(apiService.getEpisode(episodeId))
-    }
-
-    fun getLocation(episodeId: String) = flow {
-        emit(apiService.getLocation(episodeId))
-    }
-
-}
