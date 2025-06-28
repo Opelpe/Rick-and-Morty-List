@@ -1,0 +1,7 @@
+#!/bin/sh
+./gradlew ktlintCheck
+
+if [ $? -ne 0 ]; then
+  echo "❌ ktlintCheck failed! FIX issues before committing! ❌"
+  exit 1
+fi
