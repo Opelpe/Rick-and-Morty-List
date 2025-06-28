@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Rick-And-Morty-List"
 include(":app")
+include(":data")
