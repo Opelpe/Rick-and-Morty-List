@@ -1,31 +1,65 @@
 #!/bin/sh
 
+echo
+echo
+echo
+echo "############################################################################################################"
+echo "############################################################################################################"
+echo "#                                                                                                          #"
+echo "#                               🚨 PRE-COMMIT CHECK IN PROGRESS  🔍                                        #"
+echo "#                                                                                                          #"
+echo "############################################################################################################"
+echo "############################################################################################################"
+echo
+echo
+echo
+
 ./gradlew ktlintCheck
 RESULT=$?
 
 if [ $RESULT -ne 0 ]; then
-   echo "❌ ktlintCheck failed! FIX issues before committing! ❌"
+
+   echo
+   echo "❌  ktlintCheck failed! FIX issues before committing!  ❌"
+   echo
 
   FILES=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(kt|kts)$')
 
   if [ -n "$FILES" ]; then
     echo
-    echo "Files that require formatting or fixes (you can run the following commands):"
+    echo "🔧  Files that require formatting or fixes (you can run the following commands):"
     echo
 
     for file in $FILES; do
+      echo
       echo "  ./gradlew ktlintFormat -PinternalKtlintFiles=$file"
+      echo
     done
 
     echo
-    echo "ℹ️  Alternatively, you can run:"
+    echo "💡 Or run this to format all at once:"
     echo "  ./gradlew ktlintFormat"
-    echo "  to format all files at once."
+    echo
   else
-    echo "No staged Kotlin files detected."
+    echo "ℹ️  No staged Kotlin files detected."
   fi
 
+    echo
+    echo "######################################################################################"
+    echo "#                                                                                   #"
+    echo "#                              ❌ COMMIT REJECTED ❌                              #"
+    echo "#                                                                                #"
+    echo "##################################################################################"
+    echo
   exit 1
 fi
+
+echo
+echo "######################################################################################"
+echo "#                                                                                   #"
+echo "#                             ✅ PRE-COMMIT CHECK PASSED ✅                       #"
+echo "#                                                                                #"
+echo "##################################################################################"
+echo
 
 exit 0
