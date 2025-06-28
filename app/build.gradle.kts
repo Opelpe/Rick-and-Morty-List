@@ -3,14 +3,15 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
+    id("org.jlleitschuh.gradle.ktlint")
 }
 
 android {
-    namespace = "com.pnow.rick_and_morty_list"
+    namespace = "com.pnow.ramlist"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.pnow.rick_and_morty_list"
+        applicationId = "com.pnow.ramlist"
         minSdk = 26
         targetSdk = 35
         versionCode = 1
@@ -47,8 +48,21 @@ android {
         }
     }
 
-    testOptions.unitTests.isReturnDefaultValues = true
+    ktlint {
+        version.set("1.2.1")
+        android.set(true)
+        reporters {
+            reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.PLAIN)
+            reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.CHECKSTYLE)
+        }
+        enableExperimentalRules.set(true)
+        filter {
+            exclude("**/generated/**")
+            include("**/src/**/*.kt")
+        }
+    }
 
+    testOptions.unitTests.isReturnDefaultValues = true
 }
 
 dependencies {
@@ -94,9 +108,9 @@ dependencies {
     implementation(libs.logging.interceptor)
     implementation(libs.gson)
 
-    //PICASSO
+    // PICASSO
     implementation(libs.picasso)
 
-    //PAGING
+    // PAGING
     implementation(libs.androidx.paging.runtime.ktx)
 }
