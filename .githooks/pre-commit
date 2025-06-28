@@ -1,7 +1,31 @@
 #!/bin/sh
-./gradlew ktlintCheck
 
-if [ $? -ne 0 ]; then
-  echo "❌ ktlintCheck failed! FIX issues before committing! ❌"
+./gradlew ktlintCheck
+RESULT=$?
+
+if [ $RESULT -ne 0 ]; then
+   echo "❌ ktlintCheck failed! FIX issues before committing! ❌"
+
+  FILES=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(kt|kts)$')
+
+  if [ -n "$FILES" ]; then
+    echo
+    echo "Files that require formatting or fixes (you can run the following commands):"
+    echo
+
+    for file in $FILES; do
+      echo "  ./gradlew ktlintFormat -PinternalKtlintFiles=$file"
+    done
+
+    echo
+    echo "ℹ️  Alternatively, you can run:"
+    echo "  ./gradlew ktlintFormat"
+    echo "  to format all files at once."
+  else
+    echo "No staged Kotlin files detected."
+  fi
+
   exit 1
 fi
+
+exit 0
