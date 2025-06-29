@@ -1,8 +1,8 @@
-package com.pnow.ramlist.app.data.model.character
+package com.pnow.data.character.model
 
 import com.google.gson.annotations.SerializedName
 
-data class CharacterModel(
+data class CharacterDTO(
     @field:SerializedName("id")
     val id: Int,
     @field:SerializedName("name")
@@ -16,9 +16,9 @@ data class CharacterModel(
     @field:SerializedName("image")
     val imageUrl: String,
     @field:SerializedName("origin")
-    val origin: CharacterLocationModel,
+    val origin: CharacterLocationDTO,
     @field:SerializedName("location")
-    val location: CharacterLocationModel,
+    val location: CharacterLocationDTO,
     @field:SerializedName("episode")
-    val episodeUrl: List<String>,
+    val episodeUrl: List<String>
 )

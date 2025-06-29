@@ -1,8 +1,8 @@
-package com.pnow.ramlist.app.data.model
+package com.pnow.data.episode
 
 import com.google.gson.annotations.SerializedName
 
-data class EpisodeModel(
+data class EpisodeDTO(
     @field:SerializedName("id")
     val id: Int,
     @field:SerializedName("name")
@@ -10,5 +10,5 @@ data class EpisodeModel(
     @field:SerializedName("air_date")
     val airDate: String,
     @field:SerializedName("episode")
-    val episode: String,
+    val episode: String
 )

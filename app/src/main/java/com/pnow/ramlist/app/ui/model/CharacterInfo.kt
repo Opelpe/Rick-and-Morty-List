@@ -1,6 +1,6 @@
 package com.pnow.ramlist.app.ui.model
 
-import com.pnow.ramlist.app.data.model.character.CharacterLocationModel
+import com.pnow.domain.model.CharacterLocation
 import com.pnow.ramlist.app.ui.adapter.CharacterStatus
 import java.io.Serializable
 
@@ -18,8 +18,8 @@ sealed class CharacterInfo {
         val species: String,
         val gender: String,
         val imageUrl: String,
-        val origin: CharacterLocationModel,
-        val location: CharacterLocationModel,
+        val origin: CharacterLocation,
+        val location: CharacterLocation,
         val episodeUrl: List<String>,
     ) : CharacterInfo(), Serializable
 }
