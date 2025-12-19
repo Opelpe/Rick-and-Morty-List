@@ -1,8 +1,9 @@
-package com.pnow.ramlist.app.data.di.module
+package com.pnow.data.di
 
 import com.google.gson.Gson
-import com.pnow.ramlist.app.data.networking.ApiService
-import com.pnow.ramlist.app.data.networking.CharactersPagingDataSource
+import com.pnow.data.character.CharacterApi
+import com.pnow.data.character.CharactersPagingDataSource
+import com.pnow.data.character.mapper.CharacterDTOMapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -44,13 +45,10 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideApiService(retrofit: Retrofit): ApiService {
-        return retrofit.create(ApiService::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideCharactersPagingDataSource(apiService: ApiService): CharactersPagingDataSource {
-        return CharactersPagingDataSource(apiService)
+    fun provideCharactersPagingDataSource(
+        characterApi: CharacterApi,
+        characterMapper: CharacterDTOMapper
+    ): CharactersPagingDataSource {
+        return CharactersPagingDataSource(characterApi, characterMapper)
     }
 }
