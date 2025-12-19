@@ -4,9 +4,10 @@ import android.util.Log
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.pnow.domain.model.CharacterLocation
+import com.pnow.domain.repository.EpisodeRepository
+import com.pnow.domain.repository.LocationRepository
 import com.pnow.ramlist.app.data.mapper.DetailsUiMapper
-import com.pnow.ramlist.app.data.model.character.CharacterLocationModel
-import com.pnow.ramlist.app.data.repository.RickAndMortyRepository
 import com.pnow.ramlist.app.ui.model.CharacterInfo
 import com.pnow.ramlist.app.ui.model.EpisodeUIModel
 import com.pnow.ramlist.app.ui.model.LocationUIModel
@@ -25,7 +26,8 @@ import javax.inject.Inject
 class DetailsViewModel
     @Inject
     constructor(
-        private val rickAndMortyRepository: RickAndMortyRepository,
+        private val episodeRepository: EpisodeRepository,
+        private val locationRepository: LocationRepository,
         private val detailsMapper: DetailsUiMapper,
         private val dispatcher: CoroutineDispatcher,
     ) : ViewModel() {
@@ -46,10 +48,10 @@ class DetailsViewModel
                 _detailsState.emit(DetailsUiState.CharacterInfoLoading)
 
                 val originFlow =
-                    rickAndMortyRepository.getLocation(getUriPath(originUrl))
+                    locationRepository.getLocation(getUriPath(originUrl))
                         .map { detailsMapper.mapToLocationUiModel(it) }
                 val locationFlow =
-                    rickAndMortyRepository.getLocation(getUriPath(locationUrl))
+                    locationRepository.getLocation(getUriPath(locationUrl))
                         .map { detailsMapper.mapToLocationUiModel(it) }
 
                 val origin = originFlow.first()
@@ -74,7 +76,7 @@ class DetailsViewModel
                 _detailsState.emit(DetailsUiState.EpisodesLoading(true))
 
                 urls.forEach { url ->
-                    rickAndMortyRepository.getEpisode(getUriPath(url))
+                    episodeRepository.getEpisode(getUriPath(url))
                         .map { detailsMapper.mapToEpisodeUIModel(it) }
                         .catch {
                             Log.e(TAG, "Error fetching episode from URL: $url", it)
@@ -99,7 +101,7 @@ class DetailsViewModel
             return url?.toUri()?.lastPathSegment ?: ""
         }
 
-        fun getLocationDescription(model: CharacterLocationModel?): LocationUIModel {
+        fun getLocationDescription(model: CharacterLocation?): LocationUIModel {
             return detailsMapper.mapToLocationUiModel(model)
         }
     }

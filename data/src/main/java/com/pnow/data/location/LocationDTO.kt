@@ -1,8 +1,8 @@
-package com.pnow.ramlist.app.data.model
+package com.pnow.data.location
 
 import com.google.gson.annotations.SerializedName
 
-data class LocationModel(
+data class LocationDTO(
     @field:SerializedName("id")
     val id: Int,
     @field:SerializedName("name")
@@ -10,5 +10,5 @@ data class LocationModel(
     @field:SerializedName("type")
     val type: String,
     @field:SerializedName("dimension")
-    val dimension: String,
+    val dimension: String
 )

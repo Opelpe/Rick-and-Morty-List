@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.pnow.domain.repository.CharacterRepository
 import com.pnow.ramlist.app.data.mapper.CharacterUiModelMapper
-import com.pnow.ramlist.app.data.repository.RickAndMortyRepository
 import com.pnow.ramlist.app.ui.model.CharacterInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -20,9 +20,9 @@ import javax.inject.Inject
 class CharacterViewModel
     @Inject
     constructor(
-        rickAndMortyRepository: RickAndMortyRepository,
         dispatcher: CoroutineDispatcher,
         mapper: CharacterUiModelMapper,
+        characterRepository: CharacterRepository,
     ) : ViewModel() {
         private val _charactersState =
             MutableStateFlow<PagingData<CharacterInfo.ListItem>>(PagingData.empty())
@@ -30,7 +30,7 @@ class CharacterViewModel
 
         init {
             viewModelScope.launch(dispatcher) {
-                rickAndMortyRepository.getCharacters()
+                characterRepository.getCharacters()
                     .map(mapper::map)
                     .cachedIn(viewModelScope)
                     .collectLatest { pagingData ->
