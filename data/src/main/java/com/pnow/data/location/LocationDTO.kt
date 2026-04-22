@@ -1,6 +1,7 @@
 package com.pnow.data.location
 
 import com.google.gson.annotations.SerializedName
+import com.pnow.domain.model.Location
 
 data class LocationDTO(
     @field:SerializedName("id")
@@ -10,5 +11,16 @@ data class LocationDTO(
     @field:SerializedName("type")
     val type: String,
     @field:SerializedName("dimension")
-    val dimension: String
-)
+    val dimension: String,
+) {
+    fun toDomain(): Location {
+        return with(this) {
+            Location(
+                id = id,
+                name = name,
+                type = type,
+                dimension = dimension
+            )
+        }
+    }
+}

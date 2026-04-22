@@ -5,6 +5,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface LocationRepository {
     fun getLocation(
-        locationId: String
+        locationId: String,
     ): Flow<Location>
 }
