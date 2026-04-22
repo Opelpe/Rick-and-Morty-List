@@ -17,16 +17,16 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindCharacterRepository(
-        impl: CharacterRepositoryImpl
+        impl: CharacterRepositoryImpl,
     ): CharacterRepository
 
     @Binds
     abstract fun bindEpisodeRepository(
-        impl: EpisodeRepositoryImpl
+        impl: EpisodeRepositoryImpl,
     ): EpisodeRepository
 
     @Binds
     abstract fun bindLocationRepository(
-        impl: LocationRepositoryImpl
+        impl: LocationRepositoryImpl,
     ): LocationRepository
 }

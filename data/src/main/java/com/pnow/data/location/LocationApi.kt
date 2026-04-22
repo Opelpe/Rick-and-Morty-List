@@ -7,6 +7,6 @@ interface LocationApi {
 
     @GET("location/{id}")
     suspend fun getLocation(
-        @Path("id") id: String
+        @Path("id") id: String,
     ): LocationDTO
 }
