@@ -19,7 +19,7 @@ data class EpisodeDTO(
                 id = id,
                 name = name,
                 airDate = airDate,
-                episodeNumber = episode
+                episodeNumber = episode,
             )
         }
     }

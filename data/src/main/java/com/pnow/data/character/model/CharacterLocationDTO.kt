@@ -12,7 +12,7 @@ data class CharacterLocationDTO(
     fun toDomain(): CharacterLocation = with(this) {
         CharacterLocation(
             name = name,
-            url = url
+            url = url,
         )
     }
 }

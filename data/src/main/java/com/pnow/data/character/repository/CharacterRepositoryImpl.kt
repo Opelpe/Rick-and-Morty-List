@@ -20,9 +20,9 @@ class CharacterRepositoryImpl @Inject constructor(
         config = PagingConfig(
             pageSize = PAGE_SIZE,
             prefetchDistance = PREFETCH_DISTANCE,
-            initialLoadSize = INITIAL_LOAD_SIZE
+            initialLoadSize = INITIAL_LOAD_SIZE,
         ),
-        pagingSourceFactory = { pagingDataSourceProvider.get() }
+        pagingSourceFactory = { pagingDataSourceProvider.get() },
     ).flow
 
     override suspend fun getCharacterById(id: Int): Character =

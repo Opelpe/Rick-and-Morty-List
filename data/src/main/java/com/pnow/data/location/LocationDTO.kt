@@ -19,7 +19,7 @@ data class LocationDTO(
                 id = id,
                 name = name,
                 type = type,
-                dimension = dimension
+                dimension = dimension,
             )
         }
     }

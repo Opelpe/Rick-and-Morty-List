@@ -34,7 +34,7 @@ data class CharacterDTO(
                 imageUrl = imageUrl,
                 origin = origin.toDomain(),
                 location = location.toDomain(),
-                episodeUrl = episodeUrl
+                episodeUrl = episodeUrl,
             )
         }
     }
