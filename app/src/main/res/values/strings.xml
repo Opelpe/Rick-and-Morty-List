@@ -8,7 +8,11 @@
     <string name="common_word_origin">Origin</string>
     <string name="common_word_location">Location</string>
     <string name="common_word_type">Type:</string>
-    <string name="common_word_dimension">Dimension:</string>
+    <string name="common_word_dimension">Dimension</string>
     <string name="common_word_episodes">Episodes</string>
     <string name="common_word_unknown">Unknown</string>
+    <string name="common_word_locations">Locations</string>
+    <string name="navigate_back">Navigate back</string>
+    <string name="list_error_loading_more">Error loading more items</string>
+    <string name="character_avatar_description">%s avatar</string>
 </resources>
