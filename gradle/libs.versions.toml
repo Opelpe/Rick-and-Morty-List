@@ -33,7 +33,6 @@ retrofit = "2.9.0"
 truth = "1.1.3"
 material = "1.12.0"
 jetbrainsKotlinJvm = "2.1.0"
-foundation = "1.10.4"
 lifecycleViewmodelSavedstate = "2.10.0"
 roomKtx = "2.8.4"
 
@@ -82,7 +81,7 @@ coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coi
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 truth = { module = "com.google.truth:truth", version.ref = "truth" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "foundation" }
+androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
 androidx-lifecycle-viewmodel-savedstate = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-savedstate", version.ref = "lifecycleViewmodelSavedstate" }
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomKtx" }
 
