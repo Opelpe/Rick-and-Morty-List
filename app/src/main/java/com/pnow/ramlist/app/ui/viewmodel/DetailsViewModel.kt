@@ -149,6 +149,7 @@ constructor(
 
     private fun getUriPath(url: String?): String = url?.toUri()?.lastPathSegment ?: ""
 
+    //todo czemu to nie jest ze strings?
     companion object {
 
         private const val ERROR_LOAD_CHARACTER = "Failed to load character"

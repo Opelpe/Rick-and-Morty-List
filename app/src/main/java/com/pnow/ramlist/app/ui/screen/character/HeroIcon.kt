@@ -32,6 +32,7 @@ fun HeroDetailsIcon(imageUrl: String, name: String, modifier: Modifier = Modifie
         error = painterResource(R.drawable.ic_rick_morty_transparent_logo),
     )
 }
+//todo jak dla mnie te 2 obrazki są zabardzo podobone do siebie żeby było jako osobne komponenty - parametry powinny wystarczyć
 
 @Composable
 fun HeroListItemIcon(imageUrl: String, name: String, modifier: Modifier = Modifier) {

@@ -23,3 +23,6 @@ fun itemSelectableBorder(
         else -> if (darkTheme) RaMColor.GreenDark else RaMColor.FireDark
     }
 }
+
+
+// todo plik nazywa się ColorExtension a w te metody nie rozszeżają koloru

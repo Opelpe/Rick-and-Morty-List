@@ -25,6 +25,8 @@ import com.pnow.ramlist.core.ui.theme.RickAndMortyTheme
 
 @Composable
 fun StatusPill(status: CharacterStatus, label: String, background: Color, modifier: Modifier = Modifier) {
+
+//todo obczaj czy przy rekompozycji to się nie będzie mapowało kilka razy, albo rember albo dodaj kolor do CharacterStatus i to jego użuj
     val dotColor =
         when (status) {
             CharacterStatus.ALIVE -> CharacterDetailsColors.StatusAlive

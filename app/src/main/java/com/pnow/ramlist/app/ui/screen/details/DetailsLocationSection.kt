@@ -34,6 +34,7 @@ import com.pnow.ramlist.core.ui.theme.RickAndMortyTheme
 fun LocationsSection(state: CharacterInfoState, modifier: Modifier = Modifier) {
     when (state) {
         is CharacterInfoState.Loading ->
+//todo na pewno ten box jest potrzebny?
             Box(
                 modifier =
                 Modifier
@@ -47,6 +48,7 @@ fun LocationsSection(state: CharacterInfoState, modifier: Modifier = Modifier) {
                     strokeWidth = 3.dp,
                 )
             }
+//todo reload danych nie byłby lepszy?
         is CharacterInfoState.Failure ->
             Spacer(
                 modifier =
@@ -65,6 +67,7 @@ fun LocationsSection(state: CharacterInfoState, modifier: Modifier = Modifier) {
 
 @Composable
 private fun LocationsRow(origin: LocationInfo, location: LocationInfo, modifier: Modifier = Modifier) {
+//todo po co ta kolumna?
     Column(
         modifier = modifier.padding(horizontal = 20.dp, vertical = 8.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp),

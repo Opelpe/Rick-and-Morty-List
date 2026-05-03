@@ -45,6 +45,7 @@ fun DetailsHeroView(detailsInfo: DetailsInfo, modifier: Modifier = Modifier) {
                 name = characterInfo.name,
             )
 
+            //todo po co kolumna na jeden element?
             Column(
                 modifier =
                 Modifier

@@ -23,6 +23,7 @@ fun AppNavHost(navController: NavHostController = rememberNavController()) {
     ) {
         composable(CHARACTER_LIST) {
             CharacterListScreen(
+                //todo w normalnych projekach kolejność argumentów ma sens, raz modifier masz jako pierwszy niżej jako ostatni
                 modifier = Modifier.fillMaxSize(),
                 onCharacterClick = { characterId ->
                     navController.navigate(AppDestinations.characterDetails(characterId))

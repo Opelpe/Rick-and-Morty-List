@@ -14,3 +14,6 @@ object Dimens {
     val CornerRadius12 = 12.dp
     val CornerRadius16 = 16.dp
 }
+
+
+//todo mega burdel, niby masz dimens a w projekcie czesto używasz 8.dp, jeśli tu masz niespójnośc z samysm sobą to przy pracy z innymi devami będzie mega syf

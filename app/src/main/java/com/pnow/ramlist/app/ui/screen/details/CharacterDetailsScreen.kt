@@ -43,6 +43,7 @@ fun CharacterDetailsScreen(
 
 @Composable
 private fun CharacterDetailsContent(state: DetailsUiState, onBackClick: () -> Unit, modifier: Modifier = Modifier) {
+//todo czy systemBarsPadding powinno być w komonentach? mie wstarczy tylko w activity?
     LazyColumn(
         modifier =
         modifier

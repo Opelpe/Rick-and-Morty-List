@@ -1,6 +1,7 @@
 package com.pnow.ramlist.app.data.mapper
 
 import android.content.Context
+import androidx.compose.ui.text.capitalize
 import com.pnow.domain.model.Episode
 import com.pnow.domain.model.Location
 import com.pnow.ramlist.R
@@ -15,6 +16,7 @@ constructor(context: Context) {
     private val unknownTitle = context.getString(R.string.common_word_unknown)
 
     fun mapToLocationInfo(location: Location): LocationInfo {
+        //todo po co if empty? location.name?:  unknownTitle wystarczy
         val name = capitalize(location.name?.ifEmpty { unknownTitle } ?: unknownTitle)
         val type = capitalize(location.type?.ifEmpty { unknownTitle } ?: unknownTitle)
         val dimension = capitalize(location.dimension?.ifEmpty { unknownTitle } ?: unknownTitle)
@@ -31,6 +33,7 @@ constructor(context: Context) {
     }
 
     private fun capitalize(word: String): String {
+        //todo po co takie kombiancje? word.capitalize() z przekazanym lokale
         return word.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
     }
 }
