@@ -11,18 +11,16 @@ class CharacterMapper
 @Inject
 constructor() {
 
-    fun map(pagingData: PagingData<Character>): PagingData<CharacterInfo> {
-        return pagingData.map { character ->
-            val status = CharacterStatus.fromString(character.status)
-            CharacterInfo(
-                id = character.id,
-                name = character.name,
-                statusDescription = status.statusTitle,
-                imageUrl = character.imageUrl,
-                status = status,
-                species = character.species,
-                gender = character.gender,
-            )
-        }
+    fun map(pagingData: PagingData<Character>): PagingData<CharacterInfo> = pagingData.map { character ->
+        val status = CharacterStatus.fromString(character.status)
+        CharacterInfo(
+            id = character.id,
+            name = character.name,
+            statusDescription = status.statusTitle,
+            imageUrl = character.imageUrl,
+            status = status,
+            species = character.species,
+            gender = character.gender,
+        )
     }
 }

@@ -15,9 +15,7 @@ import kotlinx.coroutines.Dispatchers
 object AppModule {
     @Provides
     @Singleton
-    fun provideContext(@ApplicationContext appContext: Context): Context {
-        return appContext
-    }
+    fun provideContext(@ApplicationContext appContext: Context): Context = appContext
 
     @Provides
     @Singleton

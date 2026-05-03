@@ -49,6 +49,22 @@ fun HeroListItemIcon(imageUrl: String, name: String, modifier: Modifier = Modifi
     )
 }
 
+@Composable
+private fun HeroIcon(imageUrl: String, name: String, modifier: Modifier = Modifier) {
+    AsyncImage(
+        model = imageUrl,
+        contentDescription = stringResource(R.string.character_avatar_description, name),
+        contentScale = ContentScale.FillBounds,
+        placeholder = painterResource(R.drawable.ic_rick_morty_transparent_logo),
+        modifier =
+        modifier
+            .size(Dimens.ItemIconWidth, Dimens.ItemIconHeight)
+            .clip(RoundedCornerShape(Dimens.CornerRadius8))
+            .background(MaterialTheme.colorScheme.surfaceVariant),
+        error = painterResource(R.drawable.ic_rick_morty_transparent_logo),
+    )
+}
+
 @Preview
 @Composable
 private fun HeroListItemIconPreview() {

@@ -16,8 +16,9 @@ import com.pnow.ramlist.app.ui.screen.details.CharacterDetailsScreen
 import com.pnow.ramlist.app.ui.screen.list.CharacterListScreen
 
 @Composable
-fun AppNavHost(navController: NavHostController = rememberNavController()) {
+fun AppNavHost(modifier: Modifier = Modifier, navController: NavHostController = rememberNavController()) {
     NavHost(
+        modifier = modifier,
         navController = navController,
         startDestination = CHARACTER_LIST,
     ) {

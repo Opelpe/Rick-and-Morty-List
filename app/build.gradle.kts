@@ -49,7 +49,7 @@ android {
     }
 
     ktlint {
-        version.set("1.2.1")
+        version.set("1.3.1")
         android.set(true)
         reporters {
             reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.PLAIN)
@@ -66,6 +66,8 @@ android {
 }
 
 dependencies {
+
+    ktlintRuleset(libs.compose.rules.ktlint)
 
     implementation(project(":domain"))
     implementation(project(":data"))

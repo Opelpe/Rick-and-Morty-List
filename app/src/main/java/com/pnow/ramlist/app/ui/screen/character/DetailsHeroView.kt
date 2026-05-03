@@ -45,44 +45,52 @@ fun DetailsHeroView(detailsInfo: DetailsInfo, modifier: Modifier = Modifier) {
                 name = characterInfo.name,
             )
 
-            Column(
+            HeroDetailsInfo(
+                status = characterInfo.status,
+                label = characterInfo.statusDescription,
+                name = characterInfo.name,
+                species = characterInfo.species,
+                gender = characterInfo.gender,
                 modifier =
                 Modifier
                     .weight(1f)
                     .padding(top = 4.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-            ) {
-                HeroDetailsInfo(
-                    status = characterInfo.status,
-                    label = characterInfo.statusDescription,
-                    name = characterInfo.name,
-                    species = characterInfo.species,
-                    gender = characterInfo.gender,
-                )
-            }
+            )
         }
     }
 }
 
 @Composable
-private fun HeroDetailsInfo(status: CharacterStatus, label: String, name: String, species: String, gender: String) {
-    Text(
-        text = name,
-        fontSize = 20.sp,
-        fontWeight = FontWeight.Medium,
-        color = CharacterDetailsColors.TextPrimary,
-        lineHeight = 24.sp,
-    )
+private fun HeroDetailsInfo(
+    status: CharacterStatus,
+    label: String,
+    name: String,
+    species: String,
+    gender: String,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        Text(
+            text = name,
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Medium,
+            color = CharacterDetailsColors.TextPrimary,
+            lineHeight = 24.sp,
+        )
 
-    StatusPill(
-        status = status,
-        label = label,
-        background = CharacterDetailsColors.StatusPillBackground,
-    )
+        StatusPill(
+            status = status,
+            label = label,
+            background = CharacterDetailsColors.StatusPillBackground,
+        )
 
-    Row(horizontalArrangement = Arrangement.spacedBy(32.dp)) {
-        MetaItem(label = stringResource(R.string.common_word_species), value = species)
-        MetaItem(label = stringResource(R.string.common_word_gender), value = gender)
+        Row(horizontalArrangement = Arrangement.spacedBy(32.dp)) {
+            MetaItem(label = stringResource(R.string.common_word_species), value = species)
+            MetaItem(label = stringResource(R.string.common_word_gender), value = gender)
+        }
     }
 }
 

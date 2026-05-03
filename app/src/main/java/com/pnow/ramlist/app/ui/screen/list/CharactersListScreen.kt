@@ -19,9 +19,9 @@ import com.pnow.ramlist.app.ui.viewmodel.CharacterViewModel
 
 @Composable
 fun CharacterListScreen(
+    modifier: Modifier = Modifier,
     onCharacterClick: (id: Int) -> Unit = {},
     viewModel: CharacterViewModel = hiltViewModel(),
-    modifier: Modifier = Modifier,
 ) {
     val characters = viewModel.charactersState.collectAsLazyPagingItems()
 
