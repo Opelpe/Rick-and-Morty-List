@@ -27,6 +27,7 @@ import com.pnow.ramlist.app.ui.model.LocationInfo
 import com.pnow.ramlist.app.ui.screen.previewDetails
 import com.pnow.ramlist.app.ui.screen.previewLocation2
 import com.pnow.ramlist.app.ui.state.CharacterInfoState
+import com.pnow.ramlist.core.ui.theme.CharacterDetailsColors
 import com.pnow.ramlist.core.ui.theme.Dimens
 import com.pnow.ramlist.core.ui.theme.RickAndMortyTheme
 
@@ -65,25 +66,20 @@ fun LocationsSection(state: CharacterInfoState, modifier: Modifier = Modifier) {
 
 @Composable
 private fun LocationsRow(origin: LocationInfo, location: LocationInfo, modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier.padding(horizontal = 20.dp, vertical = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
-        ) {
-            LocationCard(
-                badge = stringResource(R.string.common_word_origin),
-                location = origin,
-                modifier = Modifier.weight(1f),
-            )
-            LocationCard(
-                badge = stringResource(R.string.common_word_location),
-                location = location,
-                modifier = Modifier.weight(1f),
-            )
-        }
+        LocationCard(
+            badge = stringResource(R.string.common_word_origin),
+            location = origin,
+            modifier = Modifier.weight(1f),
+        )
+        LocationCard(
+            badge = stringResource(R.string.common_word_location),
+            location = location,
+            modifier = Modifier.weight(1f),
+        )
     }
 }
 

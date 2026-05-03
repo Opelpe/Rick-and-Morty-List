@@ -22,6 +22,7 @@ import com.pnow.ramlist.R
 import com.pnow.ramlist.app.ui.screen.character.DetailsHeroView
 import com.pnow.ramlist.app.ui.screen.previewDetails
 import com.pnow.ramlist.app.ui.state.CharacterInfoState
+import com.pnow.ramlist.core.ui.theme.CharacterDetailsColors
 import com.pnow.ramlist.core.ui.theme.RickAndMortyTheme
 
 @Composable

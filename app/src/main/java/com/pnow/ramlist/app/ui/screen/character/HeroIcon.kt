@@ -13,8 +13,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import coil.compose.AsyncImage
 import com.pnow.ramlist.R
-import com.pnow.ramlist.app.ui.screen.details.CharacterDetailsColors
 import com.pnow.ramlist.app.ui.screen.previewCharacter
+import com.pnow.ramlist.core.ui.theme.CharacterDetailsColors
 import com.pnow.ramlist.core.ui.theme.Dimens
 
 @Composable

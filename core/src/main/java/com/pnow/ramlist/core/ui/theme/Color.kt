@@ -38,3 +38,18 @@ object RaMColor {
     val Pink = Color(0xFFE81D3C)
     val Pistachio = Color(0xFFA2F484)
 }
+
+object CharacterDetailsColors {
+    val Background = Color(0xFFF9F0EE)
+    val HeroBackground = Color(0xFFEDD8D3)
+    val CardBackground = Color(0xFFFFFFFF)
+    val TextPrimary = Color(0xFF2C1A17)
+    val TextMuted = Color(0xFF9B7B74)
+    val StatusPillBackground = Color(0xFF2C1A17)
+    val StatusPillText = Color(0xFFF9F0EE)
+    val StatusAlive = Color(0xFF5FCF7A)
+    val StatusDead = Color(0xFFE24B4A)
+    val EpisodeBadgeBackground = Color(0xFFF9F0EE)
+    val Error = Color(0xFFE24B4A)
+    val AvatarBackground = Color(0xFFD4B8B2)
+}
