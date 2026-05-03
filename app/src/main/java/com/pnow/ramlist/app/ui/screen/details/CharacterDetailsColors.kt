@@ -2,7 +2,7 @@ package com.pnow.ramlist.app.ui.screen.details
 
 import androidx.compose.ui.graphics.Color
 
-//todo nie do końca jestem przekonany żeby mieć kolory w kilku miejsach
+// todo nie do końca jestem przekonany żeby mieć kolory w kilku miejsach
 object CharacterDetailsColors {
     val Background = Color(0xFFF9F0EE)
     val HeroBackground = Color(0xFFEDD8D3)

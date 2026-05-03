@@ -24,8 +24,7 @@ import com.pnow.ramlist.core.ui.theme.RickAndMortyTheme
 
 @Composable
 fun ListItemHeroView(characterInfo: CharacterInfo, modifier: Modifier = Modifier) {
-
-    //todo PO CO TEN BOX !!!!!!!?????????? !!@# 41234124kqasfjhiauorh321o4
+    // todo PO CO TEN BOX !!!!!!!?????????? !!@# 41234124kqasfjhiauorh321o4
     Box(
         modifier =
         modifier

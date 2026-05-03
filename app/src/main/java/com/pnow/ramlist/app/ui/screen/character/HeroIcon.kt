@@ -32,10 +32,26 @@ fun HeroDetailsIcon(imageUrl: String, name: String, modifier: Modifier = Modifie
         error = painterResource(R.drawable.ic_rick_morty_transparent_logo),
     )
 }
-//todo jak dla mnie te 2 obrazki są zabardzo podobone do siebie żeby było jako osobne komponenty - parametry powinny wystarczyć
+// todo jak dla mnie te 2 obrazki są zabardzo podobone do siebie żeby było jako osobne komponenty - parametry powinny wystarczyć
 
 @Composable
 fun HeroListItemIcon(imageUrl: String, name: String, modifier: Modifier = Modifier) {
+    AsyncImage(
+        model = imageUrl,
+        contentDescription = stringResource(R.string.character_avatar_description, name),
+        contentScale = ContentScale.FillBounds,
+        placeholder = painterResource(R.drawable.ic_rick_morty_transparent_logo),
+        modifier =
+        modifier
+            .size(Dimens.ItemIconWidth, Dimens.ItemIconHeight)
+            .clip(RoundedCornerShape(Dimens.CornerRadius8))
+            .background(MaterialTheme.colorScheme.surfaceVariant),
+        error = painterResource(R.drawable.ic_rick_morty_transparent_logo),
+    )
+}
+
+@Composable
+private fun HeroIcon(imageUrl: String, name: String, modifier: Modifier = Modifier) {
     AsyncImage(
         model = imageUrl,
         contentDescription = stringResource(R.string.character_avatar_description, name),

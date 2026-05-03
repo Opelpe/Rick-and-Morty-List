@@ -12,5 +12,4 @@ data class Character(
     val episodeUrl: List<String>,
 )
 
-
-//todo nie rozumiem tej organizacji modułów, doczytaj sobie za co odpowiada domain
+// todo nie rozumiem tej organizacji modułów, doczytaj sobie za co odpowiada domain

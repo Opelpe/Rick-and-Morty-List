@@ -58,7 +58,7 @@ fun LazyListScope.episodeSection(episodeState: EpisodeState) {
     }
 }
 
-//todo nie powinno być prywante?
+// todo nie powinno być prywante?
 @Composable
 fun EpisodeItem(episode: EpisodeInfo, modifier: Modifier = Modifier) {
     Row(
@@ -108,7 +108,7 @@ fun EpisodeItem(episode: EpisodeInfo, modifier: Modifier = Modifier) {
 
 @Composable
 private fun EpisodesLoadingIndicator() {
-    //todo po co box? jest kilka takich miejsc ale już nie będę o tym pisał
+    // todo po co box? jest kilka takich miejsc ale już nie będę o tym pisał
     Box(
         modifier =
         Modifier

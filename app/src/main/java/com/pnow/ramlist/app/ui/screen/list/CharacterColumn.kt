@@ -77,8 +77,8 @@ fun CharactersColumn(
 
 @Composable
 fun CharacterListItem(
-    modifier: Modifier = Modifier,
     data: CharacterInfo,
+    modifier: Modifier = Modifier,
     isSelected: Boolean = false,
     onClick: (id: Int) -> Unit = {},
 ) {
@@ -109,11 +109,11 @@ fun CharacterListItem(
                 color = borderColor,
                 shape = borderShape,
             )
+            .clip(shape = borderShape)
             .clickable(
                 interactionSource = interactionSource,
                 indication = ripple(bounded = true),
             ) { onClick(data.id) }
-            .clip(shape = borderShape)
             .background(backgroundColor)
             .padding(horizontal = 12.dp, vertical = 7.dp),
         verticalAlignment = Alignment.CenterVertically,

@@ -11,7 +11,7 @@ import com.pnow.ramlist.core.ui.theme.RickAndMortyTheme
 
 @Composable
 fun ErrorMessage(message: String, modifier: Modifier = Modifier) {
-//todo mam wrażenie, że nie ma tu żandego systemu względem paddingów i fontSize tylko trochę randomowe liczby
+// todo mam wrażenie, że nie ma tu żandego systemu względem paddingów i fontSize tylko trochę randomowe liczby
 
     Text(
         text = message,
