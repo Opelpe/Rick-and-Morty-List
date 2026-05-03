@@ -19,7 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pnow.domain.model.CharacterStatus
-import com.pnow.ramlist.app.ui.screen.details.CharacterDetailsColors
+import com.pnow.ramlist.core.ui.theme.CharacterDetailsColors
 import com.pnow.ramlist.core.ui.theme.Dimens
 import com.pnow.ramlist.core.ui.theme.RickAndMortyTheme
 

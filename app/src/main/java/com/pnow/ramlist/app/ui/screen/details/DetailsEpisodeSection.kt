@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pnow.ramlist.app.ui.model.EpisodeInfo
 import com.pnow.ramlist.app.ui.state.EpisodeState
+import com.pnow.ramlist.core.ui.theme.CharacterDetailsColors
 import com.pnow.ramlist.core.ui.theme.Dimens
 import com.pnow.ramlist.core.ui.theme.RickAndMortyTheme
 
@@ -58,9 +59,8 @@ fun LazyListScope.episodeSection(episodeState: EpisodeState) {
     }
 }
 
-// todo nie powinno być prywante?
 @Composable
-fun EpisodeItem(episode: EpisodeInfo, modifier: Modifier = Modifier) {
+private fun EpisodeItem(episode: EpisodeInfo, modifier: Modifier = Modifier) {
     Row(
         modifier =
         modifier

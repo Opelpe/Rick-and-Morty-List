@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,6 +24,7 @@ import com.pnow.ramlist.app.ui.state.CharacterInfoState
 import com.pnow.ramlist.app.ui.state.DetailsUiState
 import com.pnow.ramlist.app.ui.state.EpisodeState
 import com.pnow.ramlist.app.ui.viewmodel.DetailsViewModel
+import com.pnow.ramlist.core.ui.theme.CharacterDetailsColors
 import com.pnow.ramlist.core.ui.theme.RickAndMortyTheme
 
 @Composable
@@ -43,13 +43,11 @@ fun CharacterDetailsScreen(
 
 @Composable
 private fun CharacterDetailsContent(state: DetailsUiState, onBackClick: () -> Unit, modifier: Modifier = Modifier) {
-// todo czy systemBarsPadding powinno być w komonentach? mie wstarczy tylko w activity?
     LazyColumn(
         modifier =
         modifier
             .fillMaxSize()
-            .background(CharacterDetailsColors.Background)
-            .systemBarsPadding(),
+            .background(CharacterDetailsColors.Background),
     ) {
         item {
             DetailsHeroSection(
