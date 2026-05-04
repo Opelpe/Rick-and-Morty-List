@@ -15,22 +15,20 @@ constructor(context: Context) {
     private val unknownTitle = context.getString(R.string.common_word_unknown)
 
     fun mapToLocationInfo(location: Location): LocationInfo {
-        val name = capitalize(location.name?.ifEmpty { unknownTitle } ?: unknownTitle)
-        val type = capitalize(location.type?.ifEmpty { unknownTitle } ?: unknownTitle)
-        val dimension = capitalize(location.dimension?.ifEmpty { unknownTitle } ?: unknownTitle)
+        val name = capitalize(location.name.ifEmpty { unknownTitle })
+        val type = capitalize(location.type.ifEmpty { unknownTitle })
+        val dimension = capitalize(location.dimension.ifEmpty { unknownTitle })
         return LocationInfo(name, type, dimension)
     }
 
     fun mapToEpisodeInfo(episode: Episode) = with(episode) {
         EpisodeInfo(
             id = id,
-            episodeNumber = episodeNumber.orEmpty(),
-            name = name.orEmpty(),
-            date = airDate.orEmpty(),
+            episodeNumber = episodeNumber,
+            name = name,
+            date = airDate,
         )
     }
 
-    private fun capitalize(word: String): String {
-        return word.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
-    }
+    private fun capitalize(word: String): String = word.replaceFirstChar { it.titlecase() }
 }

@@ -29,20 +29,26 @@ import com.pnow.ramlist.core.ui.theme.RickAndMortyTheme
 
 @Composable
 fun CharacterDetailsScreen(
-    onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
+    onBackClick: () -> Unit,
     viewModel: DetailsViewModel = hiltViewModel(),
 ) {
     val state by viewModel.detailsState.collectAsStateWithLifecycle()
     CharacterDetailsContent(
+        modifier = modifier,
         state = state,
         onBackClick = onBackClick,
-        modifier = modifier,
+        onRetry = viewModel::reloadDetails,
     )
 }
 
 @Composable
-private fun CharacterDetailsContent(state: DetailsUiState, onBackClick: () -> Unit, modifier: Modifier = Modifier) {
+private fun CharacterDetailsContent(
+    modifier: Modifier = Modifier,
+    state: DetailsUiState,
+    onBackClick: () -> Unit,
+    onRetry: () -> Unit,
+) {
     LazyColumn(
         modifier =
         modifier
@@ -51,8 +57,10 @@ private fun CharacterDetailsContent(state: DetailsUiState, onBackClick: () -> Un
     ) {
         item {
             DetailsHeroSection(
+                modifier = Modifier.defaultMinSize(minHeight = 200.dp),
                 state = state.character,
                 onBackClick = onBackClick,
+                onRetry = onRetry,
             )
         }
 
@@ -70,35 +78,42 @@ private fun CharacterDetailsContent(state: DetailsUiState, onBackClick: () -> Un
 
         item {
             LocationsSection(
+                modifier = Modifier
+                    .defaultMinSize(minHeight = 120.dp)
+                    .padding(horizontal = 20.dp),
                 state = state.character,
-                modifier = Modifier.defaultMinSize(minHeight = 120.dp),
+                onRetry = onRetry,
             )
         }
 
         item {
             SectionHeader(
-                title = stringResource(R.string.common_word_episodes),
                 modifier =
                 Modifier.padding(
                     horizontal = 20.dp,
                     vertical = 16.dp,
                 ),
+                title = stringResource(R.string.common_word_episodes),
             )
         }
 
-        episodeSection(state.episodes)
+        episodeSection(
+            modifier = Modifier.padding(horizontal = 20.dp),
+            episodeState = state.episodes,
+            onRetry = onRetry,
+        )
     }
 }
 
 @Composable
-private fun SectionHeader(title: String, modifier: Modifier = Modifier) {
+private fun SectionHeader(modifier: Modifier = Modifier, title: String) {
     Text(
+        modifier = modifier,
         text = title.uppercase(),
         fontSize = 11.sp,
         fontWeight = FontWeight.Medium,
         color = CharacterDetailsColors.TextMuted,
         letterSpacing = 1.sp,
-        modifier = modifier,
     )
 }
 
@@ -119,6 +134,7 @@ private fun SuccessStatePreview() {
                 ),
             ),
             onBackClick = {},
+            onRetry = {},
         )
     }
 }
@@ -130,6 +146,7 @@ private fun LoadingStatePreview() {
         CharacterDetailsContent(
             state = DetailsUiState(),
             onBackClick = {},
+            onRetry = {},
         )
     }
 }
@@ -141,10 +158,11 @@ private fun ErrorStatePreview() {
         CharacterDetailsContent(
             state =
             DetailsUiState(
-                character = CharacterInfoState.Failure("Failed to load character"),
-                episodes = EpisodeState.Failure("Failed to load episodes"),
+                character = CharacterInfoState.Failure("Failed to load character. Tap to retry."),
+                episodes = EpisodeState.Failure("Failed to load episodes. Tap to retry."),
             ),
             onBackClick = {},
+            onRetry = {},
         )
     }
 }

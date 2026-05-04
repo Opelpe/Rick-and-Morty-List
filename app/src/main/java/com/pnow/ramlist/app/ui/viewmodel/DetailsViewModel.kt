@@ -1,5 +1,6 @@
 package com.pnow.ramlist.app.ui.viewmodel
 
+import android.content.Context
 import androidx.core.net.toUri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -8,6 +9,7 @@ import com.pnow.domain.model.CharacterStatus
 import com.pnow.domain.repository.CharacterRepository
 import com.pnow.domain.repository.EpisodeRepository
 import com.pnow.domain.repository.LocationRepository
+import com.pnow.ramlist.R
 import com.pnow.ramlist.app.data.mapper.DetailsMapper
 import com.pnow.ramlist.app.ui.model.CharacterInfo
 import com.pnow.ramlist.app.ui.model.DetailsInfo
@@ -16,6 +18,7 @@ import com.pnow.ramlist.app.ui.state.CharacterInfoState
 import com.pnow.ramlist.app.ui.state.DetailsUiState
 import com.pnow.ramlist.app.ui.state.EpisodeState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
@@ -39,6 +42,7 @@ constructor(
     private val locationRepository: LocationRepository,
     private val detailsMapper: DetailsMapper,
     private val dispatcher: CoroutineDispatcher,
+    @param:ApplicationContext private val appContext: Context,
 ) : ViewModel() {
 
     private val characterId: Int = checkNotNull(savedStateHandle[CHARACTER_ID_KEY])
@@ -50,6 +54,10 @@ constructor(
         loadCharacterDetails()
     }
 
+    fun reloadDetails() {
+        loadCharacterDetails()
+    }
+
     private fun loadCharacterDetails() {
         viewModelScope.launch(dispatcher) {
             val character =
@@ -58,7 +66,9 @@ constructor(
                 }.getOrElse {
                     _detailsState.update {
                         it.copy(
-                            character = CharacterInfoState.Failure(ERROR_LOAD_CHARACTER),
+                            character = CharacterInfoState.Failure(
+                                appContext.getString(R.string.load_character_failed_retry),
+                            ),
                             episodes = EpisodeState.Success(emptyList()),
                         )
                     }
@@ -68,13 +78,13 @@ constructor(
             val originDeferred =
                 async {
                     locationRepository.getLocation(getUriPath(character.origin.url))
-                        .map { detailsMapper.mapToLocationInfo(it) }
+                        .map(detailsMapper::mapToLocationInfo)
                         .first()
                 }
             val locationDeferred =
                 async {
                     locationRepository.getLocation(getUriPath(character.location.url))
-                        .map { detailsMapper.mapToLocationInfo(it) }
+                        .map(detailsMapper::mapToLocationInfo)
                         .first()
                 }
 
@@ -106,7 +116,9 @@ constructor(
             }.onFailure {
                 _detailsState.update {
                     it.copy(
-                        character = CharacterInfoState.Failure(ERROR_LOAD_CHARACTER),
+                        character = CharacterInfoState.Failure(
+                            appContext.getString(R.string.load_character_failed_retry),
+                        ),
                         episodes = EpisodeState.Success(emptyList()),
                     )
                 }
@@ -138,7 +150,7 @@ constructor(
                 it.copy(
                     episodes =
                     if (episodes.isEmpty()) {
-                        EpisodeState.Failure(ERROR_LOAD_EPISODES)
+                        EpisodeState.Failure(appContext.getString(R.string.load_episodes_failed_retry))
                     } else {
                         EpisodeState.Success(episodes)
                     },
@@ -148,10 +160,4 @@ constructor(
     }
 
     private fun getUriPath(url: String?): String = url?.toUri()?.lastPathSegment ?: ""
-
-    companion object {
-
-        private const val ERROR_LOAD_CHARACTER = "Failed to load character"
-        private const val ERROR_LOAD_EPISODES = "Failed to load episodes"
-    }
 }

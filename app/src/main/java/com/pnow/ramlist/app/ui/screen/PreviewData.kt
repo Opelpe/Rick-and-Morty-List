@@ -31,17 +31,25 @@ val previewLocation2 =
     )
 val previewEpisode1 =
     EpisodeInfo(
-        id = 2,
+        id = 1,
         name = "Lawnmower Dog",
         episodeNumber = "S01E02",
         date = "December 9, 2013",
     )
 val previewEpisode2 =
     EpisodeInfo(
-        id = 1,
+        id = 2,
         name = "Pilot",
         episodeNumber = "S01E01",
         date = "December 2, 2013",
+    )
+
+val previewEpisode3 =
+    EpisodeInfo(
+        id = 3,
+        name = "Rick And Morty 09",
+        episodeNumber = "S01E02",
+        date = "December 25, 2022",
     )
 
 val previewDetails =

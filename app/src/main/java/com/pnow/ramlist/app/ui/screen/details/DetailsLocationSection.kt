@@ -2,14 +2,12 @@ package com.pnow.ramlist.app.ui.screen.details
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
@@ -32,42 +30,39 @@ import com.pnow.ramlist.core.ui.theme.Dimens
 import com.pnow.ramlist.core.ui.theme.RickAndMortyTheme
 
 @Composable
-fun LocationsSection(state: CharacterInfoState, modifier: Modifier = Modifier) {
+fun LocationsSection(modifier: Modifier = Modifier, state: CharacterInfoState, onRetry: () -> Unit) {
     when (state) {
         is CharacterInfoState.Loading ->
-            Box(
-                modifier =
-                Modifier
+            CircularProgressIndicator(
+                modifier = modifier
                     .fillMaxWidth()
-                    .height(120.dp),
-                contentAlignment = Alignment.Center,
-            ) {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(32.dp),
-                    color = CharacterDetailsColors.TextMuted,
-                    strokeWidth = 3.dp,
-                )
-            }
-        is CharacterInfoState.Failure ->
-            Spacer(
-                modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .height(120.dp),
+                    .wrapContentSize(Alignment.Center)
+                    .size(32.dp),
+                color = CharacterDetailsColors.TextMuted,
+                strokeWidth = 3.dp,
             )
-        is CharacterInfoState.Success ->
+
+        is CharacterInfoState.Failure ->
+            RetryButtonWithMessage(
+                modifier = Modifier.padding(vertical = 16.dp),
+                onRetry = onRetry,
+                message = state.error,
+            )
+
+        is CharacterInfoState.Success,
+        ->
             LocationsRow(
+                modifier = modifier,
                 origin = state.info.origin,
                 location = state.info.location,
-                modifier = modifier,
             )
     }
 }
 
 @Composable
-private fun LocationsRow(origin: LocationInfo, location: LocationInfo, modifier: Modifier = Modifier) {
+private fun LocationsRow(modifier: Modifier = Modifier, origin: LocationInfo, location: LocationInfo) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(10.dp),
     ) {
         LocationCard(
@@ -84,14 +79,36 @@ private fun LocationsRow(origin: LocationInfo, location: LocationInfo, modifier:
 }
 
 @Composable
-private fun LocationCard(badge: String, location: LocationInfo, modifier: Modifier = Modifier) {
+private fun LocationCard(modifier: Modifier = Modifier, badge: String, location: LocationInfo) {
     Column(
         modifier =
         modifier
-            .background(CharacterDetailsColors.CardBackground, RoundedCornerShape(Dimens.CornerRadius8))
+            .background(
+                color = CharacterDetailsColors.CardBackground,
+                shape = RoundedCornerShape(Dimens.CornerRadius8),
+            )
             .padding(8.dp),
         verticalArrangement = Arrangement.spacedBy(5.dp),
     ) {
+        LocationTitle(
+            badge = badge,
+            locationName = location.name,
+        )
+
+        LocationDetails(
+            label = stringResource(R.string.common_word_type),
+            value = location.type,
+        )
+        LocationDetails(
+            label = stringResource(R.string.common_word_dimension),
+            value = location.dimension,
+        )
+    }
+}
+
+@Composable
+private fun LocationTitle(modifier: Modifier = Modifier, badge: String, locationName: String) {
+    Column(modifier = modifier) {
         Text(
             text = badge.uppercase(),
             fontSize = 10.sp,
@@ -100,7 +117,7 @@ private fun LocationCard(badge: String, location: LocationInfo, modifier: Modifi
             letterSpacing = 0.5.sp,
         )
         Text(
-            text = location.name,
+            text = locationName,
             fontSize = 13.sp,
             fontWeight = FontWeight.Medium,
             color = CharacterDetailsColors.TextPrimary,
@@ -108,13 +125,11 @@ private fun LocationCard(badge: String, location: LocationInfo, modifier: Modifi
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
         )
-        LocationDetailColumn(label = stringResource(R.string.common_word_type), value = location.type)
-        LocationDetailColumn(label = stringResource(R.string.common_word_dimension), value = location.dimension)
     }
 }
 
 @Composable
-private fun LocationDetailColumn(label: String, value: String, modifier: Modifier = Modifier) {
+private fun LocationDetails(modifier: Modifier = Modifier, label: String, value: String) {
     Column(
         modifier =
         modifier
@@ -143,14 +158,13 @@ private fun LocationDetailColumn(label: String, value: String, modifier: Modifie
 
 @Preview(showBackground = true, backgroundColor = 0xFFF9F0EE)
 @Composable
-private fun LocationSectionPreview() {
+private fun LocationSectionSuccessPreview() {
     RickAndMortyTheme {
         LocationsSection(
-            state = CharacterInfoState.Success(previewDetails),
             modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(vertical = 20.dp),
+            Modifier.fillMaxWidth(),
+            state = CharacterInfoState.Success(info = previewDetails),
+            onRetry = {},
         )
     }
 }
@@ -160,12 +174,27 @@ private fun LocationSectionPreview() {
 private fun LocationCardPreview() {
     RickAndMortyTheme {
         LocationCard(
-            location = previewLocation2,
-            badge = "Location",
             modifier =
             Modifier
                 .fillMaxWidth()
                 .padding(40.dp),
+            location = previewLocation2,
+            badge = "Location",
+        )
+    }
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFFF9F0EE)
+@Composable
+private fun LocationSectionErroePreview() {
+    RickAndMortyTheme {
+        LocationsSection(
+            modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(vertical = 20.dp),
+            state = CharacterInfoState.Failure("Failed to load data, retry!"),
+            onRetry = {},
         )
     }
 }
