@@ -13,14 +13,12 @@ data class LocationDTO(
     @field:SerializedName("dimension")
     val dimension: String,
 ) {
-    fun toDomain(): Location {
-        return with(this) {
-            Location(
-                id = id,
-                name = name,
-                type = type,
-                dimension = dimension,
-            )
-        }
+    fun toDomain(): Location = with(this) {
+        Location(
+            id = id,
+            name = name,
+            type = type,
+            dimension = dimension,
+        )
     }
 }

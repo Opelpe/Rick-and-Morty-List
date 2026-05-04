@@ -9,9 +9,7 @@ import retrofit2.HttpException
 
 class CharactersPagingDataSource
 @Inject
-constructor(
-    private val api: CharacterApi,
-) : PagingSource<Int, Character>() {
+constructor(private val api: CharacterApi) : PagingSource<Int, Character>() {
 
     override fun getRefreshKey(state: PagingState<Int, Character>): Int? {
         val anchorPosition = state.anchorPosition ?: return null
@@ -19,10 +17,7 @@ constructor(
         return closestPage?.prevKey?.plus(1) ?: closestPage?.nextKey?.minus(1)
     }
 
-    private suspend fun loadWithRetry(
-        params: LoadParams<Int>,
-        retryCount: Int = 0,
-    ): LoadResult<Int, Character> {
+    private suspend fun loadWithRetry(params: LoadParams<Int>, retryCount: Int = 0): LoadResult<Int, Character> {
         val page = params.key ?: FIRST_PAGE
         return try {
             val response = api.getCharacters(page)
