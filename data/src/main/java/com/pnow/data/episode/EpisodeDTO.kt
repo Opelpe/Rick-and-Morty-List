@@ -13,14 +13,12 @@ data class EpisodeDTO(
     @field:SerializedName("episode")
     val episode: String,
 ) {
-    fun toDomain(): Episode {
-        return with(this) {
-            Episode(
-                id = id,
-                name = name,
-                airDate = airDate,
-                episodeNumber = episode,
-            )
-        }
+    fun toDomain(): Episode = with(this) {
+        Episode(
+            id = id,
+            name = name,
+            airDate = airDate,
+            episodeNumber = episode,
+        )
     }
 }

@@ -25,8 +25,7 @@ class CharacterRepositoryImpl @Inject constructor(
         pagingSourceFactory = { pagingDataSourceProvider.get() },
     ).flow
 
-    override suspend fun getCharacterById(id: Int): Character =
-        characterApi.getCharacterById(id).toDomain()
+    override suspend fun getCharacterById(id: Int): Character = characterApi.getCharacterById(id).toDomain()
 
     companion object {
         private const val PAGE_SIZE = 20

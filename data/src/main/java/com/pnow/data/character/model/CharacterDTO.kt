@@ -23,19 +23,17 @@ data class CharacterDTO(
     @field:SerializedName("episode")
     val episodeUrl: List<String>,
 ) {
-    fun toDomain(): Character {
-        return with(this) {
-            Character(
-                id = id,
-                name = name,
-                status = status,
-                species = species,
-                gender = gender,
-                imageUrl = imageUrl,
-                origin = origin.toDomain(),
-                location = location.toDomain(),
-                episodeUrl = episodeUrl,
-            )
-        }
+    fun toDomain(): Character = with(this) {
+        Character(
+            id = id,
+            name = name,
+            status = status,
+            species = species,
+            gender = gender,
+            imageUrl = imageUrl,
+            origin = origin.toDomain(),
+            location = location.toDomain(),
+            episodeUrl = episodeUrl,
+        )
     }
 }

@@ -16,9 +16,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object NetworkModule {
     @Provides
     @Singleton
-    fun provideGson(): Gson {
-        return Gson()
-    }
+    fun provideGson(): Gson = Gson()
 
     @Provides
     @Singleton
@@ -32,11 +30,9 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl("https://rickandmortyapi.com/api/")
-            .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
+    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
+        .baseUrl("https://rickandmortyapi.com/api/")
+        .client(okHttpClient)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
 }
