@@ -2,9 +2,7 @@ package com.pnow.ramlist.app.ui.screen.details
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -26,47 +24,45 @@ import com.pnow.ramlist.core.ui.theme.CharacterDetailsColors
 import com.pnow.ramlist.core.ui.theme.RickAndMortyTheme
 
 @Composable
-fun DetailsHeroSection(state: CharacterInfoState, onBackClick: () -> Unit, modifier: Modifier = Modifier) {
-    Box(modifier = modifier.fillMaxWidth().background(CharacterDetailsColors.HeroBackground)) {
+fun DetailsHeroSection(
+    modifier: Modifier = Modifier,
+    state: CharacterInfoState,
+    onBackClick: () -> Unit,
+    onRetry: () -> Unit,
+) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .background(CharacterDetailsColors.HeroBackground),
+    ) {
         when (state) {
             is CharacterInfoState.Loading ->
-                Box(
-                    modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .height(200.dp),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    CircularProgressIndicator(
-                        color = CharacterDetailsColors.TextMuted,
-                        modifier = Modifier.size(64.dp),
-                    )
-                }
+                CircularProgressIndicator(
+                    color = CharacterDetailsColors.TextMuted,
+                    modifier = Modifier
+                        .size(64.dp)
+                        .align(Alignment.Center),
+                )
+
             is CharacterInfoState.Failure ->
-                Box(
-                    modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .defaultMinSize(minHeight = 200.dp),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    ErrorMessage(
-                        message = state.error,
-                        modifier = Modifier.padding(top = 56.dp),
-                    )
-                }
+                RetryButtonWithMessage(
+                    modifier = Modifier.padding(vertical = 16.dp),
+                    onRetry = onRetry,
+                    message = state.error,
+                )
+
             is CharacterInfoState.Success ->
                 DetailsHeroView(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 20.dp),
                     detailsInfo = state.info,
-                    modifier = Modifier.fillMaxWidth().padding(top = 20.dp),
                 )
         }
 
         IconButton(
+            modifier = Modifier.align(Alignment.TopEnd),
             onClick = onBackClick,
-            modifier =
-            Modifier
-                .align(Alignment.TopStart),
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -84,6 +80,7 @@ private fun SuccessStatePreview() {
         DetailsHeroSection(
             state = CharacterInfoState.Success(previewDetails),
             onBackClick = {},
+            onRetry = {},
         )
     }
 }
@@ -95,6 +92,7 @@ private fun LoadingStatePreview() {
         DetailsHeroSection(
             state = CharacterInfoState.Loading,
             onBackClick = {},
+            onRetry = {},
         )
     }
 }
@@ -106,6 +104,7 @@ private fun ErrorStatePreview() {
         DetailsHeroSection(
             state = CharacterInfoState.Failure("Failed to load character"),
             onBackClick = {},
+            onRetry = {},
         )
     }
 }

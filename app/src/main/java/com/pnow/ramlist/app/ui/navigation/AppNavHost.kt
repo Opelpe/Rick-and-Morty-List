@@ -16,19 +16,18 @@ import com.pnow.ramlist.app.ui.screen.details.CharacterDetailsScreen
 import com.pnow.ramlist.app.ui.screen.list.CharacterListScreen
 
 @Composable
-fun AppNavHost(modifier: Modifier = Modifier, navController: NavHostController = rememberNavController()) {
+fun AppNavHost(navController: NavHostController = rememberNavController(), modifier: Modifier = Modifier) {
     NavHost(
-        modifier = modifier,
         navController = navController,
         startDestination = CHARACTER_LIST,
+        modifier = modifier,
     ) {
         composable(CHARACTER_LIST) {
             CharacterListScreen(
-                // todo w normalnych projekach kolejność argumentów ma sens, raz modifier masz jako pierwszy niżej jako ostatni
-                modifier = Modifier.fillMaxSize(),
                 onCharacterClick = { characterId ->
                     navController.navigate(AppDestinations.characterDetails(characterId))
                 },
+                modifier = Modifier.fillMaxSize(),
             )
         }
 

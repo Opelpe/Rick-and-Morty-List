@@ -19,3 +19,5 @@ ktlint_standard_no-wildcard-imports = enabled
 
 [*.kt]
 ktlint_function_naming_ignore_when_annotated_with = Composable, Preview
+ktlint_compose_param-order-check = disabled
+ktlint_compose_lambda-param-event-trailing = disabled

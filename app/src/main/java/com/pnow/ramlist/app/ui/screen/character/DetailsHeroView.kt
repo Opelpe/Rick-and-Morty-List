@@ -100,7 +100,7 @@ private fun MetaItem(label: String, value: String, modifier: Modifier = Modifier
         modifier = modifier.padding(top = 15.dp),
     ) {
         Text(
-            text = label.uppercase(),
+            text = "${label.uppercase()}:",
             fontSize = 10.sp,
             color = CharacterDetailsColors.TextMuted,
             letterSpacing = 0.5.sp,
