@@ -23,15 +23,15 @@ import com.pnow.ramlist.core.ui.theme.CharacterDetailsColors
 import com.pnow.ramlist.core.ui.theme.Dimens
 import com.pnow.ramlist.core.ui.theme.RickAndMortyTheme
 
-@Composable
-fun StatusPill(status: CharacterStatus, label: String, background: Color, modifier: Modifier = Modifier) {
-    val dotColor =
-        when (status) {
-            CharacterStatus.ALIVE -> CharacterDetailsColors.StatusAlive
-            CharacterStatus.DEAD -> CharacterDetailsColors.StatusDead
-            CharacterStatus.UNKNOWN -> CharacterDetailsColors.TextMuted
-        }
+private val CharacterStatus.dotColor: Color
+    get() = when (this) {
+        CharacterStatus.ALIVE -> CharacterDetailsColors.StatusAlive
+        CharacterStatus.DEAD -> CharacterDetailsColors.StatusDead
+        CharacterStatus.UNKNOWN -> CharacterDetailsColors.TextMuted
+    }
 
+@Composable
+fun StatusPill(modifier: Modifier = Modifier, status: CharacterStatus, label: String, background: Color) {
     Row(
         modifier =
         modifier
@@ -44,7 +44,7 @@ fun StatusPill(status: CharacterStatus, label: String, background: Color, modifi
             modifier =
             Modifier
                 .size(7.dp)
-                .background(dotColor, CircleShape),
+                .background(status.dotColor, CircleShape),
         )
         Text(
             text = label.uppercase(),
@@ -61,13 +61,13 @@ fun StatusPill(status: CharacterStatus, label: String, background: Color, modifi
 private fun AliveStatusPreview() {
     RickAndMortyTheme {
         StatusPill(
-            status = CharacterStatus.ALIVE,
-            label = "Alive",
             modifier =
             Modifier
                 .fillMaxWidth()
                 .padding(150.dp),
             background = CharacterDetailsColors.StatusPillBackground,
+            status = CharacterStatus.ALIVE,
+            label = "Alive",
         )
     }
 }
@@ -77,13 +77,13 @@ private fun AliveStatusPreview() {
 private fun DeadStatusPreview() {
     RickAndMortyTheme {
         StatusPill(
-            status = CharacterStatus.DEAD,
-            label = "Dead",
             modifier =
             Modifier
                 .fillMaxWidth()
                 .padding(150.dp),
             background = CharacterDetailsColors.StatusPillBackground,
+            status = CharacterStatus.DEAD,
+            label = "Dead",
         )
     }
 }
@@ -93,13 +93,13 @@ private fun DeadStatusPreview() {
 private fun UnknownStatusPreview() {
     RickAndMortyTheme {
         StatusPill(
-            status = CharacterStatus.UNKNOWN,
-            label = "Unknown",
             modifier =
             Modifier
                 .fillMaxWidth()
                 .padding(150.dp),
             background = CharacterDetailsColors.StatusPillBackground,
+            status = CharacterStatus.UNKNOWN,
+            label = "Unknown",
         )
     }
 }
