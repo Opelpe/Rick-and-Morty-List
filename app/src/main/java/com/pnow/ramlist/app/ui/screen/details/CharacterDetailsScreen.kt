@@ -38,6 +38,7 @@ fun CharacterDetailsScreen(
         state = state,
         onBackClick = onBackClick,
         onRetry = viewModel::reloadDetails,
+        onRetryEpisodes = viewModel::reloadEpisodes,
     )
 }
 
@@ -47,6 +48,7 @@ private fun CharacterDetailsContent(
     state: DetailsUiState,
     onBackClick: () -> Unit,
     onRetry: () -> Unit,
+    onRetryEpisodes: () -> Unit,
 ) {
     LazyColumn(
         modifier =
@@ -99,7 +101,7 @@ private fun CharacterDetailsContent(
         episodeSection(
             modifier = Modifier.padding(horizontal = Dimens.Spacing20),
             episodeState = state.episodes,
-            onRetry = onRetry,
+            onRetry = onRetryEpisodes,
         )
     }
 }
@@ -134,6 +136,7 @@ private fun SuccessStatePreview() {
             ),
             onBackClick = {},
             onRetry = {},
+            onRetryEpisodes = {},
         )
     }
 }
@@ -146,6 +149,7 @@ private fun LoadingStatePreview() {
             state = DetailsUiState(),
             onBackClick = {},
             onRetry = {},
+            onRetryEpisodes = {},
         )
     }
 }
@@ -162,6 +166,7 @@ private fun ErrorStatePreview() {
             ),
             onBackClick = {},
             onRetry = {},
+            onRetryEpisodes = {},
         )
     }
 }

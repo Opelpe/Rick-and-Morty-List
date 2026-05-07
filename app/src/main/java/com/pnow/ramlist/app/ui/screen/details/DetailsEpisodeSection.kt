@@ -76,6 +76,7 @@ private fun EpisodeItem(modifier: Modifier = Modifier, episode: EpisodeInfo) {
         verticalAlignment = Alignment.CenterVertically,
     ) {
         EpisodeInfo(
+            modifier = Modifier.weight(1f),
             episodeName = episode.name,
             episodeDate = episode.date,
         )
@@ -87,6 +88,7 @@ private fun EpisodeItem(modifier: Modifier = Modifier, episode: EpisodeInfo) {
 @Composable
 private fun EpisodeInfo(modifier: Modifier = Modifier, episodeName: String, episodeDate: String) {
     Column(
+        modifier = modifier.padding(end = Dimens.Spacing10),
         verticalArrangement = Arrangement.spacedBy(Dimens.Spacing2),
     ) {
         Text(
@@ -109,7 +111,7 @@ private fun EpisodeInfo(modifier: Modifier = Modifier, episodeName: String, epis
 private fun EpisodeNumber(modifier: Modifier = Modifier, episodeNumber: String) {
     Text(
         modifier =
-        Modifier
+        modifier
             .background(CharacterDetailsColors.EpisodeBadgeBackground, RoundedCornerShape(Dimens.CornerRadius6))
             .padding(horizontal = Dimens.Spacing8, vertical = Dimens.Spacing3),
         text = episodeNumber,
