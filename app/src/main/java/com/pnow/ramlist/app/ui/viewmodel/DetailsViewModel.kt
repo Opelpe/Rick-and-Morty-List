@@ -22,7 +22,6 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -30,7 +29,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.supervisorScope
 
 @HiltViewModel
 class DetailsViewModel
@@ -50,12 +48,20 @@ constructor(
     private val _detailsState = MutableStateFlow(DetailsUiState())
     val detailsState: StateFlow<DetailsUiState> = _detailsState.asStateFlow()
 
+    private var lastEpisodeUrls: List<String> = emptyList()
+
     init {
         loadCharacterDetails()
     }
 
     fun reloadDetails() {
+        _detailsState.update { DetailsUiState() }
         loadCharacterDetails()
+    }
+
+    fun reloadEpisodes() {
+        _detailsState.update { it.copy(episodes = EpisodeState.Loading) }
+        loadEpisodes(lastEpisodeUrls)
     }
 
     private fun loadCharacterDetails() {
@@ -112,7 +118,8 @@ constructor(
                         ),
                     )
                 }
-                loadEpisodes(character.episodeUrl)
+                lastEpisodeUrls = character.episodeUrl
+                loadEpisodes(lastEpisodeUrls)
             }.onFailure {
                 _detailsState.update {
                     it.copy(
@@ -133,28 +140,17 @@ constructor(
         }
 
         viewModelScope.launch(dispatcher) {
-            val episodes =
-                supervisorScope {
-                    urls.map { url ->
-                        async {
-                            runCatching {
-                                episodeRepository.getEpisode(getUriPath(url))
-                                    .map { detailsMapper.mapToEpisodeInfo(it) }
-                                    .first()
-                            }.getOrNull()
-                        }
-                    }.awaitAll().filterNotNull()
+            val ids = urls.map { getUriPath(it) }
+            runCatching {
+                episodeRepository.getEpisodes(ids)
+                    .map { list -> list.map(detailsMapper::mapToEpisodeInfo) }
+                    .first()
+            }.onSuccess { episodes ->
+                _detailsState.update { it.copy(episodes = EpisodeState.Success(episodes)) }
+            }.onFailure {
+                _detailsState.update {
+                    it.copy(episodes = EpisodeState.Failure(appContext.getString(R.string.load_episodes_failed_retry)))
                 }
-
-            _detailsState.update {
-                it.copy(
-                    episodes =
-                    if (episodes.isEmpty()) {
-                        EpisodeState.Failure(appContext.getString(R.string.load_episodes_failed_retry))
-                    } else {
-                        EpisodeState.Success(episodes)
-                    },
-                )
             }
         }
     }
