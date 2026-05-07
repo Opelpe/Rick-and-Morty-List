@@ -46,7 +46,7 @@ fun DetailsHeroSection(
 
             is CharacterInfoState.Failure ->
                 RetryButtonWithMessage(
-                    modifier = Modifier.padding(vertical = Dimens.Spacing16),
+                    modifier = Modifier.padding(vertical = Dimens.Spacing24).align(Alignment.Center),
                     onRetry = onRetry,
                     message = state.error,
                 )
