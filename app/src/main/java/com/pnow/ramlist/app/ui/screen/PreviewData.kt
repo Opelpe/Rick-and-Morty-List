@@ -47,7 +47,7 @@ val previewEpisode2 =
 val previewEpisode3 =
     EpisodeInfo(
         id = 3,
-        name = "Rick And Morty 09",
+        name = "Rick And Morty 09 very long episode title or name or something",
         episodeNumber = "S01E02",
         date = "December 25, 2022",
     )

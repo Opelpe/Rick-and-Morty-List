@@ -9,4 +9,13 @@ class EpisodeRepositoryImpl @Inject constructor(private val api: EpisodeApi) : E
         val episodeDto = api.getEpisode(episodeId)
         emit(episodeDto.toDomain())
     }
+
+    override fun getEpisodes(episodeIds: List<String>) = flow {
+        val episodes = if (episodeIds.size == 1) {
+            listOf(api.getEpisode(episodeIds.first()).toDomain())
+        } else {
+            api.getEpisodes(episodeIds.joinToString(",")).map { it.toDomain() }
+        }
+        emit(episodes)
+    }
 }
