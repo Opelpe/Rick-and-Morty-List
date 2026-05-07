@@ -7,6 +7,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -18,58 +20,37 @@ import com.pnow.ramlist.core.ui.theme.CharacterDetailsColors
 import com.pnow.ramlist.core.ui.theme.Dimens
 
 @Composable
-fun HeroDetailsIcon(imageUrl: String, name: String, modifier: Modifier = Modifier) {
+fun HeroIcon(
+    modifier: Modifier = Modifier,
+    contentScale: ContentScale = ContentScale.FillBounds,
+    shape: Shape = RoundedCornerShape(Dimens.CornerRadius8),
+    background: Color = MaterialTheme.colorScheme.surfaceVariant,
+    imageUrl: String,
+    name: String,
+) {
     AsyncImage(
+        modifier = modifier
+            .clip(shape)
+            .background(background),
         model = imageUrl,
-        contentDescription = stringResource(R.string.character_avatar_description, name),
-        contentScale = ContentScale.Fit,
-        placeholder = painterResource(R.drawable.ic_rick_morty_transparent_logo),
-        modifier =
-        modifier
-            .size(Dimens.DetailsIconSize)
-            .clip(RoundedCornerShape(Dimens.CornerRadius6))
-            .background(CharacterDetailsColors.AvatarBackground),
-        error = painterResource(R.drawable.ic_rick_morty_transparent_logo),
-    )
-}
-
-@Composable
-fun HeroListItemIcon(imageUrl: String, name: String, modifier: Modifier = Modifier) {
-    AsyncImage(
-        model = imageUrl,
-        contentDescription = stringResource(R.string.character_avatar_description, name),
-        contentScale = ContentScale.FillBounds,
-        placeholder = painterResource(R.drawable.ic_rick_morty_transparent_logo),
-        modifier =
-        modifier
-            .size(Dimens.ItemIconWidth, Dimens.ItemIconHeight)
-            .clip(RoundedCornerShape(Dimens.CornerRadius8))
-            .background(MaterialTheme.colorScheme.surfaceVariant),
-        error = painterResource(R.drawable.ic_rick_morty_transparent_logo),
-    )
-}
-
-@Composable
-private fun HeroIcon(imageUrl: String, name: String, modifier: Modifier = Modifier) {
-    AsyncImage(
-        model = imageUrl,
-        contentDescription = stringResource(R.string.character_avatar_description, name),
-        contentScale = ContentScale.FillBounds,
-        placeholder = painterResource(R.drawable.ic_rick_morty_transparent_logo),
-        modifier =
-        modifier
-            .size(Dimens.ItemIconWidth, Dimens.ItemIconHeight)
-            .clip(RoundedCornerShape(Dimens.CornerRadius8))
-            .background(MaterialTheme.colorScheme.surfaceVariant),
-        error = painterResource(R.drawable.ic_rick_morty_transparent_logo),
+        contentDescription =
+        stringResource(R.string.character_avatar_description, name),
+        contentScale = contentScale,
+        placeholder =
+        painterResource(R.drawable.ic_rick_morty_transparent_logo),
+        error =
+        painterResource(R.drawable.ic_rick_morty_transparent_logo),
     )
 }
 
 @Preview
 @Composable
 private fun HeroListItemIconPreview() {
-    HeroListItemIcon(
-        imageUrl = "",
+    HeroIcon(
+        modifier = Modifier.size(width = Dimens.ItemIconWidth, height = Dimens.ItemIconHeight),
+        contentScale = ContentScale.FillBounds,
+        shape = RoundedCornerShape(Dimens.CornerRadius8),
+        imageUrl = previewCharacter.imageUrl,
         name = previewCharacter.name,
     )
 }
@@ -77,8 +58,12 @@ private fun HeroListItemIconPreview() {
 @Preview
 @Composable
 private fun HeroDetailsIconPreview() {
-    HeroDetailsIcon(
-        imageUrl = "",
+    HeroIcon(
+        modifier = Modifier.size(Dimens.DetailsIconSize),
+        contentScale = ContentScale.Fit,
+        shape = RoundedCornerShape(Dimens.CornerRadius6),
+        background = CharacterDetailsColors.AvatarBackground,
+        imageUrl = previewCharacter.imageUrl,
         name = previewCharacter.name,
     )
 }
