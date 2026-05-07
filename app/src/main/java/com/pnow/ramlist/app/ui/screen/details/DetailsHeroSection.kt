@@ -15,12 +15,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.pnow.ramlist.R
 import com.pnow.ramlist.app.ui.screen.character.DetailsHeroView
 import com.pnow.ramlist.app.ui.screen.previewDetails
 import com.pnow.ramlist.app.ui.state.CharacterInfoState
 import com.pnow.ramlist.core.ui.theme.CharacterDetailsColors
+import com.pnow.ramlist.core.ui.theme.Dimens
 import com.pnow.ramlist.core.ui.theme.RickAndMortyTheme
 
 @Composable
@@ -40,13 +40,13 @@ fun DetailsHeroSection(
                 CircularProgressIndicator(
                     color = CharacterDetailsColors.TextMuted,
                     modifier = Modifier
-                        .size(64.dp)
+                        .size(Dimens.ProgressSizeLarge)
                         .align(Alignment.Center),
                 )
 
             is CharacterInfoState.Failure ->
                 RetryButtonWithMessage(
-                    modifier = Modifier.padding(vertical = 16.dp),
+                    modifier = Modifier.padding(vertical = Dimens.Spacing16),
                     onRetry = onRetry,
                     message = state.error,
                 )
@@ -55,7 +55,7 @@ fun DetailsHeroSection(
                 DetailsHeroView(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 20.dp),
+                        .padding(vertical = Dimens.Spacing20),
                     detailsInfo = state.info,
                 )
         }

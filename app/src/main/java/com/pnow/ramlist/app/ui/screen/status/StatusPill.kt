@@ -16,8 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.pnow.domain.model.CharacterStatus
 import com.pnow.ramlist.core.ui.theme.CharacterDetailsColors
 import com.pnow.ramlist.core.ui.theme.Dimens
@@ -36,22 +34,22 @@ fun StatusPill(modifier: Modifier = Modifier, status: CharacterStatus, label: St
         modifier =
         modifier
             .background(background, RoundedCornerShape(Dimens.CornerRadius8))
-            .padding(horizontal = 10.dp, vertical = 4.dp),
+            .padding(horizontal = Dimens.Spacing10, vertical = Dimens.Spacing4),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(5.dp),
+        horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing5),
     ) {
         Box(
             modifier =
             Modifier
-                .size(7.dp)
+                .size(Dimens.StatusDotSize)
                 .background(status.dotColor, CircleShape),
         )
         Text(
             text = label.uppercase(),
-            fontSize = 11.sp,
+            fontSize = Dimens.TextSize11,
             fontWeight = FontWeight.Medium,
             color = CharacterDetailsColors.StatusPillText,
-            letterSpacing = 0.5.sp,
+            letterSpacing = Dimens.LetterSpacingTight,
         )
     }
 }
@@ -64,7 +62,7 @@ private fun AliveStatusPreview() {
             modifier =
             Modifier
                 .fillMaxWidth()
-                .padding(150.dp),
+                .padding(Dimens.Spacing150),
             background = CharacterDetailsColors.StatusPillBackground,
             status = CharacterStatus.ALIVE,
             label = "Alive",
@@ -80,7 +78,7 @@ private fun DeadStatusPreview() {
             modifier =
             Modifier
                 .fillMaxWidth()
-                .padding(150.dp),
+                .padding(Dimens.Spacing150),
             background = CharacterDetailsColors.StatusPillBackground,
             status = CharacterStatus.DEAD,
             label = "Dead",
@@ -96,7 +94,7 @@ private fun UnknownStatusPreview() {
             modifier =
             Modifier
                 .fillMaxWidth()
-                .padding(150.dp),
+                .padding(Dimens.Spacing150),
             background = CharacterDetailsColors.StatusPillBackground,
             status = CharacterStatus.UNKNOWN,
             label = "Unknown",

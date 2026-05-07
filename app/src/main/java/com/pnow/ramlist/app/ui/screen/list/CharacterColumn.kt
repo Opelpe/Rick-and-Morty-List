@@ -25,7 +25,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
@@ -34,19 +33,20 @@ import com.pnow.domain.model.CharacterStatus
 import com.pnow.ramlist.R
 import com.pnow.ramlist.app.ui.model.CharacterInfo
 import com.pnow.ramlist.app.ui.screen.character.ListItemHeroView
+import com.pnow.ramlist.core.ui.theme.Dimens
 import com.pnow.ramlist.core.ui.theme.RaMColor
 import com.pnow.ramlist.core.ui.theme.RickAndMortyTheme
 import kotlinx.coroutines.flow.flowOf
 
 @Composable
 fun CharactersColumn(
-    characters: LazyPagingItems<CharacterInfo>,
     modifier: Modifier = Modifier,
+    characters: LazyPagingItems<CharacterInfo>,
     onCharacterClick: (id: Int) -> Unit = {},
 ) {
     LazyColumn(
-        modifier = modifier.padding(horizontal = 15.dp, vertical = 3.dp),
-        verticalArrangement = Arrangement.spacedBy(6.dp),
+        modifier = modifier.padding(horizontal = Dimens.Spacing15, vertical = Dimens.Spacing3),
+        verticalArrangement = Arrangement.spacedBy(Dimens.Spacing6),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         items(characters.itemCount) { index ->
@@ -60,13 +60,13 @@ fun CharactersColumn(
 
         when (characters.loadState.append) {
             is LoadState.Loading -> {
-                item { CircularProgressIndicator(modifier = Modifier.padding(16.dp)) }
+                item { CircularProgressIndicator(modifier = Modifier.padding(Dimens.Spacing16)) }
             }
             is LoadState.Error -> {
                 item {
                     Text(
+                        modifier = Modifier.padding(Dimens.Spacing16),
                         text = stringResource(R.string.list_error_loading_more),
-                        modifier = Modifier.padding(16.dp),
                     )
                 }
             }
@@ -77,8 +77,8 @@ fun CharactersColumn(
 
 @Composable
 fun CharacterListItem(
-    data: CharacterInfo,
     modifier: Modifier = Modifier,
+    data: CharacterInfo,
     isSelected: Boolean = false,
     onClick: (id: Int) -> Unit = {},
 ) {
@@ -99,13 +99,13 @@ fun CharacterListItem(
             isPressed = isPressed,
         )
 
-    val borderShape = RoundedCornerShape(8.dp)
+    val borderShape = RoundedCornerShape(Dimens.CornerRadius8)
 
     Row(
         modifier =
         modifier
             .border(
-                width = 3.dp,
+                width = Dimens.BorderWidth3,
                 color = borderColor,
                 shape = borderShape,
             )
@@ -115,7 +115,7 @@ fun CharacterListItem(
                 indication = ripple(bounded = true),
             ) { onClick(data.id) }
             .background(backgroundColor)
-            .padding(horizontal = 12.dp, vertical = 7.dp),
+            .padding(horizontal = Dimens.Spacing12, vertical = Dimens.Spacing7),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         ListItemHeroView(
@@ -140,6 +140,7 @@ private fun getItemBorderColor(darkTheme: Boolean, isSelected: Boolean, isPresse
 private fun CharacterListItemPreview() {
     RickAndMortyTheme(darkTheme = true) {
         CharacterListItem(
+            modifier = Modifier.fillMaxWidth(),
             data =
             CharacterInfo(
                 id = 1,
@@ -150,7 +151,6 @@ private fun CharacterListItemPreview() {
                 gender = "Male",
                 imageUrl = "",
             ),
-            modifier = Modifier.fillMaxWidth(),
         )
     }
 }
@@ -191,6 +191,6 @@ private fun CharactersColumnPreview() {
     val pagingItems = flowOf(PagingData.from(items)).collectAsLazyPagingItems()
 
     RickAndMortyTheme(darkTheme = true) {
-        CharactersColumn(characters = pagingItems, modifier = Modifier.fillMaxSize())
+        CharactersColumn(modifier = Modifier.fillMaxSize(), characters = pagingItems)
     }
 }

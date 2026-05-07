@@ -17,8 +17,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.pnow.domain.model.CharacterStatus
 import com.pnow.ramlist.R
 import com.pnow.ramlist.app.ui.model.DetailsInfo
@@ -35,8 +33,8 @@ fun DetailsHeroView(modifier: Modifier = Modifier, detailsInfo: DetailsInfo) {
         modifier
             .fillMaxWidth()
             .background(CharacterDetailsColors.HeroBackground)
-            .padding(8.dp),
-        horizontalArrangement = Arrangement.spacedBy(24.dp),
+            .padding(Dimens.Spacing8),
+        horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing24),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         val characterInfo = detailsInfo.character
@@ -59,7 +57,7 @@ fun DetailsHeroView(modifier: Modifier = Modifier, detailsInfo: DetailsInfo) {
             modifier =
             Modifier
                 .weight(1f)
-                .padding(top = 4.dp),
+                .padding(top = Dimens.Spacing4),
         )
     }
 }
@@ -75,14 +73,14 @@ private fun HeroDetailsInfo(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(Dimens.Spacing16),
     ) {
         Text(
             text = name,
-            fontSize = 20.sp,
+            fontSize = Dimens.TextSize20,
             fontWeight = FontWeight.Medium,
             color = CharacterDetailsColors.TextPrimary,
-            lineHeight = 24.sp,
+            lineHeight = Dimens.TextSize24,
         )
 
         StatusPill(
@@ -91,7 +89,7 @@ private fun HeroDetailsInfo(
             background = CharacterDetailsColors.StatusPillBackground,
         )
 
-        Row(horizontalArrangement = Arrangement.spacedBy(32.dp)) {
+        Row(horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing32)) {
             MetaItem(label = stringResource(R.string.common_word_species), value = species)
             MetaItem(label = stringResource(R.string.common_word_gender), value = gender)
         }
@@ -101,18 +99,18 @@ private fun HeroDetailsInfo(
 @Composable
 private fun MetaItem(modifier: Modifier = Modifier, label: String, value: String) {
     Column(
-        modifier = modifier.padding(top = 15.dp),
+        modifier = modifier.padding(top = Dimens.Spacing15),
     ) {
         Text(
             text = "${label.uppercase()}:",
-            fontSize = 10.sp,
+            fontSize = Dimens.TextSize10,
             color = CharacterDetailsColors.TextMuted,
-            letterSpacing = 0.5.sp,
-            lineHeight = 10.sp,
+            letterSpacing = Dimens.LetterSpacingTight,
+            lineHeight = Dimens.TextSize10,
         )
         Text(
             text = value,
-            fontSize = 13.sp,
+            fontSize = Dimens.TextSize13,
             fontWeight = FontWeight.Medium,
             color = CharacterDetailsColors.TextPrimary,
         )
