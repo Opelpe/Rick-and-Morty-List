@@ -12,8 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.pnow.ramlist.R
@@ -25,6 +23,7 @@ import com.pnow.ramlist.app.ui.state.DetailsUiState
 import com.pnow.ramlist.app.ui.state.EpisodeState
 import com.pnow.ramlist.app.ui.viewmodel.DetailsViewModel
 import com.pnow.ramlist.core.ui.theme.CharacterDetailsColors
+import com.pnow.ramlist.core.ui.theme.Dimens
 import com.pnow.ramlist.core.ui.theme.RickAndMortyTheme
 
 @Composable
@@ -57,7 +56,7 @@ private fun CharacterDetailsContent(
     ) {
         item {
             DetailsHeroSection(
-                modifier = Modifier.defaultMinSize(minHeight = 200.dp),
+                modifier = Modifier.defaultMinSize(minHeight = Dimens.HeroSectionMinHeight),
                 state = state.character,
                 onBackClick = onBackClick,
                 onRetry = onRetry,
@@ -69,9 +68,9 @@ private fun CharacterDetailsContent(
                 title = stringResource(R.string.common_word_locations),
                 modifier =
                 Modifier.padding(
-                    start = 20.dp,
-                    end = 20.dp,
-                    top = 25.dp,
+                    start = Dimens.Spacing20,
+                    end = Dimens.Spacing20,
+                    top = Dimens.Spacing25,
                 ),
             )
         }
@@ -79,8 +78,8 @@ private fun CharacterDetailsContent(
         item {
             LocationsSection(
                 modifier = Modifier
-                    .defaultMinSize(minHeight = 120.dp)
-                    .padding(horizontal = 20.dp),
+                    .defaultMinSize(minHeight = Dimens.LocationsSectionMinHeight)
+                    .padding(horizontal = Dimens.Spacing20),
                 state = state.character,
                 onRetry = onRetry,
             )
@@ -90,15 +89,15 @@ private fun CharacterDetailsContent(
             SectionHeader(
                 modifier =
                 Modifier.padding(
-                    horizontal = 20.dp,
-                    vertical = 16.dp,
+                    horizontal = Dimens.Spacing20,
+                    vertical = Dimens.Spacing16,
                 ),
                 title = stringResource(R.string.common_word_episodes),
             )
         }
 
         episodeSection(
-            modifier = Modifier.padding(horizontal = 20.dp),
+            modifier = Modifier.padding(horizontal = Dimens.Spacing20),
             episodeState = state.episodes,
             onRetry = onRetry,
         )
@@ -110,10 +109,10 @@ private fun SectionHeader(modifier: Modifier = Modifier, title: String) {
     Text(
         modifier = modifier,
         text = title.uppercase(),
-        fontSize = 11.sp,
+        fontSize = Dimens.TextSize11,
         fontWeight = FontWeight.Medium,
         color = CharacterDetailsColors.TextMuted,
-        letterSpacing = 1.sp,
+        letterSpacing = Dimens.LetterSpacingWide,
     )
 }
 

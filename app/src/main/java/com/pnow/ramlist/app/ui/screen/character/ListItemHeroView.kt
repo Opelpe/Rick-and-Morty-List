@@ -17,8 +17,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.pnow.ramlist.app.ui.model.CharacterInfo
 import com.pnow.ramlist.app.ui.screen.previewCharacter
 import com.pnow.ramlist.app.ui.screen.status.StatusPill
@@ -29,7 +27,7 @@ import com.pnow.ramlist.core.ui.theme.RickAndMortyTheme
 fun ListItemHeroView(modifier: Modifier = Modifier, characterInfo: CharacterInfo) {
     Row(
         modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(24.dp),
+        horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing24),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         HeroIcon(
@@ -41,21 +39,21 @@ fun ListItemHeroView(modifier: Modifier = Modifier, characterInfo: CharacterInfo
         )
 
         Column(
-            modifier = Modifier.weight(1f).padding(top = 4.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier.weight(1f).padding(top = Dimens.Spacing4),
+            verticalArrangement = Arrangement.spacedBy(Dimens.Spacing12),
         ) {
             Text(
                 text = characterInfo.name,
-                fontSize = 24.sp,
+                fontSize = Dimens.TextSize24,
                 fontWeight = FontWeight.Medium,
                 color = MaterialTheme.colorScheme.onSurface,
-                lineHeight = 28.sp,
+                lineHeight = Dimens.TextSize28,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
 
             StatusPill(
-                modifier = Modifier.padding(start = 2.dp),
+                modifier = Modifier.padding(start = Dimens.Spacing2),
                 status = characterInfo.status,
                 label = characterInfo.statusDescription,
                 background = MaterialTheme.colorScheme.surfaceVariant,

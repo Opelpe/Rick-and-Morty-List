@@ -15,7 +15,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
 import com.pnow.ramlist.R
 import com.pnow.ramlist.core.ui.theme.Dimens
 import com.pnow.ramlist.core.ui.theme.RickAndMortyTheme
@@ -31,16 +30,16 @@ fun CharacterListHeader(modifier: Modifier = Modifier) {
                 .padding(start = Dimens.LogoWidthSize)
                 .align(Alignment.Center),
             text = stringResource(R.string.module_list_logo_motto).uppercase(),
-            fontSize = 13.sp,
+            fontSize = Dimens.TextSize13,
             fontWeight = FontWeight.Bold,
         )
 
         Image(
-            painter = painterResource(id = R.drawable.ic_rick_morty_logo),
             modifier =
             Modifier
                 .size(Dimens.LogoWidthSize, Dimens.LogoHeightSize)
                 .align(Alignment.CenterStart),
+            painter = painterResource(id = R.drawable.ic_rick_morty_logo),
             contentDescription = null,
         )
     }

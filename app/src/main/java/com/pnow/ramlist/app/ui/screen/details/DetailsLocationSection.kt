@@ -18,8 +18,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.pnow.ramlist.R
 import com.pnow.ramlist.app.ui.model.LocationInfo
 import com.pnow.ramlist.app.ui.screen.previewDetails
@@ -37,14 +35,14 @@ fun LocationsSection(modifier: Modifier = Modifier, state: CharacterInfoState, o
                 modifier = modifier
                     .fillMaxWidth()
                     .wrapContentSize(Alignment.Center)
-                    .size(32.dp),
+                    .size(Dimens.ProgressSizeSmall),
                 color = CharacterDetailsColors.TextMuted,
-                strokeWidth = 3.dp,
+                strokeWidth = Dimens.BorderWidth3,
             )
 
         is CharacterInfoState.Failure ->
             RetryButtonWithMessage(
-                modifier = Modifier.padding(vertical = 16.dp),
+                modifier = Modifier.padding(vertical = Dimens.Spacing16),
                 onRetry = onRetry,
                 message = state.error,
             )
@@ -63,7 +61,7 @@ fun LocationsSection(modifier: Modifier = Modifier, state: CharacterInfoState, o
 private fun LocationsRow(modifier: Modifier = Modifier, origin: LocationInfo, location: LocationInfo) {
     Row(
         modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing10),
     ) {
         LocationCard(
             badge = stringResource(R.string.common_word_origin),
@@ -87,8 +85,8 @@ private fun LocationCard(modifier: Modifier = Modifier, badge: String, location:
                 color = CharacterDetailsColors.CardBackground,
                 shape = RoundedCornerShape(Dimens.CornerRadius8),
             )
-            .padding(8.dp),
-        verticalArrangement = Arrangement.spacedBy(5.dp),
+            .padding(Dimens.Spacing8),
+        verticalArrangement = Arrangement.spacedBy(Dimens.Spacing5),
     ) {
         LocationTitle(
             badge = badge,
@@ -111,17 +109,17 @@ private fun LocationTitle(modifier: Modifier = Modifier, badge: String, location
     Column(modifier = modifier) {
         Text(
             text = badge.uppercase(),
-            fontSize = 10.sp,
-            lineHeight = 10.sp,
+            fontSize = Dimens.TextSize10,
+            lineHeight = Dimens.TextSize10,
             color = CharacterDetailsColors.TextMuted,
-            letterSpacing = 0.5.sp,
+            letterSpacing = Dimens.LetterSpacingTight,
         )
         Text(
             text = locationName,
-            fontSize = 13.sp,
+            fontSize = Dimens.TextSize13,
             fontWeight = FontWeight.Medium,
             color = CharacterDetailsColors.TextPrimary,
-            lineHeight = 18.sp,
+            lineHeight = Dimens.TextSize18,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
         )
@@ -134,20 +132,20 @@ private fun LocationDetails(modifier: Modifier = Modifier, label: String, value:
         modifier =
         modifier
             .fillMaxWidth()
-            .padding(top = 3.dp, start = 3.dp),
-        verticalArrangement = Arrangement.spacedBy(3.dp),
+            .padding(top = Dimens.Spacing3, start = Dimens.Spacing3),
+        verticalArrangement = Arrangement.spacedBy(Dimens.Spacing3),
     ) {
         Text(
             text = "$label: ",
-            fontSize = 9.sp,
-            lineHeight = 9.sp,
+            fontSize = Dimens.TextSize9,
+            lineHeight = Dimens.TextSize9,
             color = CharacterDetailsColors.TextMuted,
         )
         Text(
-            modifier = Modifier.padding(start = 4.dp),
+            modifier = Modifier.padding(start = Dimens.Spacing4),
             text = value,
-            fontSize = 10.sp,
-            lineHeight = 10.sp,
+            fontSize = Dimens.TextSize10,
+            lineHeight = Dimens.TextSize10,
             fontWeight = FontWeight.Medium,
             color = CharacterDetailsColors.TextPrimary,
             maxLines = 2,
@@ -177,7 +175,7 @@ private fun LocationCardPreview() {
             modifier =
             Modifier
                 .fillMaxWidth()
-                .padding(40.dp),
+                .padding(Dimens.Spacing40),
             location = previewLocation2,
             badge = "Location",
         )
@@ -192,7 +190,7 @@ private fun LocationSectionErroePreview() {
             modifier =
             Modifier
                 .fillMaxWidth()
-                .padding(vertical = 20.dp),
+                .padding(vertical = Dimens.Spacing20),
             state = CharacterInfoState.Failure("Failed to load data, retry!"),
             onRetry = {},
         )

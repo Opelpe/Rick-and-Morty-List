@@ -22,8 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.pnow.ramlist.app.ui.model.EpisodeInfo
 import com.pnow.ramlist.app.ui.screen.previewEpisode1
 import com.pnow.ramlist.app.ui.screen.previewEpisode2
@@ -39,11 +37,11 @@ fun LazyListScope.episodeSection(modifier: Modifier = Modifier, episodeState: Ep
             CircularProgressIndicator(
                 modifier
                     .fillMaxWidth()
-                    .padding(vertical = 20.dp)
+                    .padding(vertical = Dimens.Spacing20)
                     .wrapContentSize(Alignment.Center)
-                    .size(32.dp),
+                    .size(Dimens.ProgressSizeSmall),
                 color = CharacterDetailsColors.TextMuted,
-                strokeWidth = 3.dp,
+                strokeWidth = Dimens.BorderWidth3,
             )
         }
 
@@ -60,7 +58,7 @@ fun LazyListScope.episodeSection(modifier: Modifier = Modifier, episodeState: Ep
             items(items = episodeState.episodes, key = { it.id }) { episode ->
                 EpisodeItem(modifier = modifier, episode = episode)
             }
-            item { Spacer(modifier = Modifier.height(20.dp)) }
+            item { Spacer(modifier = Modifier.height(Dimens.Spacing20)) }
         }
     }
 }
@@ -71,9 +69,9 @@ private fun EpisodeItem(modifier: Modifier = Modifier, episode: EpisodeInfo) {
         modifier =
         modifier
             .fillMaxWidth()
-            .padding(bottom = 8.dp)
+            .padding(bottom = Dimens.Spacing8)
             .background(CharacterDetailsColors.CardBackground, RoundedCornerShape(Dimens.CornerRadius8))
-            .padding(horizontal = 14.dp, vertical = 10.dp),
+            .padding(horizontal = Dimens.Spacing14, vertical = Dimens.Spacing10),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -89,11 +87,11 @@ private fun EpisodeItem(modifier: Modifier = Modifier, episode: EpisodeInfo) {
 @Composable
 private fun EpisodeInfo(modifier: Modifier = Modifier, episodeName: String, episodeDate: String) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(2.dp),
+        verticalArrangement = Arrangement.spacedBy(Dimens.Spacing2),
     ) {
         Text(
             text = episodeName,
-            fontSize = 13.sp,
+            fontSize = Dimens.TextSize13,
             fontWeight = FontWeight.Medium,
             color = CharacterDetailsColors.TextPrimary,
             maxLines = 1,
@@ -101,7 +99,7 @@ private fun EpisodeInfo(modifier: Modifier = Modifier, episodeName: String, epis
         )
         Text(
             text = episodeDate,
-            fontSize = 11.sp,
+            fontSize = Dimens.TextSize11,
             color = CharacterDetailsColors.TextMuted,
         )
     }
@@ -113,9 +111,9 @@ private fun EpisodeNumber(modifier: Modifier = Modifier, episodeNumber: String) 
         modifier =
         Modifier
             .background(CharacterDetailsColors.EpisodeBadgeBackground, RoundedCornerShape(Dimens.CornerRadius6))
-            .padding(horizontal = 8.dp, vertical = 3.dp),
+            .padding(horizontal = Dimens.Spacing8, vertical = Dimens.Spacing3),
         text = episodeNumber,
-        fontSize = 11.sp,
+        fontSize = Dimens.TextSize11,
         fontWeight = FontWeight.Medium,
         color = CharacterDetailsColors.TextMuted,
     )
@@ -128,7 +126,7 @@ private fun EpisodesSectionPreview() {
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp),
+                .padding(horizontal = Dimens.Spacing20),
         ) {
             episodeSection(
                 episodeState =
@@ -184,7 +182,7 @@ private fun EpisodeItemPreview() {
             modifier =
             Modifier
                 .fillMaxWidth()
-                .padding(vertical = 20.dp),
+                .padding(vertical = Dimens.Spacing20),
             episode = previewEpisode1,
         )
     }

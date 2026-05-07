@@ -16,10 +16,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.pnow.ramlist.R
 import com.pnow.ramlist.core.ui.theme.CharacterDetailsColors
+import com.pnow.ramlist.core.ui.theme.Dimens
 import com.pnow.ramlist.core.ui.theme.RickAndMortyTheme
 
 @Composable
@@ -34,7 +33,7 @@ fun RetryButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
         Icon(
             imageVector = Icons.Default.Refresh,
             contentDescription = null,
-            modifier = Modifier.padding(8.dp),
+            modifier = Modifier.padding(Dimens.Spacing8),
         )
     }
 }
@@ -43,20 +42,20 @@ fun RetryButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
 fun RetryButtonWithMessage(modifier: Modifier = Modifier, onRetry: () -> Unit, message: String?) {
     Column(
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
+        verticalArrangement = Arrangement.spacedBy(Dimens.Spacing10),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         RetryButton(
             onClick = onRetry,
-            modifier = Modifier.size(56.dp),
+            modifier = Modifier.size(Dimens.RetryButtonSize),
         )
 
         val text = message ?: stringResource(R.string.common_word_retry)
         Text(
-            modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp),
+            modifier = Modifier.padding(horizontal = Dimens.Spacing20, vertical = Dimens.Spacing4),
             text = text,
             color = CharacterDetailsColors.Error,
-            fontSize = 13.sp,
+            fontSize = Dimens.TextSize13,
         )
     }
 }
@@ -78,7 +77,7 @@ private fun RetryButtonPreview() {
     RickAndMortyTheme {
         RetryButton(
             modifier = Modifier
-                .size(32.dp),
+                .size(Dimens.ProgressSizeSmall),
             onClick = {},
         )
     }
