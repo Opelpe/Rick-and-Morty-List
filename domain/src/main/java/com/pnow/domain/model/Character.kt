@@ -11,5 +11,3 @@ data class Character(
     val location: CharacterLocation,
     val episodeUrl: List<String>,
 )
-
-// todo nie rozumiem tej organizacji modułów, doczytaj sobie za co odpowiada domain

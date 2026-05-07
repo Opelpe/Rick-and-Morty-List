@@ -2,16 +2,18 @@ package com.pnow.ramlist.app.ui.screen.character
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,51 +25,53 @@ import com.pnow.ramlist.app.ui.model.DetailsInfo
 import com.pnow.ramlist.app.ui.screen.previewDetails
 import com.pnow.ramlist.app.ui.screen.status.StatusPill
 import com.pnow.ramlist.core.ui.theme.CharacterDetailsColors
+import com.pnow.ramlist.core.ui.theme.Dimens
 import com.pnow.ramlist.core.ui.theme.RickAndMortyTheme
 
 @Composable
-fun DetailsHeroView(detailsInfo: DetailsInfo, modifier: Modifier = Modifier) {
-    Box(
+fun DetailsHeroView(modifier: Modifier = Modifier, detailsInfo: DetailsInfo) {
+    Row(
         modifier =
         modifier
             .fillMaxWidth()
             .background(CharacterDetailsColors.HeroBackground)
             .padding(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(24.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(24.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            val characterInfo = detailsInfo.character
+        val characterInfo = detailsInfo.character
 
-            HeroDetailsIcon(
-                imageUrl = characterInfo.imageUrl,
-                name = characterInfo.name,
-            )
+        HeroIcon(
+            modifier = Modifier.size(Dimens.DetailsIconSize),
+            contentScale = ContentScale.Fit,
+            shape = RoundedCornerShape(Dimens.CornerRadius6),
+            background = CharacterDetailsColors.AvatarBackground,
+            imageUrl = characterInfo.imageUrl,
+            name = characterInfo.name,
+        )
 
-            HeroDetailsInfo(
-                status = characterInfo.status,
-                label = characterInfo.statusDescription,
-                name = characterInfo.name,
-                species = characterInfo.species,
-                gender = characterInfo.gender,
-                modifier =
-                Modifier
-                    .weight(1f)
-                    .padding(top = 4.dp),
-            )
-        }
+        HeroDetailsInfo(
+            status = characterInfo.status,
+            label = characterInfo.statusDescription,
+            name = characterInfo.name,
+            species = characterInfo.species,
+            gender = characterInfo.gender,
+            modifier =
+            Modifier
+                .weight(1f)
+                .padding(top = 4.dp),
+        )
     }
 }
 
 @Composable
 private fun HeroDetailsInfo(
+    modifier: Modifier = Modifier,
     status: CharacterStatus,
     label: String,
     name: String,
     species: String,
     gender: String,
-    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier,
@@ -95,7 +99,7 @@ private fun HeroDetailsInfo(
 }
 
 @Composable
-private fun MetaItem(label: String, value: String, modifier: Modifier = Modifier) {
+private fun MetaItem(modifier: Modifier = Modifier, label: String, value: String) {
     Column(
         modifier = modifier.padding(top = 15.dp),
     ) {
@@ -120,8 +124,8 @@ private fun MetaItem(label: String, value: String, modifier: Modifier = Modifier
 private fun DetailsCharacterPreview() {
     RickAndMortyTheme {
         DetailsHeroView(
-            detailsInfo = previewDetails,
             modifier = Modifier.background(MaterialTheme.colorScheme.background),
+            detailsInfo = previewDetails,
         )
     }
 }
