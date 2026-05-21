@@ -1,6 +1,7 @@
 package com.pnow.data.character.model
 
 import com.google.gson.annotations.SerializedName
+import com.pnow.domain.model.Character
 
 data class CharacterDTO(
     @field:SerializedName("id")
@@ -20,5 +21,19 @@ data class CharacterDTO(
     @field:SerializedName("location")
     val location: CharacterLocationDTO,
     @field:SerializedName("episode")
-    val episodeUrl: List<String>
-)
+    val episodeUrl: List<String>,
+) {
+    fun toDomain(): Character = with(this) {
+        Character(
+            id = id,
+            name = name,
+            status = status,
+            species = species,
+            gender = gender,
+            imageUrl = imageUrl,
+            origin = origin.toDomain(),
+            location = location.toDomain(),
+            episodeUrl = episodeUrl,
+        )
+    }
+}

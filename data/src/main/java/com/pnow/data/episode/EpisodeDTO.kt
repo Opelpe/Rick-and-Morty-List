@@ -1,6 +1,7 @@
 package com.pnow.data.episode
 
 import com.google.gson.annotations.SerializedName
+import com.pnow.domain.model.Episode
 
 data class EpisodeDTO(
     @field:SerializedName("id")
@@ -10,5 +11,14 @@ data class EpisodeDTO(
     @field:SerializedName("air_date")
     val airDate: String,
     @field:SerializedName("episode")
-    val episode: String
-)
+    val episode: String,
+) {
+    fun toDomain(): Episode = with(this) {
+        Episode(
+            id = id,
+            name = name,
+            airDate = airDate,
+            episodeNumber = episode,
+        )
+    }
+}

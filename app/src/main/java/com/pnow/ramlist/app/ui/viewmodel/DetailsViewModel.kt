@@ -1,119 +1,159 @@
 package com.pnow.ramlist.app.ui.viewmodel
 
-import android.util.Log
+import android.content.Context
 import androidx.core.net.toUri
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.pnow.domain.model.CharacterLocation
+import com.pnow.domain.model.CharacterStatus
+import com.pnow.domain.repository.CharacterRepository
 import com.pnow.domain.repository.EpisodeRepository
 import com.pnow.domain.repository.LocationRepository
-import com.pnow.ramlist.app.data.mapper.DetailsUiMapper
+import com.pnow.ramlist.R
+import com.pnow.ramlist.app.data.mapper.DetailsMapper
 import com.pnow.ramlist.app.ui.model.CharacterInfo
-import com.pnow.ramlist.app.ui.model.EpisodeUIModel
-import com.pnow.ramlist.app.ui.model.LocationUIModel
+import com.pnow.ramlist.app.ui.model.DetailsInfo
+import com.pnow.ramlist.app.ui.navigation.AppDestinations.CHARACTER_ID_KEY
+import com.pnow.ramlist.app.ui.state.CharacterInfoState
+import com.pnow.ramlist.app.ui.state.DetailsUiState
+import com.pnow.ramlist.app.ui.state.EpisodeState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class DetailsViewModel
-    @Inject
-    constructor(
-        private val episodeRepository: EpisodeRepository,
-        private val locationRepository: LocationRepository,
-        private val detailsMapper: DetailsUiMapper,
-        private val dispatcher: CoroutineDispatcher,
-    ) : ViewModel() {
-        private val _detailsState =
-            MutableStateFlow<DetailsUiState>(DetailsUiState.CharacterInfoLoading)
-        val detailsState: StateFlow<DetailsUiState> = _detailsState.asStateFlow()
+@Inject
+constructor(
+    savedStateHandle: SavedStateHandle,
+    private val characterRepository: CharacterRepository,
+    private val episodeRepository: EpisodeRepository,
+    private val locationRepository: LocationRepository,
+    private val detailsMapper: DetailsMapper,
+    private val dispatcher: CoroutineDispatcher,
+    @param:ApplicationContext private val appContext: Context,
+) : ViewModel() {
 
-        companion object {
-            const val TAG = "DetailsVM"
-        }
+    private val characterId: Int = checkNotNull(savedStateHandle[CHARACTER_ID_KEY])
 
-        fun fetchDetails(
-            episodeUrls: List<String>?,
-            locationUrl: String?,
-            originUrl: String?,
-        ) {
-            viewModelScope.launch(dispatcher) {
-                _detailsState.emit(DetailsUiState.CharacterInfoLoading)
+    private val _detailsState = MutableStateFlow(DetailsUiState())
+    val detailsState: StateFlow<DetailsUiState> = _detailsState.asStateFlow()
 
-                val originFlow =
-                    locationRepository.getLocation(getUriPath(originUrl))
-                        .map { detailsMapper.mapToLocationUiModel(it) }
-                val locationFlow =
-                    locationRepository.getLocation(getUriPath(locationUrl))
-                        .map { detailsMapper.mapToLocationUiModel(it) }
+    private var lastEpisodeUrls: List<String> = emptyList()
 
-                val origin = originFlow.first()
-                val location = locationFlow.first()
-                val detailsData =
-                    CharacterInfo.Details(
-                        origin,
-                        location,
+    init {
+        loadCharacterDetails()
+    }
+
+    fun reloadDetails() {
+        _detailsState.update { DetailsUiState() }
+        loadCharacterDetails()
+    }
+
+    fun reloadEpisodes() {
+        _detailsState.update { it.copy(episodes = EpisodeState.Loading) }
+        loadEpisodes(lastEpisodeUrls)
+    }
+
+    private fun loadCharacterDetails() {
+        viewModelScope.launch(dispatcher) {
+            val character =
+                runCatching {
+                    characterRepository.getCharacterById(characterId)
+                }.getOrElse {
+                    _detailsState.update {
+                        it.copy(
+                            character = CharacterInfoState.Failure(
+                                appContext.getString(R.string.load_character_failed_retry),
+                            ),
+                            episodes = EpisodeState.Success(emptyList()),
+                        )
+                    }
+                    return@launch
+                }
+
+            val originDeferred =
+                async {
+                    locationRepository.getLocation(getUriPath(character.origin.url))
+                        .map(detailsMapper::mapToLocationInfo)
+                        .first()
+                }
+            val locationDeferred =
+                async {
+                    locationRepository.getLocation(getUriPath(character.location.url))
+                        .map(detailsMapper::mapToLocationInfo)
+                        .first()
+                }
+
+            runCatching {
+                originDeferred.await() to locationDeferred.await()
+            }.onSuccess { (origin, location) ->
+                _detailsState.update {
+                    it.copy(
+                        character =
+                        CharacterInfoState.Success(
+                            DetailsInfo(
+                                character =
+                                CharacterInfo(
+                                    id = character.id,
+                                    name = character.name,
+                                    statusDescription = character.status,
+                                    status = CharacterStatus.fromString(character.status),
+                                    species = character.species,
+                                    gender = character.gender,
+                                    imageUrl = character.imageUrl,
+                                ),
+                                origin = origin,
+                                location = location,
+                            ),
+                        ),
                     )
-                _detailsState.emit(DetailsUiState.CharacterInfoUpdated(detailsData))
-                fetchEpisodes(episodeUrls)
-            }
-        }
-
-        private fun fetchEpisodes(episodeUrls: List<String>?) {
-            val urls = episodeUrls.orEmpty()
-            if (urls.isEmpty()) return
-
-            val episodes = mutableSetOf<EpisodeUIModel>()
-
-            viewModelScope.launch(dispatcher) {
-                _detailsState.emit(DetailsUiState.EpisodesLoading(true))
-
-                urls.forEach { url ->
-                    episodeRepository.getEpisode(getUriPath(url))
-                        .map { detailsMapper.mapToEpisodeUIModel(it) }
-                        .catch {
-                            Log.e(TAG, "Error fetching episode from URL: $url", it)
-                            _detailsState.emit(
-                                DetailsUiState.Failure("Something goes wrong, retry!"),
-                            )
-                        }
-                        .collect { episode ->
-                            if (episodes.add(episode)) {
-                                _detailsState.emit(DetailsUiState.EpisodesUpdated(episodes.toList()))
-                            }
-
-                            if (episodes.size == urls.size) {
-                                _detailsState.emit(DetailsUiState.EpisodesLoading(false))
-                            }
-                        }
+                }
+                lastEpisodeUrls = character.episodeUrl
+                loadEpisodes(lastEpisodeUrls)
+            }.onFailure {
+                _detailsState.update {
+                    it.copy(
+                        character = CharacterInfoState.Failure(
+                            appContext.getString(R.string.load_character_failed_retry),
+                        ),
+                        episodes = EpisodeState.Success(emptyList()),
+                    )
                 }
             }
         }
+    }
 
-        private fun getUriPath(url: String?): String {
-            return url?.toUri()?.lastPathSegment ?: ""
+    private fun loadEpisodes(urls: List<String>) {
+        if (urls.isEmpty()) {
+            _detailsState.update { it.copy(episodes = EpisodeState.Success(emptyList())) }
+            return
         }
 
-        fun getLocationDescription(model: CharacterLocation?): LocationUIModel {
-            return detailsMapper.mapToLocationUiModel(model)
+        viewModelScope.launch(dispatcher) {
+            val ids = urls.map { getUriPath(it) }
+            runCatching {
+                episodeRepository.getEpisodes(ids)
+                    .map { list -> list.map(detailsMapper::mapToEpisodeInfo) }
+                    .first()
+            }.onSuccess { episodes ->
+                _detailsState.update { it.copy(episodes = EpisodeState.Success(episodes)) }
+            }.onFailure {
+                _detailsState.update {
+                    it.copy(episodes = EpisodeState.Failure(appContext.getString(R.string.load_episodes_failed_retry)))
+                }
+            }
         }
     }
 
-sealed class DetailsUiState {
-    data object CharacterInfoLoading : DetailsUiState()
-
-    data class CharacterInfoUpdated(val info: CharacterInfo.Details) : DetailsUiState()
-
-    data class EpisodesLoading(val isLoading: Boolean) : DetailsUiState()
-
-    data class EpisodesUpdated(val episodes: List<EpisodeUIModel>) : DetailsUiState()
-
-    data class Failure(val error: String) : DetailsUiState()
+    private fun getUriPath(url: String?): String = url?.toUri()?.lastPathSegment ?: ""
 }

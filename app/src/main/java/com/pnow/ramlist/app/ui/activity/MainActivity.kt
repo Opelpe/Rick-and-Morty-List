@@ -1,18 +1,38 @@
 package com.pnow.ramlist.app.ui.activity
 
 import android.os.Bundle
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import com.pnow.ramlist.databinding.ActivityMainBinding
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.ui.Modifier
+import androidx.core.view.WindowCompat
+import com.pnow.ramlist.app.ui.navigation.AppNavHost
+import com.pnow.ramlist.core.ui.theme.RickAndMortyTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        enableEdgeToEdge()
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        setContent {
+            RickAndMortyTheme {
+                Surface(
+                    modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .systemBarsPadding(),
+                    color = MaterialTheme.colorScheme.background,
+                ) {
+                    AppNavHost()
+                }
+            }
+        }
     }
 }

@@ -6,7 +6,5 @@ import retrofit2.http.Path
 interface LocationApi {
 
     @GET("location/{id}")
-    suspend fun getLocation(
-        @Path("id") id: String
-    ): LocationDTO
+    suspend fun getLocation(@Path("id") id: String): LocationDTO
 }

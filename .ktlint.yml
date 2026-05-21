@@ -5,6 +5,7 @@ android: true
 disabled_rules:
   - package-name
   - filename
+  - compose:composable-parameters-ordering
 
 reporters:
   - plain
@@ -25,5 +26,5 @@ editor_config_overrides:
   ij_kotlin_blank_lines_before_rbrace: 0
   ij_kotlin_imports_layout: "*"
   ij_kotlin_allow_trailing_comma: true
+  ij_kotlin_allow_trailing_comma_on_call_site: true
   ij_kotlin_wrap_before_assignment: true
-
