@@ -16,8 +16,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import coil.compose.AsyncImage
 import com.pnow.ramlist.R
 import com.pnow.ramlist.app.ui.screen.previewCharacter
-import com.pnow.ramlist.core.ui.theme.CharacterDetailsColors
-import com.pnow.ramlist.core.ui.theme.Dimens
+import com.pnow.ramlist.core.ui.dimens.Dimens
+import com.pnow.ramlist.core.ui.theme.detailsColors
 
 @Composable
 fun HeroIcon(
@@ -62,7 +62,7 @@ private fun HeroDetailsIconPreview() {
         modifier = Modifier.size(Dimens.DetailsIconSize),
         contentScale = ContentScale.Fit,
         shape = RoundedCornerShape(Dimens.CornerRadius6),
-        background = CharacterDetailsColors.AvatarBackground,
+        background = MaterialTheme.detailsColors.avatarBackground,
         imageUrl = previewCharacter.imageUrl,
         name = previewCharacter.name,
     )

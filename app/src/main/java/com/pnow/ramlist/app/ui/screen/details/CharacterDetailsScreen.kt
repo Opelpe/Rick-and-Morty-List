@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -22,9 +23,9 @@ import com.pnow.ramlist.app.ui.state.CharacterInfoState
 import com.pnow.ramlist.app.ui.state.DetailsUiState
 import com.pnow.ramlist.app.ui.state.EpisodeState
 import com.pnow.ramlist.app.ui.viewmodel.DetailsViewModel
-import com.pnow.ramlist.core.ui.theme.CharacterDetailsColors
-import com.pnow.ramlist.core.ui.theme.Dimens
+import com.pnow.ramlist.core.ui.dimens.Dimens
 import com.pnow.ramlist.core.ui.theme.RickAndMortyTheme
+import com.pnow.ramlist.core.ui.theme.detailsColors
 
 @Composable
 fun CharacterDetailsScreen(
@@ -54,7 +55,7 @@ private fun CharacterDetailsContent(
         modifier =
         modifier
             .fillMaxSize()
-            .background(CharacterDetailsColors.Background),
+            .background(MaterialTheme.detailsColors.background),
     ) {
         item {
             DetailsHeroSection(
@@ -113,7 +114,7 @@ private fun SectionHeader(modifier: Modifier = Modifier, title: String) {
         text = title.uppercase(),
         fontSize = Dimens.TextSize11,
         fontWeight = FontWeight.Medium,
-        color = CharacterDetailsColors.TextMuted,
+        color = MaterialTheme.detailsColors.textMuted,
         letterSpacing = Dimens.LetterSpacingWide,
     )
 }

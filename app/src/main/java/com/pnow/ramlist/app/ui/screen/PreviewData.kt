@@ -12,7 +12,7 @@ val previewCharacter =
         name = "Rick Sanchez",
         status = CharacterStatus.ALIVE,
         statusDescription = "Alive",
-        species = "Human",
+        species = "Human very long name of spieces",
         gender = "Male",
         imageUrl = "",
     )
