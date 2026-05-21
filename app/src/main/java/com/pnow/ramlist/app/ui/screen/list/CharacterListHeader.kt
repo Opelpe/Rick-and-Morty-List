@@ -16,7 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.pnow.ramlist.R
-import com.pnow.ramlist.core.ui.theme.Dimens
+import com.pnow.ramlist.core.ui.dimens.Dimens
 import com.pnow.ramlist.core.ui.theme.RickAndMortyTheme
 
 @Composable

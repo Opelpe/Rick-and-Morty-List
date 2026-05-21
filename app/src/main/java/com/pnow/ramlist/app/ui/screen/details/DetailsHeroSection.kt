@@ -1,5 +1,6 @@
 package com.pnow.ramlist.app.ui.screen.details
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,6 +11,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,9 +21,9 @@ import com.pnow.ramlist.R
 import com.pnow.ramlist.app.ui.screen.character.DetailsHeroView
 import com.pnow.ramlist.app.ui.screen.previewDetails
 import com.pnow.ramlist.app.ui.state.CharacterInfoState
-import com.pnow.ramlist.core.ui.theme.CharacterDetailsColors
-import com.pnow.ramlist.core.ui.theme.Dimens
+import com.pnow.ramlist.core.ui.dimens.Dimens
 import com.pnow.ramlist.core.ui.theme.RickAndMortyTheme
+import com.pnow.ramlist.core.ui.theme.detailsColors
 
 @Composable
 fun DetailsHeroSection(
@@ -30,15 +32,16 @@ fun DetailsHeroSection(
     onBackClick: () -> Unit,
     onRetry: () -> Unit,
 ) {
+    val colors = MaterialTheme.detailsColors
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .background(CharacterDetailsColors.HeroBackground),
+            .background(colors.heroBackground),
     ) {
         when (state) {
             is CharacterInfoState.Loading ->
                 CircularProgressIndicator(
-                    color = CharacterDetailsColors.TextMuted,
+                    color = colors.textMuted,
                     modifier = Modifier
                         .size(Dimens.ProgressSizeLarge)
                         .align(Alignment.Center),
@@ -67,13 +70,13 @@ fun DetailsHeroSection(
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = stringResource(R.string.navigate_back),
-                tint = CharacterDetailsColors.TextPrimary,
+                tint = colors.textPrimary,
             )
         }
     }
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFFF9F0EE)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun SuccessStatePreview() {
     RickAndMortyTheme {
@@ -85,7 +88,7 @@ private fun SuccessStatePreview() {
     }
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFFF9F0EE)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun LoadingStatePreview() {
     RickAndMortyTheme {
@@ -97,7 +100,7 @@ private fun LoadingStatePreview() {
     }
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFFF9F0EE)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun ErrorStatePreview() {
     RickAndMortyTheme {

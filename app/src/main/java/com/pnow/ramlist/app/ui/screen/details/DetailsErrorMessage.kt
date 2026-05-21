@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -17,9 +18,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.pnow.ramlist.R
-import com.pnow.ramlist.core.ui.theme.CharacterDetailsColors
-import com.pnow.ramlist.core.ui.theme.Dimens
+import com.pnow.ramlist.core.ui.dimens.Dimens
 import com.pnow.ramlist.core.ui.theme.RickAndMortyTheme
+import com.pnow.ramlist.core.ui.theme.detailsColors
 
 @Composable
 fun RetryButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
@@ -27,7 +28,7 @@ fun RetryButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
         modifier = modifier,
         onClick = onClick,
         colors = IconButtonDefaults.iconButtonColors(
-            contentColor = CharacterDetailsColors.TextMuted,
+            contentColor = MaterialTheme.detailsColors.textMuted,
         ),
     ) {
         Icon(
@@ -54,7 +55,7 @@ fun RetryButtonWithMessage(modifier: Modifier = Modifier, onRetry: () -> Unit, m
         Text(
             modifier = Modifier.padding(horizontal = Dimens.Spacing20, vertical = Dimens.Spacing4),
             text = text,
-            color = CharacterDetailsColors.Error,
+            color = MaterialTheme.detailsColors.error,
             fontSize = Dimens.TextSize13,
         )
     }

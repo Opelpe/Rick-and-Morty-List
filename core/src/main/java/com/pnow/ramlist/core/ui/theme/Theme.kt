@@ -5,12 +5,18 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.staticCompositionLocalOf
+import com.pnow.ramlist.core.ui.color.details.CharacterDetailsColors
+import com.pnow.ramlist.core.ui.color.details.DarkCharacterDetailsColors
+import com.pnow.ramlist.core.ui.color.details.LightCharacterDetailsColors
+import com.pnow.ramlist.core.ui.color.theme.RaMColor
 
 private val LightColorScheme = lightColorScheme(
-    primary = RaMColor.Fire,
-    secondary = RaMColor.FireDark,
-    background = RaMColor.White,
-    surface = RaMColor.DetailsBackground,
+    primary = RaMColor.Primary,
+    secondary = RaMColor.PrimaryDark,
+    background = RaMColor.BackgroundLight,
+    surface = RaMColor.SurfaceDefault,
     onPrimary = RaMColor.White,
     onBackground = RaMColor.Black,
     onSurface = RaMColor.Black,
@@ -18,9 +24,9 @@ private val LightColorScheme = lightColorScheme(
 )
 
 private val DarkColorScheme = darkColorScheme(
-    primary = RaMColor.FireDark,
+    primary = RaMColor.PrimaryDark,
     secondary = RaMColor.GreenDark,
-    background = RaMColor.Black,
+    background = RaMColor.BackgroundDark,
     surface = RaMColor.Grey,
     onPrimary = RaMColor.Grey,
     onBackground = RaMColor.White,
@@ -28,14 +34,26 @@ private val DarkColorScheme = darkColorScheme(
     surfaceVariant = RaMColor.SurfaceVariantTransparent
 )
 
+val LocalCharacterDetailsColors = staticCompositionLocalOf {
+    LightCharacterDetailsColors
+}
+
 @Composable
 fun RickAndMortyTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
     val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
-    MaterialTheme(
-        colorScheme = colorScheme,
-        content = content
-    )
+    val characterColors = if (darkTheme) DarkCharacterDetailsColors else LightCharacterDetailsColors
+    CompositionLocalProvider(
+        LocalCharacterDetailsColors provides characterColors
+    ) {
+        MaterialTheme(
+            colorScheme = colorScheme,
+            content = content
+        )
+    }
 }
+
+val MaterialTheme.detailsColors: CharacterDetailsColors
+    @Composable get() = LocalCharacterDetailsColors.current

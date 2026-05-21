@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,9 +28,9 @@ import com.pnow.ramlist.app.ui.screen.previewEpisode1
 import com.pnow.ramlist.app.ui.screen.previewEpisode2
 import com.pnow.ramlist.app.ui.screen.previewEpisode3
 import com.pnow.ramlist.app.ui.state.EpisodeState
-import com.pnow.ramlist.core.ui.theme.CharacterDetailsColors
-import com.pnow.ramlist.core.ui.theme.Dimens
+import com.pnow.ramlist.core.ui.dimens.Dimens
 import com.pnow.ramlist.core.ui.theme.RickAndMortyTheme
+import com.pnow.ramlist.core.ui.theme.detailsColors
 
 fun LazyListScope.episodeSection(modifier: Modifier = Modifier, episodeState: EpisodeState, onRetry: () -> Unit) {
     when (episodeState) {
@@ -40,7 +41,7 @@ fun LazyListScope.episodeSection(modifier: Modifier = Modifier, episodeState: Ep
                     .padding(vertical = Dimens.Spacing20)
                     .wrapContentSize(Alignment.Center)
                     .size(Dimens.ProgressSizeSmall),
-                color = CharacterDetailsColors.TextMuted,
+                color = MaterialTheme.detailsColors.textMuted,
                 strokeWidth = Dimens.BorderWidth3,
             )
         }
@@ -70,7 +71,7 @@ private fun EpisodeItem(modifier: Modifier = Modifier, episode: EpisodeInfo) {
         modifier
             .fillMaxWidth()
             .padding(bottom = Dimens.Spacing8)
-            .background(CharacterDetailsColors.CardBackground, RoundedCornerShape(Dimens.CornerRadius8))
+            .background(MaterialTheme.detailsColors.cardBackground, RoundedCornerShape(Dimens.CornerRadius8))
             .padding(horizontal = Dimens.Spacing14, vertical = Dimens.Spacing10),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
@@ -95,14 +96,14 @@ private fun EpisodeInfo(modifier: Modifier = Modifier, episodeName: String, epis
             text = episodeName,
             fontSize = Dimens.TextSize13,
             fontWeight = FontWeight.Medium,
-            color = CharacterDetailsColors.TextPrimary,
+            color = MaterialTheme.detailsColors.textPrimary,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
         )
         Text(
             text = episodeDate,
             fontSize = Dimens.TextSize11,
-            color = CharacterDetailsColors.TextMuted,
+            color = MaterialTheme.detailsColors.textMuted,
         )
     }
 }
@@ -112,12 +113,15 @@ private fun EpisodeNumber(modifier: Modifier = Modifier, episodeNumber: String) 
     Text(
         modifier =
         modifier
-            .background(CharacterDetailsColors.EpisodeBadgeBackground, RoundedCornerShape(Dimens.CornerRadius6))
+            .background(
+                color = MaterialTheme.detailsColors.episodeBadgeBackground,
+                shape = RoundedCornerShape(Dimens.CornerRadius6),
+            )
             .padding(horizontal = Dimens.Spacing8, vertical = Dimens.Spacing3),
         text = episodeNumber,
         fontSize = Dimens.TextSize11,
         fontWeight = FontWeight.Medium,
-        color = CharacterDetailsColors.TextMuted,
+        color = MaterialTheme.detailsColors.textMuted,
     )
 }
 

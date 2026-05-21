@@ -1,4 +1,4 @@
-package com.pnow.ramlist.core.ui.theme
+package com.pnow.ramlist.core.ui.dimens
 
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp

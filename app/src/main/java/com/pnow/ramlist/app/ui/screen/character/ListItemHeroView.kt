@@ -1,5 +1,6 @@
 package com.pnow.ramlist.app.ui.screen.character
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,8 +21,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.pnow.ramlist.app.ui.model.CharacterInfo
 import com.pnow.ramlist.app.ui.screen.previewCharacter
 import com.pnow.ramlist.app.ui.screen.status.StatusPill
-import com.pnow.ramlist.core.ui.theme.Dimens
+import com.pnow.ramlist.core.ui.dimens.Dimens
 import com.pnow.ramlist.core.ui.theme.RickAndMortyTheme
+import com.pnow.ramlist.core.ui.theme.detailsColors
 
 @Composable
 fun ListItemHeroView(modifier: Modifier = Modifier, characterInfo: CharacterInfo) {
@@ -56,14 +58,14 @@ fun ListItemHeroView(modifier: Modifier = Modifier, characterInfo: CharacterInfo
                 modifier = Modifier.padding(start = Dimens.Spacing2),
                 status = characterInfo.status,
                 label = characterInfo.statusDescription,
-                background = MaterialTheme.colorScheme.surfaceVariant,
+                background = MaterialTheme.detailsColors.statusPillBackground,
             )
         }
     }
 }
 
 @Composable
-@Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 private fun ListCharacterPreview() {
     RickAndMortyTheme {
         ListItemHeroView(

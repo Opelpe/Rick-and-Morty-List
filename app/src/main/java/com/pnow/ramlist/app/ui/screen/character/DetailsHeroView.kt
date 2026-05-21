@@ -22,9 +22,9 @@ import com.pnow.ramlist.R
 import com.pnow.ramlist.app.ui.model.DetailsInfo
 import com.pnow.ramlist.app.ui.screen.previewDetails
 import com.pnow.ramlist.app.ui.screen.status.StatusPill
-import com.pnow.ramlist.core.ui.theme.CharacterDetailsColors
-import com.pnow.ramlist.core.ui.theme.Dimens
+import com.pnow.ramlist.core.ui.dimens.Dimens
 import com.pnow.ramlist.core.ui.theme.RickAndMortyTheme
+import com.pnow.ramlist.core.ui.theme.detailsColors
 
 @Composable
 fun DetailsHeroView(modifier: Modifier = Modifier, detailsInfo: DetailsInfo) {
@@ -32,7 +32,7 @@ fun DetailsHeroView(modifier: Modifier = Modifier, detailsInfo: DetailsInfo) {
         modifier =
         modifier
             .fillMaxWidth()
-            .background(CharacterDetailsColors.HeroBackground)
+            .background(MaterialTheme.detailsColors.heroBackground)
             .padding(Dimens.Spacing8),
         horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing24),
         verticalAlignment = Alignment.CenterVertically,
@@ -43,7 +43,7 @@ fun DetailsHeroView(modifier: Modifier = Modifier, detailsInfo: DetailsInfo) {
             modifier = Modifier.size(Dimens.DetailsIconSize),
             contentScale = ContentScale.Fit,
             shape = RoundedCornerShape(Dimens.CornerRadius6),
-            background = CharacterDetailsColors.AvatarBackground,
+            background = MaterialTheme.detailsColors.avatarBackground,
             imageUrl = characterInfo.imageUrl,
             name = characterInfo.name,
         )
@@ -79,19 +79,27 @@ private fun HeroDetailsInfo(
             text = name,
             fontSize = Dimens.TextSize20,
             fontWeight = FontWeight.Medium,
-            color = CharacterDetailsColors.TextPrimary,
+            color = MaterialTheme.detailsColors.textPrimary,
             lineHeight = Dimens.TextSize24,
         )
 
         StatusPill(
             status = status,
             label = label,
-            background = CharacterDetailsColors.StatusPillBackground,
+            background = MaterialTheme.detailsColors.statusPillBackground,
         )
 
         Row(horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing32)) {
-            MetaItem(label = stringResource(R.string.common_word_species), value = species)
-            MetaItem(label = stringResource(R.string.common_word_gender), value = gender)
+            MetaItem(
+                modifier = Modifier.weight(1f),
+                label = stringResource(R.string.common_word_species),
+                value = species,
+            )
+            MetaItem(
+                modifier = Modifier.weight(1f),
+                label = stringResource(R.string.common_word_gender),
+                value = gender,
+            )
         }
     }
 }
@@ -104,7 +112,7 @@ private fun MetaItem(modifier: Modifier = Modifier, label: String, value: String
         Text(
             text = "${label.uppercase()}:",
             fontSize = Dimens.TextSize10,
-            color = CharacterDetailsColors.TextMuted,
+            color = MaterialTheme.detailsColors.textMuted,
             letterSpacing = Dimens.LetterSpacingTight,
             lineHeight = Dimens.TextSize10,
         )
@@ -112,7 +120,7 @@ private fun MetaItem(modifier: Modifier = Modifier, label: String, value: String
             text = value,
             fontSize = Dimens.TextSize13,
             fontWeight = FontWeight.Medium,
-            color = CharacterDetailsColors.TextPrimary,
+            color = MaterialTheme.detailsColors.textPrimary,
         )
     }
 }

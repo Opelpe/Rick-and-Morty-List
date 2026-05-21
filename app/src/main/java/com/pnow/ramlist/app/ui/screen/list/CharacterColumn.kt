@@ -22,7 +22,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.paging.LoadState
@@ -33,8 +32,8 @@ import com.pnow.domain.model.CharacterStatus
 import com.pnow.ramlist.R
 import com.pnow.ramlist.app.ui.model.CharacterInfo
 import com.pnow.ramlist.app.ui.screen.character.ListItemHeroView
-import com.pnow.ramlist.core.ui.theme.Dimens
-import com.pnow.ramlist.core.ui.theme.RaMColor
+import com.pnow.ramlist.core.ui.color.theme.RaMColor
+import com.pnow.ramlist.core.ui.dimens.Dimens
 import com.pnow.ramlist.core.ui.theme.RickAndMortyTheme
 import kotlinx.coroutines.flow.flowOf
 
@@ -86,14 +85,14 @@ fun CharacterListItem(
     val isPressed by interactionSource.collectIsPressedAsState()
 
     val borderColor =
-        getItemBorderColor(
+        RaMColor.selectableItemBorder(
             darkTheme = isSystemInDarkTheme(),
             isSelected = isSelected,
             isPressed = isPressed,
         )
 
     val backgroundColor =
-        getItemBackgroundColor(
+        RaMColor.selectableItemBackground(
             darkTheme = isSystemInDarkTheme(),
             isSelected = isSelected,
             isPressed = isPressed,
@@ -123,16 +122,6 @@ fun CharacterListItem(
             characterInfo = data,
         )
     }
-}
-
-private fun getItemBackgroundColor(darkTheme: Boolean, isSelected: Boolean, isPressed: Boolean): Color = when {
-    isSelected || isPressed -> if (darkTheme) RaMColor.GreenTransparent else RaMColor.FireTransparent
-    else -> if (darkTheme) RaMColor.FireTransparent else RaMColor.GreyTransparent
-}
-
-private fun getItemBorderColor(darkTheme: Boolean, isSelected: Boolean, isPressed: Boolean): Color = when {
-    isSelected || isPressed -> if (darkTheme) RaMColor.FireDark else RaMColor.Red
-    else -> if (darkTheme) RaMColor.GreenDark else RaMColor.FireDark
 }
 
 @Composable

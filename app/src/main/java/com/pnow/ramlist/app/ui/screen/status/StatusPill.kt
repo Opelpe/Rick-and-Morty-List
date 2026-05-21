@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -17,15 +18,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.pnow.domain.model.CharacterStatus
-import com.pnow.ramlist.core.ui.theme.CharacterDetailsColors
-import com.pnow.ramlist.core.ui.theme.Dimens
+import com.pnow.ramlist.core.ui.color.theme.StatusColor
+import com.pnow.ramlist.core.ui.dimens.Dimens
 import com.pnow.ramlist.core.ui.theme.RickAndMortyTheme
+import com.pnow.ramlist.core.ui.theme.detailsColors
 
 private val CharacterStatus.dotColor: Color
     get() = when (this) {
-        CharacterStatus.ALIVE -> CharacterDetailsColors.StatusAlive
-        CharacterStatus.DEAD -> CharacterDetailsColors.StatusDead
-        CharacterStatus.UNKNOWN -> CharacterDetailsColors.TextMuted
+        CharacterStatus.ALIVE -> StatusColor.Alive
+        CharacterStatus.DEAD -> StatusColor.Dead
+        CharacterStatus.UNKNOWN -> StatusColor.Unknown
     }
 
 @Composable
@@ -34,9 +36,9 @@ fun StatusPill(modifier: Modifier = Modifier, status: CharacterStatus, label: St
         modifier =
         modifier
             .background(background, RoundedCornerShape(Dimens.CornerRadius8))
-            .padding(horizontal = Dimens.Spacing10, vertical = Dimens.Spacing4),
+            .padding(horizontal = Dimens.Spacing10, vertical = Dimens.Spacing2),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing5),
+        horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing8),
     ) {
         Box(
             modifier =
@@ -48,14 +50,14 @@ fun StatusPill(modifier: Modifier = Modifier, status: CharacterStatus, label: St
             text = label.uppercase(),
             fontSize = Dimens.TextSize11,
             fontWeight = FontWeight.Medium,
-            color = CharacterDetailsColors.StatusPillText,
+            color = MaterialTheme.detailsColors.statusPillText,
             letterSpacing = Dimens.LetterSpacingTight,
         )
     }
 }
 
 @Composable
-@Preview
+@Preview(uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES)
 private fun AliveStatusPreview() {
     RickAndMortyTheme {
         StatusPill(
@@ -63,7 +65,7 @@ private fun AliveStatusPreview() {
             Modifier
                 .fillMaxWidth()
                 .padding(Dimens.Spacing150),
-            background = CharacterDetailsColors.StatusPillBackground,
+            background = MaterialTheme.detailsColors.statusPillBackground,
             status = CharacterStatus.ALIVE,
             label = "Alive",
         )
@@ -79,7 +81,7 @@ private fun DeadStatusPreview() {
             Modifier
                 .fillMaxWidth()
                 .padding(Dimens.Spacing150),
-            background = CharacterDetailsColors.StatusPillBackground,
+            background = MaterialTheme.detailsColors.statusPillBackground,
             status = CharacterStatus.DEAD,
             label = "Dead",
         )
@@ -95,7 +97,7 @@ private fun UnknownStatusPreview() {
             Modifier
                 .fillMaxWidth()
                 .padding(Dimens.Spacing150),
-            background = CharacterDetailsColors.StatusPillBackground,
+            background = MaterialTheme.detailsColors.statusPillBackground,
             status = CharacterStatus.UNKNOWN,
             label = "Unknown",
         )
